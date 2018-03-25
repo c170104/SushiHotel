@@ -6,12 +6,18 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class ReadPropValues {
+    public static constant CONFIG_FILE_NAME = "config.properties";
+    public static constant CONFIG_FILE_PROPERTY_DB_TYPE = "databaseType";
+    public static enum DB_TYPE {
+        FILE,
+        MYSQL,
+        ACCESS
+    }
+
     String[] result;
     InputStream inputStream;
-    constant CONFIG_FILE_NAME = "config.properties";
-    constant CONFIG_FILE_PROPERTY_DB_TYPE = "databaseType";
 
-    public String[] getConfigPropValues() throws IOException  {
+    public Properties getConfigPropValues() throws IOException  {
         try {
             Properties prop = new Properties();
             String configPropFileName = CONFIG_FILE_NAME;
@@ -25,13 +31,12 @@ public class ReadPropValues {
             }
 
             // ADD ALL THE DIFFERENT PROPERTIES INTO THE LIST
-            result.add(prop.getProperty(CONFIG_FILE_PROPERTY_DB_TYPE));
         } catch (Exception e) {
             System.out.println("Exception: " + e.getMessage());
         } finally {
             inputStream.close();
         }
         
-        return result;
+        return prop;
     }
 }
