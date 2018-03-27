@@ -1,4 +1,4 @@
-package com.sushihotel.database.test;
+package com.sushihotel.test;
 
 import com.sushihotel.database.DataStoreFactory;
 import com.sushihotel.database.IDataStore;
