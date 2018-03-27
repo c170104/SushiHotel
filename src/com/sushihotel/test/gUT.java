@@ -1,9 +1,7 @@
-package com.sushihotel.guest.test;
+package com.sushihotel.test;
 
-import com.sushihotel.guest.GuestModel;
 import com.sushihotel.guest.Guest;
-import java.lang.Exception;
-import java.util.List;
+import com.sushihotel.guest.GuestMgr;
 
 public class gUT {
     public static void main(String[] args)  {
@@ -46,7 +44,13 @@ public class gUT {
             // // ---------- GUEST Delete -------------
             // Guest guest = GuestModel.read("Shu En", GuestModel.GUEST_READ_METHOD.NAME);
             // GuestModel.delete(guest.getGuestID());
-                
+            
+
+            // --------- Guest Register ------------
+            Guest g = new Guest("S23445", "Shu En", 234, "asd", "1", "2", "3", "4", 5, "b");
+            GuestMgr gMgr = new GuestMgr();
+
+            gMgr.registerGuest(g);
 
         } catch (Exception e)   {
             System.out.println("Stack: " + e.getMessage());
