@@ -1,7 +1,10 @@
 package com.sushihotel.guest;
 
-public class Guest  {
+import java.io.Serializable;
+
+public class Guest implements Serializable {
     private int guestID;
+    private String identificationNo;
     private String name;
     private int creditCardNo;
     private String billingAddress;
@@ -12,8 +15,8 @@ public class Guest  {
     private int contactNo;
     private String passportNo;
 
-    public Guest( 
-        int guestID,
+    public Guest(
+        String identificationNo,
         String name,
         int creditCardNo,
         String billingAddress,
@@ -24,11 +27,11 @@ public class Guest  {
         int contactNo,
         String passportNo
     )  {
-        this.guestID = guestID;
+        this.identificationNo = identificationNo;
         this.name = name;
         this.creditCardNo = creditCardNo;
         this.billingAddress = billingAddress;
-        this.address = addresss;
+        this.address = address;
         this.country = country;
         this.gender = gender;
         this.nationality = nationality;
@@ -38,6 +41,9 @@ public class Guest  {
 
     protected void setGuestID(int guestID){
         this.guestID = guestID;
+    }
+    protected void setIdentificationNo(String identificationNo)    {
+        this.identificationNo = identificationNo;
     }
     protected void setName(String name){
         this.name = name;
@@ -67,34 +73,37 @@ public class Guest  {
         this.billingAddress = billingAddress;
     }
 
-    protected int getGuestID() {
+    public int getGuestID() {
         return this.guestID;
     } 
-    protected String getName() {
+    public String getIdentificationNo()    {
+        return this.identificationNo;
+    }
+    public String getName() {
         return this.name;
     } 
-    protected int getCreditCardNumber() {
+    public int getCreditCardNumber() {
         return this.creditCardNo;
     } 
-    protected String getAddress() {
+    public String getAddress() {
         return this.address;
     } 
-    protected String getCountry() {
+    public String getCountry() {
         return this.country;
     } 
-    protected String getGender() {
+    public String getGender() {
         return this.gender;
     } 
-    protected String getNationality() {
+    public String getNationality() {
         return this.nationality;
     } 
-    protected int getContactNumber() {
+    public int getContactNumber() {
         return this.contactNo;
     } 
-    protected String getPassportNumber() {
+    public String getPassportNumber() {
         return this.passportNo;
     } 
-    protected String getBillingAddress () {
+    public String getBillingAddress () {
         return this.billingAddress;
     } 
 }
