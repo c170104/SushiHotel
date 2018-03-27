@@ -1,31 +1,44 @@
-// package com.sushihotel.guest;
+package com.sushihotel.guest;
 
-// public class GuestMgr {
-//     public boolean registerGuest(Guest guest)   {
-        
-//     }
-//     public Guest[] searchGuestsByName(String guestName)    {
+import com.sushihotel.exception.DuplicateData;
+import com.sushihotel.guest.Guest;
+import com.sushihotel.guest.GuestModel;
 
-//     }
-//     public Guest searchGuestByName(String guestName)    {
+import sun.jvm.hotspot.debugger.posix.elf.ELFSectionHeader;
 
-//     }
-//     public Guest searchGuestByPassport(int passportNo)  {
+public class GuestMgr {
+    public void registerGuest(Guest guest)   {
+        try {
+            if(GuestModel.create(guest))
+                System.out.println("Successfully registered " + guest.getName() + ".");
+            else
+                System.out.println("Registration for " + guest.getName() + " was unsuccessful. Please try again.");
+        } catch(DuplicateData dd)   {
+            System.out.println(dd.getMessage());
+        } 
+    }
+    // public Guest[] searchGuestsByName(String guestName)    {
 
-//     }
-//     public boolean editGuestByName(String guestName, Guest guest)   {
+    // }
+    // public Guest searchGuestByName(String guestName)    {
 
-//     }
-//     public boolean editGuestByPassport(int passportNo, Guest guest) {
+    // }
+    // public Guest searchGuestByPassport(int passportNo)  {
 
-//     }
-//     public boolean removeGuestByName(String guestName)  {
+    // }
+    // public boolean editGuestByName(String guestName, Guest guest)   {
 
-//     }
-//     public boolean removeGuestByPassport(int passportNo)    {
+    // }
+    // public boolean editGuestByPassport(int passportNo, Guest guest) {
 
-//     }
-//     public void printGuestDetails(Guest guest)  {
+    // }
+    // public boolean removeGuestByName(String guestName)  {
 
-//     }
-// }
+    // }
+    // public boolean removeGuestByPassport(int passportNo)    {
+
+    // }
+    // public void printGuestDetails(Guest guest)  {
+
+    // }
+}

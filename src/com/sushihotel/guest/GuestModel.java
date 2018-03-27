@@ -9,6 +9,9 @@ import com.sushihotel.database.DataStoreFactory;
 import com.sushihotel.database.IDataStore;
 import com.sushihotel.tools.ReadPropValues;
 import com.sushihotel.guest.Guest;
+import com.sushihotel.exception.DuplicateData;
+import com.sushihotel.exception.EmptyDB;
+import com.sushihotel.exception.InvalidEntity;
 
 public class GuestModel {
     private static IDataStore dataStore = DataStoreFactory.getDataStore();
@@ -18,8 +21,9 @@ public class GuestModel {
         NAME,
         GUEST_ID
     }
+    private static final String EmptyDBMsg = "Guest DB not found.";
     
-    public static boolean create(Guest guest)   {
+    public static boolean create(Guest guest) throws DuplicateData  {
         List list;
         int size;
         Guest dbGuest;
@@ -37,16 +41,13 @@ public class GuestModel {
         for(int i=0; i<size; i++)   {
             dbGuest = (Guest)list.get(i);
             if(dbGuest.getIdentificationNo().toLowerCase().equals(guest.getIdentificationNo().toLowerCase()))   {
-                System.out.println("Identification No: " + guest.getIdentificationNo() + " already exist.");
-                return false;
+                throw new DuplicateData(guest.getIdentificationNo(), GUEST_READ_METHOD.IDENTIFICATION_NO);
             }
             if(dbGuest.getName().toLowerCase().equals(guest.getName().toLowerCase()))  {
-                System.out.println("Guest " + guest.getName() +" already exist.");
-                return false;
+                throw new DuplicateData(guest.getName(), GUEST_READ_METHOD.NAME);
             }
             if(dbGuest.getPassportNumber().toLowerCase().equals(guest.getPassportNumber().toLowerCase())) {
-                System.out.println("Passport No: " + guest.getPassportNumber() + " already exist.");
-                return false;
+                throw new DuplicateData(guest.getPassportNumber(), GUEST_READ_METHOD.PASSPORT_NO);
             }
         }
 
@@ -56,24 +57,17 @@ public class GuestModel {
         // append to the end of the current db list
         list.add(guest);
 
-        if (dataStore.writeGuest(list)) {
-            System.out.println(guest.getName() + " successfully registered into the system.");
-            return true;
-        }
-        else    {
-            System.out.println("Guest registration failure.");  
-            return false;
-        }
+        return dataStore.writeGuest(list);
     }
 
-    public static Guest read(String searchDetails, Enum method)    {
+    public static Guest read(String searchDetails, Enum method) throws EmptyDB {
         List list;
         Guest guest;
 
         list = (ArrayList)dataStore.readGuest();
 
         if(list == null)
-            return null;
+            new EmptyDB(EmptyDBMsg);
 
         for(int i=0; i<list.size(); i++)    {
             guest = (Guest)list.get(i);
@@ -95,7 +89,7 @@ public class GuestModel {
         return null;
     }
 
-    public static List<Guest> read(String keyword)  {
+    public static List<Guest> read(String keyword) throws EmptyDB {
         List list = null;
         List<Guest> newList = new ArrayList();
         Guest guest;
@@ -103,18 +97,17 @@ public class GuestModel {
         list = (ArrayList)dataStore.readGuest();
         
         if(list == null)
-            return null;
+            throw new EmptyDB(EmptyDBMsg);
 
         for(int i=0; i<list.size(); i++)    {
             guest = (Guest)list.get(i);
             if(guest.getName().toLowerCase().contains(keyword.toLowerCase()))
                 newList.add(guest);
         }
-
         return newList;
     }
 
-    public static void update(int guestID, Guest guest)  {
+    public static boolean update(int guestID, Guest guest) throws EmptyDB  {
         List list;
         Iterator iter;
         Guest dbGuest;
@@ -122,7 +115,7 @@ public class GuestModel {
         list = (ArrayList)dataStore.readGuest();
 
         if(list == null)
-            return;
+            throw new EmptyDB(EmptyDBMsg);
 
         guest.setGuestID(guestID);
 
@@ -136,15 +129,11 @@ public class GuestModel {
         }
         list.add(guest);
 
-        if(dataStore.writeGuest(list))  {
-            System.out.println("Successfully updated guest " + guest.getName() + " information.");
-        }   else    {
-            System.out.println("Failed to update guest " + guest.getName() + " information.");
-        }
+        return dataStore.writeGuest(list);
 
     }
 
-    public static void delete(int guestID)   {
+    public static boolean delete(int guestID) throws EmptyDB   {
         List list;
         Iterator iter;
         Guest guest = read(Integer.toString(guestID), GUEST_READ_METHOD.GUEST_ID);
@@ -154,8 +143,7 @@ public class GuestModel {
         list = (ArrayList)dataStore.readGuest();
 
         if(list == null)    {
-            System.out.println("Guest does not exist");
-            return;
+           throw new EmptyDB(EmptyDBMsg);
         }
 
         iter = list.iterator();
@@ -167,9 +155,9 @@ public class GuestModel {
                 break;   
             }
         }
-        if(trigger_flag == 1 && dataStore.writeGuest(list))
-            System.out.println("Guest " + guest.getName() + " has successfully been removed.");
+        if(trigger_flag == 1)
+            return dataStore.writeGuest(list);
         else
-            System.out.println("Guest " + guest.getName() + " deletion has failed.");
+            throw new InvalidEntity("Invalid Guest deletion.");
     }
 }
