@@ -1,40 +1,34 @@
 package com.sushihotel.tools;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 public class ReadPropValues {
-    public static constant CONFIG_FILE_NAME = "config.properties";
-    public static constant CONFIG_FILE_PROPERTY_DB_TYPE = "databaseType";
-    public static enum DB_TYPE {
-        FILE,
-        MYSQL,
-        ACCESS
-    }
-
-    String[] result;
-    InputStream inputStream;
+    public static final String CONFIG_FILE_NAME = "resources/config.properties";
+    public static final String CONFIG_FILE_PROPERTY_DB_TYPE = "databaseType";
+    public static final String CONFIG_FILE_PROPERTY_DB_TYPE_FILE = "FILE";
+    public static final String CONFIG_FILE_PROPERTY_DB_TYPE_MYSQL = "MYSQL";
+    public static final String CONFIG_FILE_PROPERTY_DB_FILE_NAME_GUEST = "resources/db/guest.dat";
+    public static final String CONFIG_FILE_PROPERTY_DB_FILE_NAME_ROOM = "resources/db/room.dat";
+    public static final String CONFIG_FILE_PROPERTY_DB_FILE_NAME_INVOICE = "resources/db/invoice.dat";
+    public static final String CONFIG_FILE_PROPERTY_DB_FILE_NAME_ROOMSERVICE = "resources/db/roomservice.dat";
+    public static final String CONFIG_FILE_PROPERTY_DB_FILE_NAME_RESERVATION = "resources/db/reservation.dat";
 
     public Properties getConfigPropValues() throws IOException  {
+        InputStream inputStream;
+        Properties prop = new Properties();
+        
         try {
-            Properties prop = new Properties();
-            String configPropFileName = CONFIG_FILE_NAME;
-
-            inputStream = getClass().getClassLoader().getResourceAsStream(configPropFileName);
-
-            if(inputStream != null) {
+            inputStream = new FileInputStream(CONFIG_FILE_NAME);
+            
+            if(inputStream != null)
                 prop.load(inputStream);
-            } else {
-                throw new FileNotFoundException("property file: " + configPropFileName + " not found.");
-            }
 
-            // ADD ALL THE DIFFERENT PROPERTIES INTO THE LIST
-        } catch (Exception e) {
-            System.out.println("Exception: " + e.getMessage());
-        } finally {
-            inputStream.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("File Exception: " + e.getMessage());
         }
         
         return prop;
