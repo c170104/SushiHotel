@@ -6,7 +6,7 @@ public class DuplicateData extends Exception {
     private String duplicateData;
     private Enum type;
 
-    public DuplicateData(String duplicateData, Enum type ) {
+    public DuplicateData(String duplicateData, Enum type) {
         this.duplicateData = duplicateData;
         this.type = type;
     }
