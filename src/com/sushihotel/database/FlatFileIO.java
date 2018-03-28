@@ -11,24 +11,55 @@ import java.util.ArrayList;
 import com.sushihotel.tools.ReadPropValues;
 
 public class FlatFileIO implements IDataStore {
-    public static final String FILE_DB_DELIMETER = "|";
 
     public String getDataStoreType() {
         return ReadPropValues.CONFIG_FILE_PROPERTY_DB_TYPE_FILE;
     }
 
-    public List readGuest() {
+    public Enum getEntityType() {
+        return DB_ENTITY_TYPE;
+    }
+
+    public List read(Enum entityType) {
         try {
-            return readSerializedObject(ReadPropValues.CONFIG_FILE_PROPERTY_DB_FILE_NAME_GUEST);
+            String fileName = "";
+            if(entityType == DB_ENTITY_TYPE.GUEST)
+                fileName = ReadPropValues.CONFIG_FILE_PROPERTY_DB_FILE_NAME_GUEST;
+            else if(entityType == DB_ENTITY_TYPE.ROOM)
+                fileName = ReadPropValues.CONFIG_FILE_PROPERTY_DB_FILE_NAME_ROOM;
+            else if(entityType == DB_ENTITY_TYPE.INVOICE)
+                fileName = ReadPropValues.CONFIG_FILE_PROPERTY_DB_FILE_NAME_INVOICE;
+            else if(entityType == DB_ENTITY_TYPE.MENU)
+                fileName = ReadPropValues.CONFIG_FILE_PROPERTY_DB_FILE_NAME_MENU;
+            else if(entityType == DB_ENTITY_TYPE.ROOMSERVICE)
+                fileName = ReadPropValues.CONFIG_FILE_PROPERTY_DB_FILE_NAME_ROOMSERVICE;
+            else if(entityType == DB_ENTITY_TYPE.RESERVATION)
+                fileName = ReadPropValues.CONFIG_FILE_PROPERTY_DB_FILE_NAME_RESERVATION;
+
+            return readSerializedObject(fileName);
         } catch(FileNotFoundException fnfe) {
-            System.out.println("Database file " + ReadPropValues.CONFIG_FILE_PROPERTY_DB_FILE_NAME_GUEST + " not found.");
-            System.out.println("Creating Database file " + ReadPropValues.CONFIG_FILE_PROPERTY_DB_FILE_NAME_GUEST + ".");
+            System.out.println("Database file type" + entityType + " not found.");
+            System.out.println("Creating Database file type" + entityType + ".");
             return null;
         }
     }
 
-    public boolean writeGuest(List content) {
-        return writeSerializedObject(ReadPropValues.CONFIG_FILE_PROPERTY_DB_FILE_NAME_GUEST, content);
+    public boolean write(List content, Enum entityType) {
+        String fileName = "";
+        if (entityType == DB_ENTITY_TYPE.GUEST)
+            fileName = ReadPropValues.CONFIG_FILE_PROPERTY_DB_FILE_NAME_GUEST;
+        else if (entityType == DB_ENTITY_TYPE.ROOM)
+            fileName = ReadPropValues.CONFIG_FILE_PROPERTY_DB_FILE_NAME_ROOM;
+        else if (entityType == DB_ENTITY_TYPE.INVOICE)
+            fileName = ReadPropValues.CONFIG_FILE_PROPERTY_DB_FILE_NAME_INVOICE;
+        else if (entityType == DB_ENTITY_TYPE.MENU)
+            fileName = ReadPropValues.CONFIG_FILE_PROPERTY_DB_FILE_NAME_MENU;
+        else if (entityType == DB_ENTITY_TYPE.ROOMSERVICE)
+            fileName = ReadPropValues.CONFIG_FILE_PROPERTY_DB_FILE_NAME_ROOMSERVICE;
+        else if (entityType == DB_ENTITY_TYPE.RESERVATION)
+            fileName = ReadPropValues.CONFIG_FILE_PROPERTY_DB_FILE_NAME_RESERVATION;
+
+        return writeSerializedObject(fileName, content);
     }
 
     public List readSerializedObject(String fileName) throws FileNotFoundException {

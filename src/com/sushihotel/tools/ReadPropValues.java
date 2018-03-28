@@ -16,6 +16,7 @@ public class ReadPropValues {
     public static final String CONFIG_FILE_PROPERTY_DB_FILE_NAME_INVOICE = "resources/db/invoice.dat";
     public static final String CONFIG_FILE_PROPERTY_DB_FILE_NAME_ROOMSERVICE = "resources/db/roomservice.dat";
     public static final String CONFIG_FILE_PROPERTY_DB_FILE_NAME_RESERVATION = "resources/db/reservation.dat";
+    public static final String CONFIG_FILE_PROPERTY_DB_FILE_NAME_MENU = "resources/db/menu.dat";
 
     public Properties getConfigPropValues() throws IOException  {
         InputStream inputStream;

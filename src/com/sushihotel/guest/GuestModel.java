@@ -7,7 +7,6 @@ import java.lang.Integer;
 
 import com.sushihotel.database.DataStoreFactory;
 import com.sushihotel.database.IDataStore;
-import com.sushihotel.tools.ReadPropValues;
 import com.sushihotel.guest.Guest;
 import com.sushihotel.exception.DuplicateData;
 import com.sushihotel.exception.EmptyDB;
@@ -15,20 +14,20 @@ import com.sushihotel.exception.InvalidEntity;
 
 public class GuestModel {
     private static IDataStore dataStore = DataStoreFactory.getDataStore();
-    public enum GUEST_READ_METHOD {
+    public enum GUEST_SEARCH_TYPE {
         IDENTIFICATION_NO,
         PASSPORT_NO,
-        NAME,
+        GUEST_NAME,
         GUEST_ID
     }
     private static final String EmptyDBMsg = "Guest DB not found.";
     
-    public static boolean create(Guest guest) throws DuplicateData  {
+    protected static boolean create(Guest guest) throws DuplicateData  {
         List list;
         int size;
         Guest dbGuest;
 
-        list = (ArrayList)dataStore.readGuest();
+        list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.GUEST);
 
         size = list == null ? 0 : list.size();
 
@@ -41,13 +40,13 @@ public class GuestModel {
         for(int i=0; i<size; i++)   {
             dbGuest = (Guest)list.get(i);
             if(dbGuest.getIdentificationNo().toLowerCase().equals(guest.getIdentificationNo().toLowerCase()))   {
-                throw new DuplicateData(guest.getIdentificationNo(), GUEST_READ_METHOD.IDENTIFICATION_NO);
+                throw new DuplicateData(guest.getIdentificationNo(), GUEST_SEARCH_TYPE.IDENTIFICATION_NO);
             }
             if(dbGuest.getName().toLowerCase().equals(guest.getName().toLowerCase()))  {
-                throw new DuplicateData(guest.getName(), GUEST_READ_METHOD.NAME);
+                throw new DuplicateData(guest.getName(), GUEST_SEARCH_TYPE.GUEST_NAME);
             }
             if(dbGuest.getPassportNumber().toLowerCase().equals(guest.getPassportNumber().toLowerCase())) {
-                throw new DuplicateData(guest.getPassportNumber(), GUEST_READ_METHOD.PASSPORT_NO);
+                throw new DuplicateData(guest.getPassportNumber(), GUEST_SEARCH_TYPE.PASSPORT_NO);
             }
         }
 
@@ -57,14 +56,14 @@ public class GuestModel {
         // append to the end of the current db list
         list.add(guest);
 
-        return dataStore.writeGuest(list);
+        return dataStore.write(list, IDataStore.DB_ENTITY_TYPE.GUEST);
     }
 
-    public static Guest read(String searchDetails, Enum method) throws EmptyDB {
+    protected static Guest read(String searchDetails, Enum method) throws EmptyDB, InvalidEntity {
         List list;
         Guest guest;
 
-        list = (ArrayList)dataStore.readGuest();
+        list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.GUEST);
 
         if(list == null)
             new EmptyDB(EmptyDBMsg);
@@ -72,29 +71,29 @@ public class GuestModel {
         for(int i=0; i<list.size(); i++)    {
             guest = (Guest)list.get(i);
             
-            if(GUEST_READ_METHOD.IDENTIFICATION_NO == method)   {
+            if(GUEST_SEARCH_TYPE.IDENTIFICATION_NO == method)   {
                 if(guest.getIdentificationNo().toLowerCase().equals(searchDetails.toLowerCase()))
                     return guest;
-            } else if(GUEST_READ_METHOD.PASSPORT_NO == method) {
+            } else if(GUEST_SEARCH_TYPE.PASSPORT_NO == method) {
                 if(guest.getPassportNumber().toLowerCase().equals(searchDetails.toLowerCase()))
                     return guest;
-            } else if(GUEST_READ_METHOD.NAME == method)    {
+            } else if(GUEST_SEARCH_TYPE.GUEST_NAME == method)    {
                 if(guest.getName().toLowerCase().equals(searchDetails.toLowerCase()))
                     return guest;
-            } else if(GUEST_READ_METHOD.GUEST_ID == method)    {
+            } else if(GUEST_SEARCH_TYPE.GUEST_ID == method)    {
                 if(guest.getGuestID() == Integer.parseInt(searchDetails))
                     return guest;
             }       
         }
-        return null;
+        throw new InvalidEntity(searchDetails + " not found.", method);
     }
 
-    public static List<Guest> read(String keyword) throws EmptyDB {
+    protected static List<Guest> read(String keyword) throws EmptyDB {
         List list = null;
         List<Guest> newList = new ArrayList();
         Guest guest;
 
-        list = (ArrayList)dataStore.readGuest();
+        list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.GUEST);
         
         if(list == null)
             throw new EmptyDB(EmptyDBMsg);
@@ -107,12 +106,12 @@ public class GuestModel {
         return newList;
     }
 
-    public static boolean update(int guestID, Guest guest) throws EmptyDB  {
+    protected static boolean update(int guestID, Guest guest) throws EmptyDB  {
         List list;
         Iterator iter;
         Guest dbGuest;
 
-        list = (ArrayList)dataStore.readGuest();
+        list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.GUEST);
 
         if(list == null)
             throw new EmptyDB(EmptyDBMsg);
@@ -129,18 +128,18 @@ public class GuestModel {
         }
         list.add(guest);
 
-        return dataStore.writeGuest(list);
+        return dataStore.write(list, IDataStore.DB_ENTITY_TYPE.GUEST);
 
     }
 
-    public static boolean delete(int guestID) throws EmptyDB   {
+    protected static boolean delete(int guestID) throws EmptyDB, InvalidEntity   {
         List list;
         Iterator iter;
-        Guest guest = read(Integer.toString(guestID), GUEST_READ_METHOD.GUEST_ID);
+        Guest guest = read(Integer.toString(guestID), GUEST_SEARCH_TYPE.GUEST_ID);
 
         int trigger_flag = 0;
 
-        list = (ArrayList)dataStore.readGuest();
+        list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.GUEST);
 
         if(list == null)    {
            throw new EmptyDB(EmptyDBMsg);
@@ -156,8 +155,8 @@ public class GuestModel {
             }
         }
         if(trigger_flag == 1)
-            return dataStore.writeGuest(list);
+            return dataStore.write(list, IDataStore.DB_ENTITY_TYPE.GUEST);
         else
-            throw new InvalidEntity("Invalid Guest deletion.");
+            throw new InvalidEntity(guestID + " does not exist.", GUEST_SEARCH_TYPE.GUEST_ID);
     }
 }
