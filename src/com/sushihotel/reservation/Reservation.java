@@ -1,1 +1,1 @@
-"" 
+package com.sushihotel.reservation;

@@ -106,10 +106,11 @@ public class GuestModel {
         return newList;
     }
 
-    protected static boolean update(int guestID, Guest guest) throws EmptyDB  {
+    protected static boolean update(int guestID, Guest guest) throws EmptyDB, InvalidEntity  {
         List list;
         Iterator iter;
         Guest dbGuest;
+        boolean trigger_flag = false;
 
         list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.GUEST);
 
@@ -123,9 +124,13 @@ public class GuestModel {
             dbGuest = (Guest)iter.next();
             if(dbGuest.getGuestID() == guestID) {
                 iter.remove();
+                trigger_flag = true;
                 break;
             }
         }
+        if(!trigger_flag)
+            throw new InvalidEntity(guestID + " not found.", GUEST_SEARCH_TYPE.GUEST_ID);
+
         list.add(guest);
 
         return dataStore.write(list, IDataStore.DB_ENTITY_TYPE.GUEST);
@@ -136,8 +141,7 @@ public class GuestModel {
         List list;
         Iterator iter;
         Guest guest = read(Integer.toString(guestID), GUEST_SEARCH_TYPE.GUEST_ID);
-
-        int trigger_flag = 0;
+        boolean trigger_flag = false;
 
         list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.GUEST);
 
@@ -150,13 +154,13 @@ public class GuestModel {
             guest = (Guest)iter.next();
             if(guest.getGuestID() == guestID)   {
                 iter.remove();
-                trigger_flag = 1;
+                trigger_flag = true;
                 break;   
             }
         }
-        if(trigger_flag == 1)
-            return dataStore.write(list, IDataStore.DB_ENTITY_TYPE.GUEST);
-        else
+        if(!trigger_flag)
             throw new InvalidEntity(guestID + " does not exist.", GUEST_SEARCH_TYPE.GUEST_ID);
+        
+        return dataStore.write(list, IDataStore.DB_ENTITY_TYPE.GUEST);
     }
 }

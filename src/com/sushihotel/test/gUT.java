@@ -1,13 +1,17 @@
 package com.sushihotel.test;
 
+import java.io.*;
 import java.util.List;
+import java.util.logging.*;
 
 import com.sushihotel.guest.Guest;
 import com.sushihotel.guest.GuestMgr;
 import com.sushihotel.guest.GuestModel.GUEST_SEARCH_TYPE;;
 
 public class gUT {
-    public static void main(String[] args)  {
+    private static final Logger logger = Logger.getLogger(gUT.class.getName());
+
+    public static void main(String[] args) throws IOException  {
         try {
             // // ------------- Create Guest ----------
             // Guest guest = new Guest("S123","Shu En", 123, "asd", "1", "2", "3", "4", 5, "a");
@@ -48,7 +52,14 @@ public class gUT {
             // Guest guest = GuestModel.read("Shu En", GuestModel.GUEST_SEARCH_TYPE.NAME);
             // GuestModel.delete(guest.getGuestID());
             
+            // LOGGER
+            Handler files = new FileHandler("log/system.log", true);
+            Handler[] handlers = Logger.getLogger("").getHandlers();
 
+            files.setFormatter(new SimpleFormatter());
+            for(Handler handler : handlers)
+                Logger.getLogger("").removeHandler(handler);
+            Logger.getLogger("").addHandler(files);
             
             Guest g;
             GuestMgr gMgr = new GuestMgr();

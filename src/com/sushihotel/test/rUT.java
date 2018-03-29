@@ -8,8 +8,18 @@ public class rUT    {
         Room r;
         RoomMgr rMgr = new RoomMgr();
 
-        r = new Room(1, Room.ROOM_TYPE.SINGLE, 2, 4, 349.99f, 550.00f, "Two Super Single Bed, Two Mattress", false, "Facing City", false, Room.ROOM_STATUS.VACANT, 1);
-        
+        // Create Room
+        r = new Room(1, Room.ROOM_TYPE.DOUBLE, 1, 4, 349.99f, 550.00f, "Two Super Single Bed, Two Mattress", false, "Facing City", false, Room.ROOM_STATUS.VACANT, "02-04");
         rMgr.createRoom(r);
+
+        // Edit Room
+        r = new Room(1, Room.ROOM_TYPE.DOUBLE, 1, 4, 449.99f, 650.00f, "Two Super Single Bed, Two Mattress", false, "Facing City", false, Room.ROOM_STATUS.VACANT, "02-05");
+        rMgr.editRoom(2, r);
+
+        // Print all Room Status
+        rMgr.printRoomStatusByAvailability();
+
+        // Delete room
+        rMgr.removeRoom(1);
     }
 }
