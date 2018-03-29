@@ -14,7 +14,7 @@ public class Room implements Serializable {
     private String facingView;
     private boolean smokingAllowed;
     private Enum roomStatus;
-    private int floorNumber;
+    private String unitNumber;
 
     public enum ROOM_TYPE   {
         SINGLE,
@@ -42,7 +42,7 @@ public class Room implements Serializable {
         String facingView, 
         boolean smokingAllowed,
         Enum roomStatus, 
-        int floorNumber
+        String unitNumber
     ) {
         this.roomNumber = roomNumber;
         this.roomType = roomType;
@@ -55,7 +55,7 @@ public class Room implements Serializable {
         this.facingView = facingView;
         this.smokingAllowed = smokingAllowed;
         this.roomStatus = roomStatus;
-        this.floorNumber = floorNumber;
+        this.unitNumber = unitNumber;
     }
 
     protected void setRoomType(Enum roomType) {
@@ -102,8 +102,8 @@ public class Room implements Serializable {
         this.roomStatus = roomStatus;
     }
 
-    protected void setFloorNumber(int floorNumber)  {
-        this.floorNumber = floorNumber;
+    protected void setUnitNumber(String unitNumber)  {
+        this.unitNumber = unitNumber;
     }
 
     protected Enum getRoomType() {
@@ -150,7 +150,7 @@ public class Room implements Serializable {
         return this.roomStatus;
     }
 
-    protected int getFloorNumber()  {
-        return this.floorNumber;
+    protected String getUnitNumber()  {
+        return this.unitNumber;
     }
 }

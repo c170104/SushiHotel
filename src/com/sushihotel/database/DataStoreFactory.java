@@ -18,6 +18,10 @@ public class DataStoreFactory  {
             if(configDatabaseType.equals(ReadPropValues.CONFIG_FILE_PROPERTY_DB_TYPE_FILE))   {
                 dataStore = new FlatFileIO();  
             }
+            // For furture implementation of MySQL Database
+            // if(configDatabaseType.equals(ReadPropValues.CONFIG_FILE_PROPERTY_DB_TYPE_MYSQL))    {
+            //     dataStore = new MySQLImp();
+            // }
             
         } catch(IOException ioe) {
             System.out.println("IOException: " + ioe.getMessage());

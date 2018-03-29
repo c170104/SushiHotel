@@ -1,6 +1,8 @@
 package com.sushihotel.guest;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.logging.*;
 
 import com.sushihotel.exception.DuplicateData;
 import com.sushihotel.exception.EmptyDB;
@@ -9,15 +11,18 @@ import com.sushihotel.guest.Guest;
 import com.sushihotel.guest.GuestModel;
 
 public class GuestMgr {
+    private static final Logger logger = Logger.getLogger(GuestMgr.class.getName());
+
     public void registerGuest(Guest guest)   {
         try {
             if(GuestModel.create(guest))
-                System.out.println("Successfully registered " + guest.getName() + ".");
+                logger.info("Successfully registered " + guest.getName() + ".");
             else
-                System.out.println("Registration for " + guest.getName() + " was unsuccessful. Please try again.");
+                logger.info("Registration for " + guest.getName() + " was unsuccessful. Please try again.");
+            
         } catch(DuplicateData dd)   {
-            System.out.println(dd.getMessage());
-        } 
+            logger.log(Level.WARNING, dd.getMessage());
+        }
     }
     public List<Guest> searchGuestsByName(String guestName)    {
         List<Guest> guestList = null;
@@ -25,7 +30,7 @@ public class GuestMgr {
         try {
             guestList = GuestModel.read(guestName);
         } catch(EmptyDB edb)    {
-            System.out.println(edb.getMessage());
+            logger.log(Level.WARNING, edb.getMessage());
         }
         return guestList;
     }
@@ -34,10 +39,11 @@ public class GuestMgr {
         
         try {
             guest = GuestModel.read(searchData, type);
+
         } catch(InvalidEntity ie)   {
-            System.out.println(ie.getMessage());
+            logger.log(Level.WARNING, ie.getMessage());
         } catch(EmptyDB edb)    {
-            System.out.println(edb.getMessage());
+            logger.log(Level.WARNING, edb.getMessage());
         }
         return guest;
     }
@@ -53,11 +59,14 @@ public class GuestMgr {
 
             guestID = oldGuest.getGuestID();
             if(GuestModel.update(guestID, guest))
-                System.out.println("Successfully updated "+ guest.getName() + " profile information.");
+                logger.info("Successfully updated "+ guest.getName() + " profile information.");
             else
-                System.out.println("System failed to update " + guest.getName() + " profile. Please try again.");
+                logger.info("System failed to update " + guest.getName() + " profile. Please try again.");
+
         } catch(EmptyDB edb)  {
-            System.out.println(edb.getMessage());
+            logger.log(Level.WARNING, edb.getMessage());
+        } catch (InvalidEntity ie)  {
+            logger.log(Level.WARNING, ie.getMessage());
         }
     }
     
@@ -72,22 +81,14 @@ public class GuestMgr {
 
             guestID = guest.getGuestID();
             if(GuestModel.delete(guestID))
-                System.out.println("Successfully removed " + guest.getName() + " from database.");
+                logger.info("Successfully removed " + guest.getName() + " from database.");
             else
-                System.out.println("System failed to remove " + guest.getName() + " from the database. Please try again.");
+                logger.info("System failed to remove " + guest.getName() + " from the database. Please try again.");
+            
         } catch(EmptyDB edb)    {
-            System.out.println(edb.getMessage());
+            logger.log(Level.WARNING, edb.getMessage());
         } catch(InvalidEntity ie)   {
-            System.out.println(ie.getMessage());
+            logger.log(Level.WARNING, ie.getMessage());
         }
-    }
-    public void printGuestDetails(Guest guest)  {
-        
-        // ================= Lauren EDIT HERE !! ==========================
-        System.println(
-            "====================== Guest Detail ======================\n" +
-            "Name: " + guest.getName() + "\n"
-        );
-        // ================================================================
     }
 }

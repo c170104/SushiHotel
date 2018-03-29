@@ -2,6 +2,7 @@ package com.sushihotel.room;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import com.sushihotel.database.DataStoreFactory;
 import com.sushihotel.database.IDataStore;
@@ -16,7 +17,8 @@ public class RoomModel   {
         ROOM_NUMBER,
         ROOM_TYPE,
         WIFI_ENABLED,
-        SMOKING_ENABLED
+        SMOKING_ENABLED,
+        UNIT_NUMBER
     }
     private static final String EmptyDBMsg = "Room DB not found.";
 
@@ -39,6 +41,8 @@ public class RoomModel   {
             if(dbRoom.getRoomNumber() == room.getRoomNumber())  {
                 throw new DuplicateData(Integer.toString(room.getRoomNumber()), ROOM_SEARCH_TYPE.ROOM_NUMBER);
             }
+            else if(dbRoom.getUnitNumber().toLowerCase().equals(room.getUnitNumber().toLowerCase()))
+                throw new DuplicateData(room.getUnitNumber(), ROOM_SEARCH_TYPE.UNIT_NUMBER);
         }
         list.add(room);
         
@@ -72,5 +76,63 @@ public class RoomModel   {
             throw new EmptyDB(EmptyDBMsg);
         
         return list;
+    }
+
+    protected static boolean update(int roomNumber, Room room) throws EmptyDB, InvalidEntity  {
+        List list;
+        Iterator iter;
+        Room oldRoom;
+        boolean trigger_flag = false;
+
+        list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.ROOM);
+
+        if(list == null)
+            throw new EmptyDB(EmptyDBMsg);
+
+        room.setRoomNumber(roomNumber);
+
+        iter = list.iterator();
+        while(iter.hasNext())   {
+            oldRoom = (Room)iter.next();
+            if(oldRoom.getRoomNumber() == roomNumber)   {
+                iter.remove();
+                trigger_flag = true;
+                break;
+            }
+        }
+        if(!trigger_flag)
+            throw new InvalidEntity(roomNumber + " not found.", ROOM_SEARCH_TYPE.ROOM_NUMBER);
+        
+        list.add(room);
+
+        return dataStore.write(list, IDataStore.DB_ENTITY_TYPE.ROOM);
+    }
+
+    protected static boolean delete(int roomNumber) throws EmptyDB, InvalidEntity    {
+        List list;
+        Iterator iter;
+        Room room;
+        boolean trigger_flag = false;
+
+        list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.ROOM);
+
+        if(list == null)
+            throw new EmptyDB(EmptyDBMsg);
+
+        iter = list.iterator();
+
+        while(iter.hasNext())   {
+            room = (Room)iter.next();
+            if(room.getRoomNumber() == roomNumber)  {
+                iter.remove();
+                trigger_flag = true;
+                break;
+            }
+        }
+
+        if(!trigger_flag)
+            throw new InvalidEntity(roomNumber + " not found.", ROOM_SEARCH_TYPE.ROOM_NUMBER);
+        
+        return dataStore.write(list, IDataStore.DB_ENTITY_TYPE.ROOM);
     }
 }
