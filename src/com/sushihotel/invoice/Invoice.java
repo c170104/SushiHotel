@@ -5,13 +5,14 @@ import java.util.List;
 
 public class Invoice implements Serializable    {
     private int invoiceID; 
-    private int guestID; 
+    private int guestID;
+    private int roomNumber;
     private String checkInDate; 
     private String checkOutDate; 
     private float tax; 
     private float discount; 
     private float roomCharges; 
-    private List<Integer> roomSvc;
+    private float roomSvc;
     private float totalBill; 
     private boolean cashPayment;
     private Enum invoiceStatus; 
@@ -23,9 +24,13 @@ public class Invoice implements Serializable    {
     }
 
     // blank invoice upon check in
-    public Invoice(int guestID, String checkInDate)   {
+    public Invoice(int guestID, int roomNumber, float roomCharges, String checkInDate)   {
         this.guestID = guestID;
+        this.roomNumber = roomNumber;
+        this.roomCharges = roomCharges;
         this.checkInDate = checkInDate;
+        this.roomSvc = 0.0f;
+        this.invoiceStatus = INVOICE_STATUS.PAYMENT_NOT_MADE;
     }  
 
     protected void setInvoiceID(int invoiceID)  {
@@ -33,6 +38,9 @@ public class Invoice implements Serializable    {
     }
     protected void setGuestID(int guestID)  {
         this.guestID = guestID;
+    }
+    protected void setRoomNumber(int roomNumber)    {
+        this.roomNumber = roomNumber;
     }
     protected void setCheckInDate(String checkInDate)   {
         this.checkInDate = checkInDate;
@@ -49,7 +57,7 @@ public class Invoice implements Serializable    {
     protected void setRoomCharges(float roomCharges)    {
         this.roomCharges = roomCharges;
     }
-    protected void setRoomSvc(List<Integer> roomSvc)  {
+    protected void setRoomSvc(float roomSvc)  {
         this.roomSvc = roomSvc;
     }
     protected void setTotalBill(float totalBill)    {
@@ -70,7 +78,10 @@ public class Invoice implements Serializable    {
     } 
     protected int getGuestID()  {
         return this.guestID;
-    } 
+    }
+    protected int getRoomNumber()   {
+        return this.roomNumber;
+    }
     protected boolean getCashPayment()  {
         return this.cashPayment;
     } 
@@ -92,7 +103,7 @@ public class Invoice implements Serializable    {
     protected float getRoomCharges()  {
         return this.roomCharges;
     } 
-    protected List<Integer> getRoomSvc()  {
+    protected float getRoomSvc()  {
         return this.roomSvc;
     }
     protected float getTotalBill()    {

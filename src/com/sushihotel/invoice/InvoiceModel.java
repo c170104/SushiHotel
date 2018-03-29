@@ -15,7 +15,8 @@ public class InvoiceModel   {
     private static IDataStore dataStore = DataStoreFactory.getDataStore();
     public enum INVOICE_SEARCH_TYPE {
         INVOICE_ID,
-        GUEST_ID
+        GUEST_ID,
+        ROOM_NUMBER
     }
     private static final String EmptyDBMsg = "Invoice DB not found.";
 
@@ -35,7 +36,25 @@ public class InvoiceModel   {
         return dataStore.write(list, IDataStore.DB_ENTITY_TYPE.INVOICE);
     }
 
-    protected static List<Invoice> read(int guestID) throws EmptyDB  {
+    protected static Invoice readByOccupiedRoomNumber(int roomNumber) throws EmptyDB, InvalidEntity  {
+        List list;
+        Invoice invoice;
+
+        list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.INVOICE);
+
+        if(list == null)
+            throw new EmptyDB(EmptyDBMsg);
+
+        for(int i=0; i<list.size(); i++)    {
+            invoice = (Invoice)list.get(i);
+            if(invoice.getRoomNumber() == roomNumber && invoice.getInvoiceStatus() == Invoice.INVOICE_STATUS.PAYMENT_NOT_MADE) {
+                return invoice;
+            }
+        }
+        throw new InvalidEntity(roomNumber + " which is UNPAID is not found", INVOICE_SEARCH_TYPE.ROOM_NUMBER);
+    }
+
+    protected static List<Invoice> readByGuestID(int guestID) throws EmptyDB  {
         List list;
         List<Invoice> newList = new ArrayList();
         Invoice invoice;

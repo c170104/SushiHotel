@@ -14,10 +14,13 @@ public class rUT    {
 
         // Edit Room
         r = new Room(1, Room.ROOM_TYPE.DOUBLE, 1, 4, 449.99f, 650.00f, "Two Super Single Bed, Two Mattress", false, "Facing City", false, Room.ROOM_STATUS.VACANT, "02-05");
-        rMgr.editRoom(2, r);
+        rMgr.editRoom(1, r);
 
         // Print all Room Status
         rMgr.printRoomStatusByAvailability();
+
+        // Print by Type
+        rMgr.printRoomStatusByRoomType();
 
         // Delete room
         rMgr.removeRoom(1);
