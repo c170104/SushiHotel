@@ -12,39 +12,48 @@ import com.sushihotel.room.RoomModel;
 public class RoomMgr    {
     private static final Logger logger = Logger.getLogger(RoomMgr.class.getName());
 
-    public void createRoom(Room room)    {
+    public boolean createRoom(Room room)    {
         try {
-            if(RoomModel.create(room))
-                logger.info("Successfully added Room number " + room.getRoomNumber() + " Type: " + room.getRoomType());
+            if(RoomModel.create(room))  {
+                logger.info("[CREATE SUCCESS] Room Number: " + room.getRoomNumber() + " |Type: " + room.getRoomType());
+                return true;
+            }
             else
-                logger.info("System failed to add Room number" + room.getRoomNumber() + ".");
+                logger.info("[CREATE FAIL] Room Number: " + room.getRoomNumber());
         } catch(DuplicateData dd)   {
             logger.warning(dd.getMessage());
         }
+        return false;
     } 
-    public void editRoom(int roomNumber , Room room) {
+    public boolean editRoom(int roomNumber , Room room) {
         try {
-            if(RoomModel.update(roomNumber, room))
-                logger.info("Successfully updated Room " + roomNumber + ".");
+            if(RoomModel.update(roomNumber, room))  {
+                logger.info("[UPDATE SUCCESS] Room Number: " + roomNumber);
+                return true;
+            }
             else
-                logger.info("System has failed to update Room " + roomNumber + ".");
+                logger.info("[UPDATE FAIL] Room Number: " + roomNumber);
         } catch (EmptyDB edb)   {
             logger.warning(edb.getMessage());
         } catch (InvalidEntity ie ) {
             logger.warning(ie.getMessage());
         }
+        return false;
     } 
-    public void removeRoom(int roomNumber)  {
+    public boolean removeRoom(int roomNumber)  {
         try {
-            if(RoomModel.delete(roomNumber))
-                logger.info("Successfully removed Room " + roomNumber + ".");
+            if(RoomModel.delete(roomNumber))    {
+                logger.info("[DELETE SUCCESS] Room Number: " + roomNumber);
+                return true;
+            }
             else
-                logger.info("System has failed to remove Room " + roomNumber + ".");
+                logger.info("[DELETE FAIL] Room Number: " + roomNumber);
         } catch (EmptyDB edb)   {
             logger.warning(edb.getMessage());
         } catch (InvalidEntity ie)  {
             logger.warning(ie.getMessage());
         }
+        return false;
     } 
     public boolean checkRoomAvailability(int roomNumber)    {
         try {
@@ -100,11 +109,66 @@ public class RoomMgr    {
         }
     }
     public void printRoomStatusByRoomType()  {
+        try {
+            List<Room> list;
+            Room room;
+            int singleVacant = 0, singleTotal = 0;
+            int doubleVacant = 0, doubleTotal = 0;
+            int deluxeVacant = 0, deluxeTotal = 0;
+            int vipVacant = 0, vipTotal = 0;
+            String singleUnitNumber = "";
+            String doubleUnitNumber = "";
+            String deluxeUnitNumber = "";
+            String vipUnitNumber = "";
 
+            list = RoomModel.read();
+
+            for(int i=0; i<list.size(); i++)    {
+                room = list.get(i);
+                if(room.getRoomType() == Room.ROOM_TYPE.SINGLE) {
+                    singleTotal++;
+                    if(room.getRoomStatus() == Room.ROOM_STATUS.VACANT) {
+                        singleVacant++;
+                        singleUnitNumber += room.getUnitNumber() + ", ";
+                    }
+                }
+                else if(room.getRoomType() == Room.ROOM_TYPE.DOUBLE)    {
+                    doubleTotal++;
+                    if(room.getRoomStatus() == Room.ROOM_STATUS.VACANT) {
+                        doubleVacant++;
+                        doubleUnitNumber += room.getUnitNumber() + ", ";
+                    }
+                }
+                else if(room.getRoomType() == Room.ROOM_TYPE.DELUXE)    {
+                    deluxeTotal++;
+                    if(room.getRoomStatus() == Room.ROOM_STATUS.VACANT) {
+                        deluxeVacant++;
+                        deluxeUnitNumber += room.getUnitNumber() + ", ";
+                    }
+                }
+                else    {
+                    vipTotal++;
+                    if(room.getRoomStatus() == Room.ROOM_STATUS.VACANT) {
+                        vipVacant++;
+                        vipUnitNumber += room.getUnitNumber() + ", ";
+                    }
+                }
+            }
+
+            System.out.println(
+                "Single: Number: " + singleVacant + " out of " + singleTotal + "\n" +
+                "\tRoom: " + singleUnitNumber + "\n" +
+                "Double: Number: " + doubleVacant + " out of " + doubleTotal + "\n" +
+                "\tRoom: " + doubleUnitNumber + "\n" +
+                "Deluxe: Number: " + deluxeVacant + " out of " + deluxeTotal + "\n" +
+                "\tRoom: " + deluxeUnitNumber + "\n" +
+                "VIP: Number: " + vipVacant + " out of " + vipTotal + "\n" +
+                "\tRoom: " + vipUnitNumber + "\n"
+            );
+        } catch(EmptyDB edb)    {
+            logger.warning(edb.getMessage());
+        }
     } 
-    // public void printRoomStatsRoomStatus()  {
-
-    // }  //list all room numbers  from each room status category
      
     // public void printRoomOccupancyPercentage(String date)   {
         
