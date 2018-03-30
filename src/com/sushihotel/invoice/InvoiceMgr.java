@@ -2,6 +2,7 @@ package com.sushihotel.invoice;
 
 import java.awt.List;
 import java.util.logging.*;
+import java.util.Calendar;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
@@ -81,29 +82,15 @@ public class InvoiceMgr {
         return false;
     }
 
-    public boolean addCharges(int roomNumber, float discount, float tax, float lateFees, String checkOutDate)    {
+    public boolean addCharges(int roomNumber, float discount, float tax, float lateFees)    {
         Invoice invoice;
-        float totalBill = 0.0f;
-        int totalDays;
-        String checkInDate;
-        Date cIn;
-        Date cOut;
-        SimpleDateFormat myFormat = new SimpleDateFormat("dd/MM/yyyy");
 
         try {
             invoice = InvoiceModel.readByOccupiedRoomNumber(roomNumber);
 
-            checkInDate = invoice.getCheckInDate();
-            cIn = new Date(myFormat.parse(checkOutDate)); 
-            cOut = new Date(myFormat.parse(checkInDate));
-            
-            totalDays = (dateDiff / (1000*60*60*24));
-            // totalBill = ((totalDays * ))
             invoice.setDiscount(discount);
             invoice.setTax(tax);
             invoice.setLateFee(lateFee);
-            invoice.setTotalBill(totalBill);
-
 
             if(InvoiceModel.update(invoice.getInvoiceID(), invoice))    {
                 logger.info("[ADD CHARGES SUCCESS] Invoice ID: " + invoice.getInvoiceID());
@@ -119,7 +106,38 @@ public class InvoiceMgr {
         return false;
     }
 
-    public boolean checkOutInvoice(int guestID, int roomNumber, String checkOutDate, boolean cashPayment)    {
+    public boolean checkOutInvoice(int roomNumber, String checkOutDate)    {
+        Invoice invoice;
+        float totalBill = 0.0f;
+        int totalWeekends = 0;
+        int totalWeekDays = 0;
+        String checkInDate;
+        Date cIn;
+        Date cOut;
+        SimpleDateFormat myFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Calendar c1 = Calendar.getInstance();
+        Calendar c2 = Calendar.getInstance();
+        
+        try {
+            invoice = InvoiceModel.readByOccupiedRoomNumber(roomNumber);
+
+            invoice.setCheckOutDate(checkOutDate);
+
+            cIn = myFormat.parse(checkInDate);
+            cOut = myFormat.parse(checkOutDate);
+            c1.setTime(cIn);
+            c2.setTime(cOut);
+            while(c2.after(c1)) {
+                if(c1.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || c1.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY))
+                    totalWeekends++;
+                totalWeekDays++;
+                c1.add(Calendar.DATE, 1);
+            }
+            // totalBill = totalWeekDays * 
+        }
+    }
+
+    public boolean makePayment(int guestID, int roomNumber, boolean cashPayment)    {
         List<Invoice> invoices;
         Invoice invoice;
         try {
@@ -135,16 +153,15 @@ public class InvoiceMgr {
             if(invoice == null)
                 return false;
 
-            invoice.setCheckOutDate(checkOutDate);
             invoice.setCashPayment(cashPayment);
             invoice.setInvoiceStatus(Invoice.INVOICE_STATUS.PAYMENT_MADE);
 
             if(InvoiceModel.update(invoice.getInvoiceID(), invoice)) {
-                logger.info("[CHECKOUT SUCCESS] Invoice ID: " + invoice.getInvoiceID() + " |Guest ID: " + invoice.getGuestID());
+                logger.info("[PAYMENT SUCCESS] Invoice ID: " + invoice.getInvoiceID() + " |Guest ID: " + invoice.getGuestID());
                 return true;
             }
             else
-                logger.info("[CHECKOUT FAIL] Invoice ID: " + invoice.getInvoiceID());
+                logger.info("[PAYMENT FAIL] Invoice ID: " + invoice.getInvoiceID());
         } catch(EmptyDB edb)    {
             logger.warning(edb.getMessage());
         } catch(InvalidEntity ie)   {
