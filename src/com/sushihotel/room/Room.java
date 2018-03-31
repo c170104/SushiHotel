@@ -30,6 +30,14 @@ public class Room implements Serializable {
         UNDER_MAINTENANCE
     }
 
+    public enum ROOM_SEARCH_TYPE    {
+        ROOM_NUMBER,
+        ROOM_TYPE,
+        WIFI_ENABLED,
+        SMOKING_ENABLED,
+        UNIT_NUMBER
+    }
+
     public Room(
         int roomNumber, 
         Enum roomType, 

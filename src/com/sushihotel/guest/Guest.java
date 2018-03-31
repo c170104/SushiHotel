@@ -15,6 +15,13 @@ public class Guest implements Serializable {
     private int contactNo;
     private String passportNo;
 
+    public enum GUEST_SEARCH_TYPE {
+        IDENTIFICATION_NO,
+        PASSPORT_NO,
+        GUEST_NAME,
+        GUEST_ID
+    }
+
     public Guest(
         String identificationNo,
         String name,

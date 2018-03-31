@@ -1,7 +1,6 @@
 package com.sushihotel.invoice;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class Invoice implements Serializable    {
     private int invoiceID; 
@@ -16,18 +15,23 @@ public class Invoice implements Serializable    {
     private float totalBill; 
     private boolean cashPayment;
     private Enum invoiceStatus; 
-    private float lateFee;
+    private float lateFees;
     
     public enum INVOICE_STATUS  {
         PAYMENT_MADE,
         PAYMENT_NOT_MADE
     }
 
+    public enum INVOICE_SEARCH_TYPE {
+        INVOICE_ID,
+        GUEST_ID,
+        ROOM_NUMBER
+    }
+
     // blank invoice upon check in
-    public Invoice(int guestID, int roomNumber, float roomCharges, String checkInDate)   {
+    public Invoice(int guestID, int roomNumber, String checkInDate)   {
         this.guestID = guestID;
         this.roomNumber = roomNumber;
-        this.roomCharges = roomCharges;
         this.checkInDate = checkInDate;
         this.roomSvc = 0.0f;
         this.invoiceStatus = INVOICE_STATUS.PAYMENT_NOT_MADE;
@@ -69,8 +73,8 @@ public class Invoice implements Serializable    {
     protected void setInvoiceStatus(Enum invoiceStatus)  {
         this.invoiceStatus = invoiceStatus;
     }
-    protected void setLateFee(float lateFee)    {
-        this.lateFee = lateFee;
+    protected void setLateFees(float lateFees)    {
+        this.lateFees = lateFees;
     }
 
     protected int getInvoiceID()    {
@@ -94,8 +98,8 @@ public class Invoice implements Serializable    {
     protected float getTax()  {
         return this.tax;
     } 
-    protected float getLateFee()  {
-        return this.lateFee;
+    protected float getLateFees()  {
+        return this.lateFees;
     } 
     protected float getDiscount() {
         return this.discount;

@@ -9,34 +9,39 @@ import com.sushihotel.database.IDataStore;
 import com.sushihotel.exception.DuplicateData;
 import com.sushihotel.exception.EmptyDB;
 import com.sushihotel.exception.InvalidEntity;
+import com.sushihotel.exception.PaymentNotMade;
 import com.sushihotel.invoice.Invoice;
 
 public class InvoiceModel   {
     private static IDataStore dataStore = DataStoreFactory.getDataStore();
-    public enum INVOICE_SEARCH_TYPE {
-        INVOICE_ID,
-        GUEST_ID,
-        ROOM_NUMBER
-    }
     private static final String EmptyDBMsg = "Invoice DB not found.";
 
-    protected static boolean create(Invoice invoice)   {
+    protected static boolean create(Invoice invoice) throws PaymentNotMade {
         List list;
+        Invoice dbInvoice;
         int size;
 
         list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.INVOICE);
 
+        size = list == null ? 0 : list.size();
+
         if(list == null)
             list = new ArrayList();
 
-        size = list == null ? 0 : list.size();
+        for(int i=0; i<size; i++)   {
+            dbInvoice = (Invoice)list.get(i);
+            if(invoice.getRoomNumber() == dbInvoice.getRoomNumber() && dbInvoice.getInvoiceStatus() == Invoice.INVOICE_STATUS.PAYMENT_NOT_MADE)
+                throw new PaymentNotMade(invoice.getRoomNumber());
+        }
 
         invoice.setInvoiceID(size+1);
+
+        list.add(invoice);
         
         return dataStore.write(list, IDataStore.DB_ENTITY_TYPE.INVOICE);
     }
 
-    protected static Invoice readByOccupiedRoomNumber(int roomNumber) throws EmptyDB, InvalidEntity  {
+    protected static Invoice read(int guestID, int roomNumber) throws EmptyDB, InvalidEntity  {
         List list;
         Invoice invoice;
 
@@ -47,28 +52,20 @@ public class InvoiceModel   {
 
         for(int i=0; i<list.size(); i++)    {
             invoice = (Invoice)list.get(i);
-            if(invoice.getRoomNumber() == roomNumber && invoice.getInvoiceStatus() == Invoice.INVOICE_STATUS.PAYMENT_NOT_MADE) {
+            if(invoice.getGuestID() == guestID && invoice.getRoomNumber() == roomNumber && invoice.getInvoiceStatus() == Invoice.INVOICE_STATUS.PAYMENT_NOT_MADE) {
                 return invoice;
             }
         }
-        throw new InvalidEntity(roomNumber + " which is UNPAID is not found", INVOICE_SEARCH_TYPE.ROOM_NUMBER);
+        throw new InvalidEntity(roomNumber + " which is UNPAID is not found", Invoice.INVOICE_SEARCH_TYPE.ROOM_NUMBER);
     }
 
-    protected static List<Invoice> readByGuestID(int guestID) throws EmptyDB  {
-        List list;
-        List<Invoice> newList = new ArrayList();
-        Invoice invoice;
+    protected static List<Invoice> read() throws EmptyDB  {
+        List<Invoice> list;
 
         list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.INVOICE);
 
         if(list == null)
             throw new EmptyDB(EmptyDBMsg);
-
-        for(int i=0; i<list.size(); i++)    {
-            invoice = (Invoice)list.get(i);
-            if(invoice.getGuestID() == guestID)
-                newList.add(invoice);
-        }
 
         return newList;
     }
@@ -97,7 +94,7 @@ public class InvoiceModel   {
         list.add(invoice);
 
         if(!trigger_flag)
-            throw new InvalidEntity(invoiceID + " not found.", INVOICE_SEARCH_TYPE.INVOICE_ID);
+            throw new InvalidEntity(invoiceID + " not found.", Invoice.INVOICE_SEARCH_TYPE.INVOICE_ID);
 
         return dataStore.write(list, IDataStore.DB_ENTITY_TYPE.INVOICE);
     }
@@ -124,7 +121,7 @@ public class InvoiceModel   {
         }
 
         if(!trigger_flag)
-            throw new InvalidEntity(invoiceID + " not found.", INVOICE_SEARCH_TYPE.INVOICE_ID);
+            throw new InvalidEntity(invoiceID + " not found.", Invoice.INVOICE_SEARCH_TYPE.INVOICE_ID);
 
         return dataStore.write(list, IDataStore.DB_ENTITY_TYPE.INVOICE);
         

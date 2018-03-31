@@ -75,6 +75,29 @@ public class GuestMgr {
         }
         return false;
     }
+
+    public boolean editGuest(int guestID, Guest guest)   {
+        Guest oldGuest;
+
+        try {
+            oldGuest = searchGuest(Integer.toString(guestID), Guest.GUEST_SEARCH_TYPE.GUEST_ID);
+            if(oldGuest == null)
+                return false;
+
+            if(GuestModel.update(guestID, guest))   {
+                logger.info("[UPDATE SUCCESS] Guest ID: " + Integer.toString(guest.getGuestID()) + " | Guest Name: " + guest.getName());
+                return true;
+            }
+            else
+                logger.info("[UPDATE FAIL] Guest ID: " + Integer.toString(guest.getGuestID()));
+
+        } catch(EmptyDB edb)  {
+            logger.log(Level.WARNING, edb.getMessage());
+        } catch (InvalidEntity ie)  {
+            logger.log(Level.WARNING, ie.getMessage());
+        }
+        return false;
+    }
     
     public boolean removeGuest(String searchData, Enum type)  {
         Guest guest;
