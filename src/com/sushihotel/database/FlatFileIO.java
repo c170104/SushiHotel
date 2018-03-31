@@ -17,7 +17,7 @@ public class FlatFileIO implements IDataStore {
     }
 
     public Enum getEntityType() {
-        return DB_ENTITY_TYPE;
+        return getEntityType();
     }
 
     public List read(Enum entityType) {
