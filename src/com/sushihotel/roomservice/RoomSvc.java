@@ -2,6 +2,7 @@ package com.sushihotel.roomservice;
 
 import java.io.Serializable;
 
+import com.sushihotel.guest.Guest;
 import com.sushihotel.menu.Meal;
 
 public class RoomSvc implements Serializable{
@@ -83,7 +84,6 @@ public class RoomSvc implements Serializable{
 	public Enum getRoomSvcStatus() {
 		return this.roomSvcStatus;
 	}
-	
 	
 }
 

@@ -81,7 +81,7 @@ public class ReservationMgr {
 			} else {
 				System.out.println("Reservation ID: " + reservation.getReservationID()
 						+ "\n No. of Adults: " + reservation.getNumAdults()
-						+ "\n No. of Childrens: " + reservation.getNumChildren()
+						+ "\n No. of Childrens: " + reservation.getNumChild()
 						+ "\n Check In Date: " + reservation.getCheckInDate()
 						+ "\n Check Out Date: " + reservation.getCheckOutDate()
 						+ "\n No. of Weekdays: " + reservation.getNoOfWeekdays() 

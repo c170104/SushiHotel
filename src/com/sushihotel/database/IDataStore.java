@@ -14,7 +14,6 @@ public interface IDataStore {
     }
 
     public String getDataStoreType();
-    public Enum getEntityType();
     public List read(Enum dbEntityType);
     public boolean write(List l, Enum dbEntityType);
 

@@ -1,6 +1,6 @@
 package com.sushihotel.menu;
 
-import java.util.ArrayList;
+import java.util.ArrayList ;
 import java.util.Iterator;
 import java.util.List;
 
@@ -9,7 +9,7 @@ import com.sushihotel.database.IDataStore;
 import com.sushihotel.exception.DuplicateData;
 import com.sushihotel.exception.EmptyDB;
 import com.sushihotel.exception.InvalidEntity;
-import com.sushihotel.menu.Meal;;
+import com.sushihotel.menu.Meal;
 
 
 public class MenuModel {
@@ -18,7 +18,7 @@ public class MenuModel {
 
 	private static final String EmptyDBMsg = "Menu DB not found.";
 	
-	protected static boolean create(Meal Meal) throws DuplicateData{
+	protected static boolean create(Meal meal) throws DuplicateData{
 		List list;
 		int size;
 		Meal dbMeal;
@@ -37,14 +37,14 @@ public class MenuModel {
 //            if(dbMeal.getMealID() == Meal.getMealID()) {
 //            	throw new DuplicateData(""+Meal.getMealID(), MENU_SEARCH_TYPE.MEAL_ID); // DuplicateData(String duplicateData, Enum type)
 //            }
-            if(dbMeal.getMealName().toLowerCase().equals(Meal.getMealName().toLowerCase())) {
-            	throw new DuplicateData(Meal.getMealName(), Meal.MENU_SEARCH_TYPE);
+            if(dbMeal.getMealName().toLowerCase().equals(meal.getMealName().toLowerCase())) {
+            	throw new DuplicateData(meal.getMealName(), Meal.MENU_SEARCH_TYPE.MEAL_NAME);
             }
         }
         
 // 		mealID automatically set on creation
-        Meal.setMealID(size + 1); // 
-        list.add(Meal);
+        meal.setMealID(size + 1); // 
+        list.add(meal);
         return dataStore.write(list, IDataStore.DB_ENTITY_TYPE.MENU);
 	
 	}
@@ -66,7 +66,7 @@ public class MenuModel {
         	return meal;
         }
     	
-        throw new InvalidEntity(mealName + " not found.", MENU_SEARCH_TYPE.MEAL_NAME);
+        throw new InvalidEntity(mealName + " not found.", Meal.MENU_SEARCH_TYPE.MEAL_NAME);
     }
         
     protected static List<Meal> read() throws EmptyDB{ 
@@ -109,7 +109,7 @@ public class MenuModel {
             }
         }
         if(!trigger_flag) 
-            throw new InvalidEntity(mealName + " not found. ", MENU_SEARCH_TYPE.MEAL_NAME);
+            throw new InvalidEntity(mealName + " not found. ", Meal.MENU_SEARCH_TYPE.MEAL_NAME);
         
         list.add(meal); 
         
@@ -138,7 +138,7 @@ public class MenuModel {
 			}
 		}
 		if (!trigger_flag) {
-			throw new InvalidEntity(mealID + " not found.", MENU_SEARCH_TYPE.MEAL_ID);
+			throw new InvalidEntity(mealID + " not found.", Meal.MENU_SEARCH_TYPE.MEAL_ID);
 		}
 		
 		return dataStore.write(list, IDataStore.DB_ENTITY_TYPE.MENU);
