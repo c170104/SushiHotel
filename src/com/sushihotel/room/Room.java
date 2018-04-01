@@ -30,6 +30,14 @@ public class Room implements Serializable {
         UNDER_MAINTENANCE
     }
 
+    public enum ROOM_SEARCH_TYPE    {
+        ROOM_NUMBER,
+        ROOM_TYPE,
+        WIFI_ENABLED,
+        SMOKING_ENABLED,
+        UNIT_NUMBER
+    }
+
     public Room(
         int roomNumber, 
         Enum roomType, 
@@ -41,7 +49,6 @@ public class Room implements Serializable {
         boolean wifiEnabled, 
         String facingView, 
         boolean smokingAllowed,
-        Enum roomStatus, 
         String unitNumber
     ) {
         this.roomNumber = roomNumber;
@@ -54,7 +61,7 @@ public class Room implements Serializable {
         this.wifiEnabled = wifiEnabled;
         this.facingView = facingView;
         this.smokingAllowed = smokingAllowed;
-        this.roomStatus = roomStatus;
+        this.roomStatus = ROOM_STATUS.VACANT;
         this.unitNumber = unitNumber;
     }
 
@@ -106,51 +113,51 @@ public class Room implements Serializable {
         this.unitNumber = unitNumber;
     }
 
-    protected Enum getRoomType() {
+    public Enum getRoomType() {
         return this.roomType;
     }
 
-    protected int getMaxNoAdults() {
+    public int getMaxNoAdults() {
         return this.maxNoAdults;
     }
 
-    protected int getMaxNoChild9() {
+    public int getMaxNoChild() {
         return this.maxNoChild;
     }
 
-    protected float getRateWeekdays() {
+    public float getRateWeekdays() {
         return this.rateWeekdays;
     }
 
-    protected float getRateWeekend()    {
+    public float getRateWeekend()    {
         return this.rateWeekends;
     }
 
-    protected int getRoomNumber() {
+    public int getRoomNumber() {
         return this.roomNumber;
     }
 
-    protected String getBedType() {
+    public String getBedType() {
         return this.bedType;
     }
 
-    protected boolean getWifiEnabled() {
+    public boolean getWifiEnabled() {
         return this.wifiEnabled;
     }
 
-    protected String getFacingView() {
+    public String getFacingView() {
         return this.facingView;
     }
 
-    protected boolean getSmokingAllowed() {
+    public boolean getSmokingAllowed() {
         return this.smokingAllowed;
     }
 
-    protected Enum getRoomStatus() {
+    public Enum getRoomStatus() {
         return this.roomStatus;
     }
 
-    protected String getUnitNumber()  {
+    public String getUnitNumber()  {
         return this.unitNumber;
     }
 }

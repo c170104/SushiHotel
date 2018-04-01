@@ -2,28 +2,44 @@ package com.sushihotel.invoice;
 
 import java.awt.List;
 import java.util.logging.*;
-import java.util.Date;
+import java.util.Calendar;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import com.sushihotel.exception.EmptyDB;
 import com.sushihotel.exception.InvalidEntity;
+import com.sushihotel.exception.PaymentNotMade;
 import com.sushihotel.invoice.Invoice;
 import com.sushihotel.invoice.InvoiceModel;
-
-import sun.invoke.empty.Empty;
 
 public class InvoiceMgr {
     private static final Logger logger = Logger.getLogger(InvoiceMgr.class.getName());
 
     public boolean createBlankInvoice(Invoice invoice)  {
-        if(InvoiceModel.create(invoice))    {
-            logger.info("[CREATE SUCCESS] Invoice ID: " + invoice.getInvoiceID());
-            return true;
+        try {
+            if(InvoiceModel.create(invoice))    {
+                logger.info("[CREATE SUCCESS] Invoice ID: " + invoice.getInvoiceID());
+                return true;
+            }
+            else    {
+                logger.info("[CREATE FAIL] Invoice ID: " + invoice.getInvoiceID());
+            }
+        } catch(PaymentNotMade pnm) {
+            logger.warning(pnm.getMessage());
         }
-        else    {
-            logger.info("[CREATE FAIL] Invoice ID: " + invoice.getInvoiceID());
-            return false;
+        return false;
+    }
+
+    public Invoice getInvoice(int guestID, int roomNumber) {
+        Invoice invoice = null;
+        try {
+            invoice = InvoiceModel.read(guestID, roomNumber);
+        } catch(EmptyDB edb)    {
+            logger.warning(edb.getMessage());
+        } catch(InvalidEntity ie)   {
+            logger.warning(ie.getMessage());
         }
+        return invoice;
     }
 
     public boolean editInvoice(int invoiceID, Invoice invoice)  {
@@ -81,29 +97,42 @@ public class InvoiceMgr {
         return false;
     }
 
-    public boolean addCharges(int roomNumber, float discount, float tax, float lateFees, String checkOutDate)    {
+    public boolean addCharges(int roomNumber, float discount, float tax, float lateFees, String checkOutDate, float weekDayRate, float weekEndRate)    {
         Invoice invoice;
+        float roomCharges = 0.0f;
         float totalBill = 0.0f;
-        int totalDays;
+        float roomSvc = 0.0f;
+        int totalWeekDay = 0;
+        int totalWeekEnd = 0;
         String checkInDate;
-        Date cIn;
-        Date cOut;
+        Calendar cIn = Calendar.getInstance();
+        Calendar cOut = Calendar.getInstance();
         SimpleDateFormat myFormat = new SimpleDateFormat("dd/MM/yyyy");
 
         try {
             invoice = InvoiceModel.readByOccupiedRoomNumber(roomNumber);
 
             checkInDate = invoice.getCheckInDate();
-            cIn = new Date(myFormat.parse(checkOutDate)); 
-            cOut = new Date(myFormat.parse(checkInDate));
-            
-            totalDays = (dateDiff / (1000*60*60*24));
-            // totalBill = ((totalDays * ))
+            cIn.setTime(myFormat.parse(checkInDate)); 
+            cOut.setTime(myFormat.parse(checkOutDate));
+
+            while(cOut.after(cIn))  {
+                if(cIn.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || cIn.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)
+                    totalWeekEnd++;
+                totalWeekDay++;
+                cIn.add(Calendar.DATE, 1); 
+            }
+
+            roomSvc = invoice.getRoomSvc();
+            roomCharges = totalWeekDay * weekDayRate + totalWeekEnd * weekEndRate;
+            totalBill = ((roomCharges + roomSvc + lateFees) * (1-discount)) * (1+tax);
+
+            invoice.setRoomCharges(roomCharges);
             invoice.setDiscount(discount);
             invoice.setTax(tax);
-            invoice.setLateFee(lateFee);
+            invoice.setLateFees(lateFees);
             invoice.setTotalBill(totalBill);
-
+            invoice.setCheckOutDate(checkOutDate);
 
             if(InvoiceModel.update(invoice.getInvoiceID(), invoice))    {
                 logger.info("[ADD CHARGES SUCCESS] Invoice ID: " + invoice.getInvoiceID());
@@ -115,27 +144,17 @@ public class InvoiceMgr {
             logger.warning(edb.getMessage());
         } catch(InvalidEntity ie)   {
             logger.warning(ie.getMessage());
+        } catch(ParseException pe)  {
+            logger.warning(pe.getMessage());
         }
         return false;
     }
 
-    public boolean checkOutInvoice(int guestID, int roomNumber, String checkOutDate, boolean cashPayment)    {
-        List<Invoice> invoices;
+    public boolean makePayment(int roomNumber, boolean cashPayment)    {
         Invoice invoice;
         try {
-            invoices = InvoiceModel.readByGuestID(guestID);
-            
-            for(int i=0; invoices.size(); i++)  {
-                invoice = invoices.get(i);
-                if(invoice.getRoomNumber() == roomNumber && invoice.getInvoiceStatus() == Invoice.INVOICE_STATUS.PAYMENT_NOT_MADE)
-                    break;
-                invoice = null;
-            }
+            invoice = InvoiceModel.readByOccupiedRoomNumber(roomNumber);
 
-            if(invoice == null)
-                return false;
-
-            invoice.setCheckOutDate(checkOutDate);
             invoice.setCashPayment(cashPayment);
             invoice.setInvoiceStatus(Invoice.INVOICE_STATUS.PAYMENT_MADE);
 

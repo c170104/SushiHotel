@@ -1,7 +1,6 @@
 package com.sushihotel.invoice;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class Invoice implements Serializable    {
     private int invoiceID; 
@@ -16,18 +15,23 @@ public class Invoice implements Serializable    {
     private float totalBill; 
     private boolean cashPayment;
     private Enum invoiceStatus; 
-    private float lateFee;
+    private float lateFees;
     
     public enum INVOICE_STATUS  {
         PAYMENT_MADE,
         PAYMENT_NOT_MADE
     }
 
+    public enum INVOICE_SEARCH_TYPE {
+        INVOICE_ID,
+        GUEST_ID,
+        ROOM_NUMBER
+    }
+
     // blank invoice upon check in
-    public Invoice(int guestID, int roomNumber, float roomCharges, String checkInDate)   {
+    public Invoice(int guestID, int roomNumber, String checkInDate)   {
         this.guestID = guestID;
         this.roomNumber = roomNumber;
-        this.roomCharges = roomCharges;
         this.checkInDate = checkInDate;
         this.roomSvc = 0.0f;
         this.invoiceStatus = INVOICE_STATUS.PAYMENT_NOT_MADE;
@@ -69,47 +73,47 @@ public class Invoice implements Serializable    {
     protected void setInvoiceStatus(Enum invoiceStatus)  {
         this.invoiceStatus = invoiceStatus;
     }
-    protected void setLateFee(float lateFee)    {
-        this.lateFee = lateFee;
+    protected void setLateFees(float lateFees)    {
+        this.lateFees = lateFees;
     }
 
-    protected int getInvoiceID()    {
+    public int getInvoiceID()    {
         return this.invoiceID;
     } 
-    protected int getGuestID()  {
+    public int getGuestID()  {
         return this.guestID;
     }
-    protected int getRoomNumber()   {
+    public int getRoomNumber()   {
         return this.roomNumber;
     }
-    protected boolean getCashPayment()  {
+    public boolean getCashPayment()  {
         return this.cashPayment;
     } 
-    protected String getCheckInDate()  {
+    public String getCheckInDate()  {
         return this.checkInDate;
     } 
-    protected String getCheckOutDate() {
+    public String getCheckOutDate() {
         return this.checkOutDate;
     } 
-    protected float getTax()  {
+    public float getTax()  {
         return this.tax;
     } 
-    protected float getLateFee()  {
-        return this.lateFee;
+    public float getLateFees()  {
+        return this.lateFees;
     } 
-    protected float getDiscount() {
+    public float getDiscount() {
         return this.discount;
     } 
-    protected float getRoomCharges()  {
+    public float getRoomCharges()  {
         return this.roomCharges;
     } 
-    protected float getRoomSvc()  {
+    public float getRoomSvc()  {
         return this.roomSvc;
     }
-    protected float getTotalBill()    {
+    public float getTotalBill()    {
         return this.totalBill;
     } 
-    protected Enum getInvoiceStatus()    {
+    public Enum getInvoiceStatus()    {
         return this.invoiceStatus;
     } 
 }

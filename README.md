@@ -24,3 +24,12 @@ Completed Classes:
 
 Features: (includes Exception handling)
     Register Guest (Done)
+
+HotelMgr:
+    Guest: 
+        Register, Edit, Search (Done)
+    Room: 
+        Create, Edit (Done)
+    Business Logic:
+        Call Room Svc, Check room Availability (Done)
+        Check in, Check out (not done)

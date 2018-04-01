@@ -23,6 +23,6 @@ public class rUT    {
         rMgr.printRoomStatusByRoomType();
 
         // Delete room
-        rMgr.removeRoom(1);
+        // rMgr.removeRoom(1);
     }
 }

@@ -14,12 +14,6 @@ import com.sushihotel.exception.InvalidEntity;
 
 public class GuestModel {
     private static IDataStore dataStore = DataStoreFactory.getDataStore();
-    public enum GUEST_SEARCH_TYPE {
-        IDENTIFICATION_NO,
-        PASSPORT_NO,
-        GUEST_NAME,
-        GUEST_ID
-    }
     private static final String EmptyDBMsg = "Guest DB not found.";
     
     protected static boolean create(Guest guest) throws DuplicateData  {
@@ -40,13 +34,13 @@ public class GuestModel {
         for(int i=0; i<size; i++)   {
             dbGuest = (Guest)list.get(i);
             if(dbGuest.getIdentificationNo().toLowerCase().equals(guest.getIdentificationNo().toLowerCase()))   {
-                throw new DuplicateData(guest.getIdentificationNo(), GUEST_SEARCH_TYPE.IDENTIFICATION_NO);
+                throw new DuplicateData(guest.getIdentificationNo(), Guest.GUEST_SEARCH_TYPE.IDENTIFICATION_NO);
             }
             if(dbGuest.getName().toLowerCase().equals(guest.getName().toLowerCase()))  {
-                throw new DuplicateData(guest.getName(), GUEST_SEARCH_TYPE.GUEST_NAME);
+                throw new DuplicateData(guest.getName(), Guest.GUEST_SEARCH_TYPE.GUEST_NAME);
             }
             if(dbGuest.getPassportNumber().toLowerCase().equals(guest.getPassportNumber().toLowerCase())) {
-                throw new DuplicateData(guest.getPassportNumber(), GUEST_SEARCH_TYPE.PASSPORT_NO);
+                throw new DuplicateData(guest.getPassportNumber(), Guest.GUEST_SEARCH_TYPE.PASSPORT_NO);
             }
         }
 
@@ -71,16 +65,16 @@ public class GuestModel {
         for(int i=0; i<list.size(); i++)    {
             guest = (Guest)list.get(i);
             
-            if(GUEST_SEARCH_TYPE.IDENTIFICATION_NO == method)   {
+            if(Guest.GUEST_SEARCH_TYPE.IDENTIFICATION_NO == method)   {
                 if(guest.getIdentificationNo().toLowerCase().equals(searchDetails.toLowerCase()))
                     return guest;
-            } else if(GUEST_SEARCH_TYPE.PASSPORT_NO == method) {
+            } else if(Guest.GUEST_SEARCH_TYPE.PASSPORT_NO == method) {
                 if(guest.getPassportNumber().toLowerCase().equals(searchDetails.toLowerCase()))
                     return guest;
-            } else if(GUEST_SEARCH_TYPE.GUEST_NAME == method)    {
+            } else if(Guest.GUEST_SEARCH_TYPE.GUEST_NAME == method)    {
                 if(guest.getName().toLowerCase().equals(searchDetails.toLowerCase()))
                     return guest;
-            } else if(GUEST_SEARCH_TYPE.GUEST_ID == method)    {
+            } else if(Guest.GUEST_SEARCH_TYPE.GUEST_ID == method)    {
                 if(guest.getGuestID() == Integer.parseInt(searchDetails))
                     return guest;
             }       
@@ -129,7 +123,7 @@ public class GuestModel {
             }
         }
         if(!trigger_flag)
-            throw new InvalidEntity(guestID + " not found.", GUEST_SEARCH_TYPE.GUEST_ID);
+            throw new InvalidEntity(guestID + " not found.", Guest.GUEST_SEARCH_TYPE.GUEST_ID);
 
         list.add(guest);
 
@@ -140,7 +134,7 @@ public class GuestModel {
     protected static boolean delete(int guestID) throws EmptyDB, InvalidEntity   {
         List list;
         Iterator iter;
-        Guest guest = read(Integer.toString(guestID), GUEST_SEARCH_TYPE.GUEST_ID);
+        Guest guest = read(Integer.toString(guestID), Guest.GUEST_SEARCH_TYPE.GUEST_ID);
         boolean trigger_flag = false;
 
         list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.GUEST);
@@ -159,7 +153,7 @@ public class GuestModel {
             }
         }
         if(!trigger_flag)
-            throw new InvalidEntity(guestID + " does not exist.", GUEST_SEARCH_TYPE.GUEST_ID);
+            throw new InvalidEntity(guestID + " does not exist.", Guest.GUEST_SEARCH_TYPE.GUEST_ID);
         
         return dataStore.write(list, IDataStore.DB_ENTITY_TYPE.GUEST);
     }
