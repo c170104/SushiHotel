@@ -12,9 +12,7 @@ import com.sushihotel.exception.InvalidEntity;
 
 public class RSvcModel {
 	private static IDataStore dataStore = DataStoreFactory.getDataStore();
-	
 
-	
 	private static final String EmptyDBMsg = "RoomService DB not found.";
 	
 	protected static boolean create(RoomSvc roomSvc) throws DuplicateData {
@@ -29,18 +27,20 @@ public class RSvcModel {
             list = new ArrayList(); // declare array list without specific <obj> ref
         } 
 		
-// 		ONE ROOM CAN HAVE MANY ROOM SERVICE?
-//		for(int i = 0; i<size; i++) {
-//			dbRoomSvc = (RoomSvc)list.get(i);
-//			if (dbRoomSvc.getRoomSvcID() == roomSvc.getRoomSvcID()) {
-//				throw new DuplicateData(""+roomSvc.getRoomSvcID(), ROOMSVC_SEARCH_TYPE.ROOM_SVC_ID); // DuplicateData(String duplicateData, Enum type)
-//			}
-//		}
-		
 		roomSvc.setRoomSvcID(size+1);
 		list.add(roomSvc);
 		return dataStore.write(list, IDataStore.DB_ENTITY_TYPE.ROOMSERVICE);
 		
+	}
+
+	protected static List<RoomSvc> read() throws EmptyDB	{
+		List<RoomSvc> list;
+
+		list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.ROOMSERVICE);
+		if(list == null)
+			throw new EmptyDB(EmptyDBMsg);
+
+		return list;
 	}
 	
 	protected static RoomSvc read(int roomSvcId) throws EmptyDB, InvalidEntity {
@@ -48,7 +48,7 @@ public class RSvcModel {
 		RoomSvc roomSvc;
 		list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.ROOMSERVICE);
 		if(list == null)
-            new EmptyDB(EmptyDBMsg);
+            throw new EmptyDB(EmptyDBMsg);
 		
 		for (int i=0; i<list.size();i++) {
 			roomSvc = (RoomSvc)list.get(i);
@@ -56,9 +56,7 @@ public class RSvcModel {
 				return roomSvc;
 			}
 		}
-		
 		throw new InvalidEntity(roomSvcId + " not found. ", RoomSvc.ROOMSVC_SEARCH_TYPE.ROOM_SVC_ID);
-		
 	}
 	
 	protected static boolean update(int roomSvcId, RoomSvc roomSvc) throws EmptyDB, InvalidEntity{

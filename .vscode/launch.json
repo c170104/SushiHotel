@@ -6,6 +6,16 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Debug hotelUT",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "stopOnEntry": false,
+            "mainClass": "com.sushihotel.test.hotelUT",
+            "args": ""
+        },
+        {
+            "type": "java",
             "name": "Debug invUT",
             "request": "launch",
             "cwd": "${workspaceFolder}",

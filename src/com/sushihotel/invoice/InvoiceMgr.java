@@ -11,6 +11,7 @@ import com.sushihotel.exception.InvalidEntity;
 import com.sushihotel.exception.PaymentNotMade;
 import com.sushihotel.invoice.Invoice;
 import com.sushihotel.invoice.InvoiceModel;
+import com.sushihotel.roomservice.RoomSvc;
 
 public class InvoiceMgr {
     private static final Logger logger = Logger.getLogger(InvoiceMgr.class.getName());
@@ -74,14 +75,16 @@ public class InvoiceMgr {
         return false;
     }
 
-    public boolean addRoomSvc(int roomNumber, float roomSvc)  {
+    public boolean addRoomSvc(int roomNumber, int roomSvcID)  {
         Invoice invoice;
+        List<Integer> roomSvcList;
 
         try {
             invoice = InvoiceModel.readByOccupiedRoomNumber(roomNumber);
 
-            roomSvc += invoice.getRoomSvc();
-            invoice.setRoomSvc(roomSvc);
+            roomSvcList = invoice.getRoomSvc();
+            roomSvcList.add(roomSvc);
+            invoice.setRoomSvc(roomSvcList);
 
             if(InvoiceModel.update(invoice.getInvoiceID(), invoice))    {
                 logger.info("[ADD ROOM SVC SUCCESS] Invoice ID: " + invoice.getInvoiceID());
