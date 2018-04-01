@@ -291,19 +291,19 @@ public class HotelMgr   {
             while(true) {
                 System.out.println("Please Enter Room Type (Single/Double/Deluxe/VIP): ");
                 roomTypeInput = sc.next();
-                if(roomTypeInput.toLowerCase() == "single") {
+                if(roomTypeInput.toLowerCase().equals("single")) {
                     roomType = Room.ROOM_TYPE.SINGLE;
                     break;
                 }
-                else if(roomTypeInput.toLowerCase() == "double")    {
+                else if(roomTypeInput.toLowerCase().equals("double"))    {
                     roomType = Room.ROOM_TYPE.DOUBLE;
                     break;
                 }
-                else if(roomTypeInput.toLowerCase() == "deluxe")    {
+                else if(roomTypeInput.toLowerCase().equals("deluxe"))    {
                     roomType = Room.ROOM_TYPE.DELUXE;
                     break;
                 }
-                else if(roomTypeInput.toLowerCase() == "vip")   {
+                else if(roomTypeInput.toLowerCase().equals("vip"))   {
                     roomType = Room.ROOM_TYPE.VIP;
                     break;
                 }
@@ -322,13 +322,13 @@ public class HotelMgr   {
             bedType = sc.next();
             System.out.println("Wifi Enabled (Yes/No)(default: No): ");
             wifiEnabledInput = sc.next();
-            if(wifiEnabledInput.toLowerCase() == "yes")
+            if(wifiEnabledInput.toLowerCase().equals("yes"))
                 wifiEnabled = true;
             System.out.println("Please Enter Room View information: ");
             facingView = sc.next();
             System.out.println("Smoking Allowed (Yes/No)(default: No): ");
             smokingAllowedInput = sc.next();
-            if(smokingAllowedInput.toLowerCase() == "yes")
+            if(smokingAllowedInput.toLowerCase().equals("yes"))
                 smokingAllowed = true;
             System.out.println("Please Enter Unit Number: ");
             unitNumber = sc.next();
@@ -407,19 +407,19 @@ public class HotelMgr   {
                         while(true) {
                             System.out.println("Please Enter Room Type (Single/Double/Deluxe/VIP): ");
                             roomTypeInput = sc.next();
-                            if(roomTypeInput.toLowerCase() == "single") {
+                            if(roomTypeInput.toLowerCase().equals("single")) {
                                 roomType = Room.ROOM_TYPE.SINGLE;
                                 break;
                             }
-                            else if(roomTypeInput.toLowerCase() == "double")    {
+                            else if(roomTypeInput.toLowerCase().equals("double"))    {
                                 roomType = Room.ROOM_TYPE.DOUBLE;
                                 break;
                             }
-                            else if(roomTypeInput.toLowerCase() == "deluxe")    {
+                            else if(roomTypeInput.toLowerCase().equals("deluxe"))    {
                                 roomType = Room.ROOM_TYPE.DELUXE;
                                 break;
                             }
-                            else if(roomTypeInput.toLowerCase() == "vip")   {
+                            else if(roomTypeInput.toLowerCase().equals("vip"))   {
                                 roomType = Room.ROOM_TYPE.VIP;
                                 break;
                             }
@@ -450,9 +450,9 @@ public class HotelMgr   {
                     case 7:
                         System.out.println("Wifi Enabled (Yes/No)(default: No): ");
                         wifiEnabledInput = sc.next();
-                        if(wifiEnabledInput.toLowerCase() == "yes")
+                        if(wifiEnabledInput.toLowerCase().equals("yes"))
                             wifiEnabled = true;
-                        else if(wifiEnabledInput.toLowerCase == "no")
+                        else if(wifiEnabledInput.toLowerCase().equals("no"))
                             wifiEnabled = false;
                         break;
                     case 8:
@@ -462,28 +462,28 @@ public class HotelMgr   {
                     case 9:
                         System.out.println("Smoking Allowed (Yes/No)(default: No): ");
                         smokingAllowedInput = sc.next();
-                        if(smokingAllowedInput.toLowerCase() == "yes")
+                        if(smokingAllowedInput.toLowerCase().equals("yes"))
                             smokingAllowed = true;
-                        else if(smokingAllowedInput.toLowerCase() == "no")
+                        else if(smokingAllowedInput.toLowerCase().equals("no"))
                             smokingAllowed = false;
                         break;
                     case 10:
                         while(true) {
                             System.out.println("Please Enter Room Status(Vacant/Occupied/Reserved/Under Maintenance): ");
                             roomStatusInput = sc.next();
-                            if(roomStatusInput.toLowerCase() == "vacant")   {
+                            if(roomStatusInput.toLowerCase().equals("vacant"))   {
                                 roomStatus = Room.ROOM_STATUS.VACANT;
                                 break;
                             }
-                            else if(roomStatusInput.toLowerCase() == "occupied")    {
+                            else if(roomStatusInput.toLowerCase().equals("occupied"))    {
                                 roomStatus = Room.ROOM_STATUS.OCCUPIED;
                                 break;
                             }
-                            else if(roomStatusInput.toLowerCase() == "reserved")    {
+                            else if(roomStatusInput.toLowerCase().equals("reserved"))    {
                                 roomStatus = Room.ROOM_STATUS.RESERVED;
                                 break;
                             }
-                            else if(roomStatusInput.toLowerCase() == "under maintenance")   {
+                            else if(roomStatusInput.toLowerCase().equals("under maintenance"))   {
                                 roomStatus = Room.ROOM_STATUS.UNDER_MAINTENANCE;
                                 break;
                             }
