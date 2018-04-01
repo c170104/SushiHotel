@@ -27,9 +27,11 @@ Features: (includes Exception handling)
 
 HotelMgr:
     Guest: 
-        Register, Edit, Search (Done)
+        Register, Edit, Search (Done)(All Tested and working)
     Room: 
-        Create, Edit (Done)
+        Create, Edit (Done)(All tested and working)
     Business Logic:
         Call Room Svc, Check room Availability (Done)
         Check in, Check out (not done)
+    Logging:
+        Global logger (Done)

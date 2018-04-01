@@ -1,6 +1,5 @@
 package com.sushihotel.menu;
 
-//import java.io.IOException;
 import java.util.List;
 import java.util.logging.*;
 
@@ -11,8 +10,8 @@ import com.sushihotel.exception.DuplicateData;
 import com.sushihotel.exception.EmptyDB;
 import com.sushihotel.exception.InvalidEntity;
 
-public class MealMgr {
-	 private static final Logger logger = Logger.getLogger(MealMgr.class.getName()); // gets name of the method
+public class MenuMgr {
+	 private static final Logger logger = Logger.getLogger(MenuMgr.class.getName()); // gets name of the method
 	 
 	 public boolean addNewMeal(Meal meal) {
 		try {
@@ -29,11 +28,11 @@ public class MealMgr {
 		 
 	 }
 	 
-	 public boolean removeMeal(String mealName) {
+	 public boolean removeMeal(int mealID) {
 		 Meal meal;
 		 int MealID;
 		 try {
-			meal = com.sushihotel.menu.MenuModel.read(mealName);
+			meal = MenuModel.read(mealID);
 			if (meal==null) {
 				return false;
 			}
@@ -73,10 +72,10 @@ public class MealMgr {
 		return false;
 	 }
 	 
-	 public Meal showMealDetails(String mealName) {
+	 public Meal getMealDetails(int mealID) {
 		Meal meal = null;
 		try {
-			meal = MenuModel.read(mealName);
+			meal = MenuModel.read(mealID);
 		} catch (EmptyDB edb) {
 			logger.log(Level.WARNING, edb.getMessage());
 		} catch (InvalidEntity ie) {
@@ -85,7 +84,7 @@ public class MealMgr {
 		return meal;		 
 	 }
 	 
-	 public List<Meal> showMealOffered() { 
+	 public List<Meal> getMealOffered() { 
 		 List<Meal> mealList = null;
 		 try {
 			mealList = MenuModel.read();
