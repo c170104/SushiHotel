@@ -54,7 +54,18 @@ public class RoomMgr    {
             logger.warning(ie.getMessage());
         }
         return false;
-    } 
+    }
+    public Room getRoom(int roomNumber) {
+        Room room = null;
+        try {
+            room = RoomModel.read(roomNumber);
+        } catch(EmptyDB edb)    {
+            logger.warning(edb.getMessage());
+        } catch(InvalidEntity ie)   {
+            logger.warning(ie.getMessage());
+        }
+        return room;
+    }
     public boolean checkRoomAvailability(int roomNumber)    {
         try {
             Room room;

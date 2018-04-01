@@ -77,43 +77,43 @@ public class Invoice implements Serializable    {
         this.lateFees = lateFees;
     }
 
-    protected int getInvoiceID()    {
+    public int getInvoiceID()    {
         return this.invoiceID;
     } 
-    protected int getGuestID()  {
+    public int getGuestID()  {
         return this.guestID;
     }
-    protected int getRoomNumber()   {
+    public int getRoomNumber()   {
         return this.roomNumber;
     }
-    protected boolean getCashPayment()  {
+    public boolean getCashPayment()  {
         return this.cashPayment;
     } 
-    protected String getCheckInDate()  {
+    public String getCheckInDate()  {
         return this.checkInDate;
     } 
-    protected String getCheckOutDate() {
+    public String getCheckOutDate() {
         return this.checkOutDate;
     } 
-    protected float getTax()  {
+    public float getTax()  {
         return this.tax;
     } 
-    protected float getLateFees()  {
+    public float getLateFees()  {
         return this.lateFees;
     } 
-    protected float getDiscount() {
+    public float getDiscount() {
         return this.discount;
     } 
-    protected float getRoomCharges()  {
+    public float getRoomCharges()  {
         return this.roomCharges;
     } 
-    protected float getRoomSvc()  {
+    public float getRoomSvc()  {
         return this.roomSvc;
     }
-    protected float getTotalBill()    {
+    public float getTotalBill()    {
         return this.totalBill;
     } 
-    protected Enum getInvoiceStatus()    {
+    public Enum getInvoiceStatus()    {
         return this.invoiceStatus;
     } 
 }
