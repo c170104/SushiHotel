@@ -1,7 +1,5 @@
 package com.sushihotel.roomservice;
 
-import java.io.IOException;
-import java.util.List;
 import java.util.logging.*;
 
 import com.sushihotel.roomservice.RSvcModel;

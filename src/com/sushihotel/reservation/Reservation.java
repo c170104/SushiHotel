@@ -36,7 +36,7 @@ public class Reservation implements Serializable{
 			String checkInDate,
 			String checkOutDate,
 			int numAdults,
-			int numChildren,
+			int numChild,
 			int numberOfWeekdays,
 			int numberOfWeekends
 			) {
@@ -45,7 +45,7 @@ public class Reservation implements Serializable{
 		this.checkInDate = checkInDate;
 		this.checkOutDate = checkOutDate;
 		this.numAdults = numAdults;
-		this.numChild = numChildren;
+		this.numChild = numChild;
 		this.reserveStatus = RESERVE_STATUS.CONFIRMED;
 		this.numberOfWeekdays = numberOfWeekdays;
 		this.numberOfWeekends = numberOfWeekends;
@@ -70,7 +70,7 @@ public class Reservation implements Serializable{
 	protected void setNumAdults(int numAdults) {
 		this.numAdults = numAdults;
 	}
-	protected void setNumChildren(int numChildren) {
+	protected void setNumChildren(int numChild) {
 		this.numChild = numChild;
 	}
 	protected void setNumberofWeekdays(int numberOfWeekdays) {
@@ -101,7 +101,7 @@ public class Reservation implements Serializable{
 	public int getNumAdults() {
 		return this.numAdults;
 	}
-	public int getNumChildren() {
+	public int getNumChild() {
 		return this.numChild;
 	}
 	public Enum getReserveStatus() {
