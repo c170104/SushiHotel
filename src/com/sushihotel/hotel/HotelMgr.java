@@ -1,5 +1,6 @@
 package com.sushihotel.hotel;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.InputMismatchException;
@@ -9,6 +10,7 @@ import java.util.logging.Logger;
 
 import com.sushihotel.guest.Guest;
 import com.sushihotel.guest.GuestMgr;
+import com.sushihotel.invoice.Invoice;
 import com.sushihotel.invoice.InvoiceMgr;
 import com.sushihotel.menu.Meal;
 import com.sushihotel.menu.MenuMgr;
@@ -40,7 +42,7 @@ public class HotelMgr   {
      * guestRegistration()
      * updateGuestInformation()
      * searchGuests()
-     * 
+     * searchGuest() private
      */
     public void guestRegistration()  {
         Guest guest;
@@ -245,6 +247,45 @@ public class HotelMgr   {
             logger.severe(npe.getMessage());
             System.out.println("No results.");
         }
+    }
+
+    private Guest searchGuest() {
+        int choice;
+        Enum type = null;
+        String searchData;
+        Guest guest = null;
+        try {
+            do {
+                System.out.print("Get guest details by:\n" + "1) Guest Name\n" + "2) Guest Identification Number\n"
+                        + "3) Guest Passport Number\n" + "Choice: ");
+                choice = sc.nextInt();
+                sc.nextLine();
+
+                switch (choice) {
+                case 1:
+                    type = Guest.GUEST_SEARCH_TYPE.GUEST_NAME;
+                    break;
+                case 2:
+                    type = Guest.GUEST_SEARCH_TYPE.IDENTIFICATION_NO;
+                    break;
+                case 3:
+                    type = Guest.GUEST_SEARCH_TYPE.PASSPORT_NO;
+                    break;
+                }
+
+                if (type != null) {
+                    System.out.print("Please enter Search data: ");
+                    searchData = sc.nextLine();
+                    guest = guestMgr.searchGuest(searchData, type);
+                    if (guest == null)
+                        choice = 0;
+                }
+            } while (choice > 3 || choice < 1);
+        } catch (InputMismatchException ime) {
+            logger.severe(ime.getMessage());
+            System.out.println(errorMsg);
+        }
+        return guest;
     }
 
     /*
@@ -683,24 +724,6 @@ public class HotelMgr   {
         }
     }
 
-    private Guest guestSearch() {
-        int choice;
-        try {
-            do {
-                System.out.print(
-                    "Get guest details by:\n" +
-                    "1) Guest Name\n" + 
-                    "2) Guest Identification Number\n" +
-                    "3) Guest Passport Number\n" +
-                    "Choice: "
-                );
-                choice = sc.nextInt();
-                sc.nextLine();
-            } while (choice > 3 || choice < 1);
-            switch
-        }
-    }
-
     private boolean checkExistingGuest()   {
         int choice = 0;
         try {
@@ -729,6 +752,14 @@ public class HotelMgr   {
         int choice;
         String guestName;
         Guest guest;
+        Invoice invoice;
+        String checkInDate;
+        String checkOutDate;
+        int roomNumber;
+        int totalWeekdays;
+        int totalWeekends;
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
         try {
             System.out.println("============ CHECK IN ============");
             do {
@@ -746,11 +777,45 @@ public class HotelMgr   {
                     // Made prior reservations 
                 }
                 else if(choice == 2)    {
-                    if(checkExistingGuest())
+                    if(!checkExistingGuest())
+                        guestRegistration();
+                    guest = searchGuest();
 
+                    // Create blank invoice
+                    System.out.print("Please input room number: ");
+                    roomNumber = sc.nextInt();
+                    sc.nextLine();
+                    System.out.print("Please input Check In Date in the format (dd/MM/yyyy HH:mm)");
+                    checkInDate = sc.nextLine();
+                    System.out.print("Please input Check Out date in the format (dd/MM/yyyy HH:mm");
+                    checkOutDate = sc.nextLine();
+                    System.out.print("Please input total weekdays of stay: ");
+                    totalWeekdays = sc.nextInt();
+                    sc.nextLine();
+                    System.out.print("Please input total weekends of stay: ");
+                    totalWeekends = sc.nextInt();
+                    sc.nextLine();
+
+                    invoice = new Invoice(guest.getGuestID(), roomNumber, formatter.parse(checkInDate), formatter.parse(checkOutDate), totalWeekdays, totalWeekends);
+                    if(invoiceMgr.createBlankInvoice(invoice))  {
+                        System.out.println("Check In for guest " + guest.getName() + " into Room number " 
+                                + Integer.toString(roomNumber) + " is successful!");
+                        break;
+                    }
+                    else    {
+                        System.out.println("Check In for guest " + guest.getName() + " into Room number "
+                                + Integer.toString(roomNumber) + " is unsuccessful. Please try again.");
+                        break;
+                    }
                 }
 
             } while (choice != 3);
+        } catch(InputMismatchException ime) {
+            logger.severe(ime.getMessage());
+            System.out.println(errorMsg);
+        } catch(ParseException pe)  {
+            logger.severe(pe.getMessage());
+            System.out.println("Date Time format is wrong. Please try again.");
         }
     }
 
