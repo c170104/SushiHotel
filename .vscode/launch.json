@@ -6,6 +6,16 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Debug rmsvctest",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "com.sushihotel.test.rsUT",
+            "args": ""
+        },
+        {
+            "type": "java",
             "name": "Debug hotelUT",
             "request": "launch",
             "cwd": "${workspaceFolder}",

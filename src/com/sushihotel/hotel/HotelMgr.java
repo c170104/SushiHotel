@@ -1,20 +1,17 @@
 package com.sushihotel.hotel;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.List;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.Scanner;
-import java.util.logging.*;
+import java.util.logging.Logger;
 
 import com.sushihotel.guest.Guest;
 import com.sushihotel.guest.GuestMgr;
-import com.sushihotel.invoice.Invoice;
 import com.sushihotel.invoice.InvoiceMgr;
 import com.sushihotel.menu.Meal;
 import com.sushihotel.menu.MenuMgr;
-import com.sushihotel.reservation.Reservation;
 import com.sushihotel.reservation.ReservationMgr;
 import com.sushihotel.room.Room;
 import com.sushihotel.room.RoomMgr;
@@ -593,12 +590,10 @@ public class HotelMgr   {
         int roomSvcID;
         float amountPayable = 0.0f;
         RoomSvc roomSvc;
-        String roomSvcDate;
         String remarks;
         List<Meal> menu;
         Meal meal;
-        Date dateTimeOrdered = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date dateTimeOrdered = new Date(); 
 
         try {
             System.out.println("============== Room Service ==============");
@@ -606,7 +601,7 @@ public class HotelMgr   {
             roomNumber = sc.nextInt();
 
             // Print Menu by roomSvcMgr
-            menu = menuMgr.showMealOffered();
+            menu = menuMgr.getMealOffered();
             System.out.println("========================== MENU ==========================");
             for(int i=0; i<menu.size(); i++)    {
                 meal = menu.get(i);
@@ -620,13 +615,13 @@ public class HotelMgr   {
                 System.out.println("Choice of meal by Meal ID (0 to exit): ");
                 // get individual meal by roomsvcMgr
                 menuChoice = sc.nextInt();
-                meal = menuMgr.getMealDetails(mealID);
+                meal = menuMgr.getMealDetails(menuChoice);
                 amountPayable += meal.getMealPrice();
             } while (menuChoice != 0);
 
             System.out.println("Please enter the room service remarks: ");
             remarks = sc.nextLine();
-            roomSvc = new RoomSvc(roomNumber, amountPayable, remarks, formatter.format(dateTimeOrdered));
+            roomSvc = new RoomSvc(roomNumber, amountPayable, remarks, dateTimeOrdered);
 
             if(roomSvcMgr.addNewRoomSvc(roomSvc))   {
                 roomSvcID = roomSvcMgr.getRoomSvcID(roomNumber);
@@ -683,18 +678,85 @@ public class HotelMgr   {
                     break;
             }
         } catch(InputMismatchException ime) {
-            logger.severe(ime.getMessage);
+            logger.severe(ime.getMessage());
             System.out.println(errorMsg);
         }
     }
 
+    private Guest guestSearch() {
+        int choice;
+        try {
+            do {
+                System.out.print(
+                    "Get guest details by:\n" +
+                    "1) Guest Name\n" + 
+                    "2) Guest Identification Number\n" +
+                    "3) Guest Passport Number\n" +
+                    "Choice: "
+                );
+                choice = sc.nextInt();
+                sc.nextLine();
+            } while (choice > 3 || choice < 1);
+            switch
+        }
+    }
+
+    private boolean checkExistingGuest()   {
+        int choice = 0;
+        try {
+            do {
+                System.out.print(
+                    "Existing Guest?\n" + 
+                    "1) Yes\n" +
+                    "2) No\n" +
+                    "Choice: "
+                );
+                choice = sc.nextInt();
+                sc.nextLine();
+            } while (choice != 1 || choice != 2);
+            
+        } catch(InputMismatchException ime) {
+            logger.warning(ime.getMessage());
+            System.out.println(errorMsg);
+            return checkExistingGuest();
+        }
+        if (choice == 1)
+            return true;
+        return false;
+    }
+
     public void checkIn()    {
-        
+        int choice;
+        String guestName;
+        Guest guest;
+        try {
+            System.out.println("============ CHECK IN ============");
+            do {
+                System.out.print(
+                    "Made a prior Reservation?\n" +
+                    "1) Yes\n" +
+                    "2) No\n" +
+                    "3) Exit\n" +
+                    "Choice: "
+                );
+                choice = sc.nextInt();
+                sc.nextLine();
+
+                if(choice == 1) {
+                    // Made prior reservations 
+                }
+                else if(choice == 2)    {
+                    if(checkExistingGuest())
+
+                }
+
+            } while (choice != 3);
+        }
     }
 
     public void checkOut()  {
         String paymentMethod = invoice.getCashPayment() ? "Cash" : "Credit Card";
-        
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         System.out.println(
             "========== SushiHotel Bill ==========\n" + 
             "Room number:\t\t" + invoice.getRoomNumber() + "\n" +

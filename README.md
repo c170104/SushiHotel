@@ -34,4 +34,4 @@ HotelMgr:
         Call Room Svc, Check room Availability (Done)
         Check in, Check out (not done)
     Logging:
-        Global logger (Done)
+        Global logger (Done)(Tested)

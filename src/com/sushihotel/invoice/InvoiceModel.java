@@ -1,16 +1,14 @@
 package com.sushihotel.invoice;
 
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import com.sushihotel.database.DataStoreFactory;
 import com.sushihotel.database.IDataStore;
-import com.sushihotel.exception.DuplicateData;
 import com.sushihotel.exception.EmptyDB;
 import com.sushihotel.exception.InvalidEntity;
 import com.sushihotel.exception.PaymentNotMade;
-import com.sushihotel.invoice.Invoice;
 
 public class InvoiceModel   {
     private static IDataStore dataStore = DataStoreFactory.getDataStore();
@@ -41,7 +39,7 @@ public class InvoiceModel   {
         return dataStore.write(list, IDataStore.DB_ENTITY_TYPE.INVOICE);
     }
 
-    protected static Invoice read(int guestID, int roomNumber) throws EmptyDB, InvalidEntity  {
+    protected static Invoice read(int roomNumber) throws EmptyDB, InvalidEntity  {
         List list;
         Invoice invoice;
 
@@ -52,7 +50,7 @@ public class InvoiceModel   {
 
         for(int i=0; i<list.size(); i++)    {
             invoice = (Invoice)list.get(i);
-            if(invoice.getGuestID() == guestID && invoice.getRoomNumber() == roomNumber && invoice.getInvoiceStatus() == Invoice.INVOICE_STATUS.PAYMENT_NOT_MADE) {
+            if(invoice.getRoomNumber() == roomNumber && invoice.getInvoiceStatus() == Invoice.INVOICE_STATUS.PAYMENT_NOT_MADE) {
                 return invoice;
             }
         }
@@ -67,7 +65,7 @@ public class InvoiceModel   {
         if(list == null)
             throw new EmptyDB(EmptyDBMsg);
 
-        return newList;
+        return list;
     }
 
     protected static boolean update(int invoiceID, Invoice invoice) throws EmptyDB, InvalidEntity {

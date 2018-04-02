@@ -15,7 +15,6 @@ import com.sushihotel.menu.Meal;
 public class MenuModel {
 	private static IDataStore dataStore = DataStoreFactory.getDataStore();
 	
-
 	private static final String EmptyDBMsg = "Menu DB not found.";
 	
 	protected static boolean create(Meal meal) throws DuplicateData{
