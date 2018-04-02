@@ -1,13 +1,15 @@
 package com.sushihotel.invoice;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 public class Invoice implements Serializable    {
     private int invoiceID; 
     private int guestID;
     private int roomNumber;
-    private String checkInDate; 
-    private String checkOutDate; 
+    private Date checkInDate; 
+    private Date checkOutDate; 
     private float tax; 
     private float discount; 
     private float roomCharges; 
@@ -29,11 +31,11 @@ public class Invoice implements Serializable    {
     }
 
     // blank invoice upon check in
-    public Invoice(int guestID, int roomNumber, String checkInDate)   {
+    public Invoice(int guestID, int roomNumber, Date checkInDate, Date checkOutDate)   {
         this.guestID = guestID;
         this.roomNumber = roomNumber;
         this.checkInDate = checkInDate;
-        this.roomSvc = 0.0f;
+        this.checkOutDate = checkOutDate;
         this.invoiceStatus = INVOICE_STATUS.PAYMENT_NOT_MADE;
     }  
 
@@ -46,10 +48,10 @@ public class Invoice implements Serializable    {
     protected void setRoomNumber(int roomNumber)    {
         this.roomNumber = roomNumber;
     }
-    protected void setCheckInDate(String checkInDate)   {
+    protected void setCheckInDate(Date checkInDate)   {
         this.checkInDate = checkInDate;
     }
-    protected void setCheckOutDate(String checkOutDate) {
+    protected void setCheckOutDate(Date checkOutDate) {
         this.checkOutDate = checkOutDate;
     }
     protected void setTax(float tax)    {
@@ -89,10 +91,10 @@ public class Invoice implements Serializable    {
     public boolean getCashPayment()  {
         return this.cashPayment;
     } 
-    public String getCheckInDate()  {
+    public Date getCheckInDate()  {
         return this.checkInDate;
     } 
-    public String getCheckOutDate() {
+    public Date getCheckOutDate() {
         return this.checkOutDate;
     } 
     public float getTax()  {

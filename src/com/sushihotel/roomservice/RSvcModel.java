@@ -75,6 +75,7 @@ public class RSvcModel {
 			if(dbRoomSvc.getRoomSvcID() == roomSvcId) {
 				iter.remove();
 				trigger_flag = true;
+				roomSvc.setRoomSvcID(roomSvcId);
 				break;
 			}
 		}
