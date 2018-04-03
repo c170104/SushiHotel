@@ -1,9 +1,10 @@
 package com.sushihotel.invoice;
 
 import java.io.Serializable;
-import java.time.temporal.WeekFields;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 
 public class Invoice implements Serializable    {
     private int invoiceID; 
@@ -42,6 +43,7 @@ public class Invoice implements Serializable    {
         this.totalWeekdays = totalWeekdays;
         this.totalWeekends = totalWeekends;
         this.invoiceStatus = INVOICE_STATUS.PAYMENT_NOT_MADE;
+        this.roomSvc = new ArrayList();
     }  
 
     protected void setInvoiceID(int invoiceID)  {
@@ -108,6 +110,12 @@ public class Invoice implements Serializable    {
     public Date getCheckOutDate() {
         return this.checkOutDate;
     } 
+    public int getTotalWeekdays()   {
+        return this.totalWeekdays;
+    }
+    public int getTotalWeekends()   {
+        return this.totalWeekends;
+    }
     public float getTax()  {
         return this.tax;
     } 

@@ -13,7 +13,7 @@ import com.sushihotel.room.Room;
 
 public class RoomModel   {
     private static IDataStore dataStore = DataStoreFactory.getDataStore();
-    private static final String EmptyDBMsg = "Room DB not found.";
+    private static final String EMPTY_DB_MSG = "Room DB not found.";
 
     protected static boolean create(Room room) throws DuplicateData  {
         List list;
@@ -49,7 +49,7 @@ public class RoomModel   {
         list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.ROOM);
         
         if(list == null)
-            throw new EmptyDB(EmptyDBMsg);
+            throw new EmptyDB(EMPTY_DB_MSG);
 
         for(int i=0; i<list.size(); i++)    {
             room = (Room)list.get(i);
@@ -66,7 +66,7 @@ public class RoomModel   {
         list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.ROOM);
 
         if(list == null)
-            throw new EmptyDB(EmptyDBMsg);
+            throw new EmptyDB(EMPTY_DB_MSG);
         
         return list;
     }
@@ -80,7 +80,7 @@ public class RoomModel   {
         list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.ROOM);
 
         if(list == null)
-            throw new EmptyDB(EmptyDBMsg);
+            throw new EmptyDB(EMPTY_DB_MSG);
 
         room.setRoomNumber(roomNumber);
 
@@ -110,7 +110,7 @@ public class RoomModel   {
         list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.ROOM);
 
         if(list == null)
-            throw new EmptyDB(EmptyDBMsg);
+            throw new EmptyDB(EMPTY_DB_MSG);
 
         iter = list.iterator();
 

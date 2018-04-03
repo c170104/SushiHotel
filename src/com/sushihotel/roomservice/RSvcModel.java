@@ -13,7 +13,7 @@ import com.sushihotel.exception.InvalidEntity;
 public class RSvcModel {
 	private static IDataStore dataStore = DataStoreFactory.getDataStore();
 
-	private static final String EmptyDBMsg = "RoomService DB not found.";
+	private static final String EMPTY_DB_MSG = "RoomService DB not found.";
 	
 	protected static boolean create(RoomSvc roomSvc) throws DuplicateData {
 		List list;
@@ -38,7 +38,7 @@ public class RSvcModel {
 
 		list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.ROOMSERVICE);
 		if(list == null)
-			throw new EmptyDB(EmptyDBMsg);
+			throw new EmptyDB(EMPTY_DB_MSG);
 
 		return list;
 	}
@@ -48,7 +48,7 @@ public class RSvcModel {
 		RoomSvc roomSvc;
 		list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.ROOMSERVICE);
 		if(list == null)
-            throw new EmptyDB(EmptyDBMsg);
+            throw new EmptyDB(EMPTY_DB_MSG);
 		
 		for (int i=0; i<list.size();i++) {
 			roomSvc = (RoomSvc)list.get(i);
@@ -67,7 +67,7 @@ public class RSvcModel {
 		
 		list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.ROOMSERVICE);
 		if (list == null) { 
-        	throw new EmptyDB(EmptyDBMsg);
+        	throw new EmptyDB(EMPTY_DB_MSG);
         }
 		iter = list.iterator();
 		while(iter.hasNext()) {
@@ -96,7 +96,7 @@ public class RSvcModel {
 		list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.ROOMSERVICE);
 		
 		if(list == null) {
-			throw new EmptyDB(EmptyDBMsg);
+			throw new EmptyDB(EMPTY_DB_MSG);
 		}
 		
 		iter = list.iterator();

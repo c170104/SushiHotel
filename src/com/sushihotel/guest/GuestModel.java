@@ -14,7 +14,7 @@ import com.sushihotel.exception.InvalidEntity;
 
 public class GuestModel {
     private static IDataStore dataStore = DataStoreFactory.getDataStore();
-    private static final String EmptyDBMsg = "Guest DB not found.";
+    private static final String EMPTY_DB_MSG = "Guest DB not found.";
     
     protected static boolean create(Guest guest) throws DuplicateData  {
         List list;
@@ -60,7 +60,7 @@ public class GuestModel {
         list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.GUEST);
 
         if(list == null)
-            new EmptyDB(EmptyDBMsg);
+            new EmptyDB(EMPTY_DB_MSG);
 
         for(int i=0; i<list.size(); i++)    {
             guest = (Guest)list.get(i);
@@ -90,7 +90,7 @@ public class GuestModel {
         list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.GUEST);
         
         if(list == null)
-            throw new EmptyDB(EmptyDBMsg);
+            throw new EmptyDB(EMPTY_DB_MSG);
 
         for(int i=0; i<list.size(); i++)    {
             guest = (Guest)list.get(i);
@@ -109,7 +109,7 @@ public class GuestModel {
         list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.GUEST);
 
         if(list == null)
-            throw new EmptyDB(EmptyDBMsg);
+            throw new EmptyDB(EMPTY_DB_MSG);
 
         guest.setGuestID(guestID);
 
@@ -140,7 +140,7 @@ public class GuestModel {
         list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.GUEST);
 
         if(list == null)    {
-           throw new EmptyDB(EmptyDBMsg);
+           throw new EmptyDB(EMPTY_DB_MSG);
         }
 
         iter = list.iterator();

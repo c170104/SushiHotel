@@ -39,7 +39,7 @@ public class InvoiceModel   {
         return dataStore.write(list, IDataStore.DB_ENTITY_TYPE.INVOICE);
     }
 
-    protected static Invoice read(int roomNumber) throws EmptyDB, InvalidEntity  {
+    protected static Invoice read(int invoiceID) throws EmptyDB, InvalidEntity  {
         List list;
         Invoice invoice;
 
@@ -50,11 +50,11 @@ public class InvoiceModel   {
 
         for(int i=0; i<list.size(); i++)    {
             invoice = (Invoice)list.get(i);
-            if(invoice.getRoomNumber() == roomNumber && invoice.getInvoiceStatus() == Invoice.INVOICE_STATUS.PAYMENT_NOT_MADE) {
+            if(invoice.getInvoiceID() == invoiceID) {
                 return invoice;
             }
         }
-        throw new InvalidEntity(roomNumber + " which is UNPAID is not found", Invoice.INVOICE_SEARCH_TYPE.ROOM_NUMBER);
+        throw new InvalidEntity(invoiceID + " is not found", Invoice.INVOICE_SEARCH_TYPE.INVOICE_ID);
     }
 
     protected static List<Invoice> read() throws EmptyDB  {
