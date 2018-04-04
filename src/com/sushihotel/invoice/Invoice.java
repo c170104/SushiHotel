@@ -1,8 +1,10 @@
 package com.sushihotel.invoice;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 
 public class Invoice implements Serializable    {
     private int invoiceID; 
@@ -10,6 +12,8 @@ public class Invoice implements Serializable    {
     private int roomNumber;
     private Date checkInDate; 
     private Date checkOutDate; 
+    private int totalWeekdays;
+    private int totalWeekends;
     private float tax; 
     private float discount; 
     private float roomCharges; 
@@ -31,12 +35,15 @@ public class Invoice implements Serializable    {
     }
 
     // blank invoice upon check in
-    public Invoice(int guestID, int roomNumber, Date checkInDate, Date checkOutDate)   {
+    public Invoice(int guestID, int roomNumber, Date checkInDate, Date checkOutDate, int totalWeekdays, int totalWeekends)   {
         this.guestID = guestID;
         this.roomNumber = roomNumber;
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
+        this.totalWeekdays = totalWeekdays;
+        this.totalWeekends = totalWeekends;
         this.invoiceStatus = INVOICE_STATUS.PAYMENT_NOT_MADE;
+        this.roomSvc = new ArrayList();
     }  
 
     protected void setInvoiceID(int invoiceID)  {
@@ -53,6 +60,12 @@ public class Invoice implements Serializable    {
     }
     protected void setCheckOutDate(Date checkOutDate) {
         this.checkOutDate = checkOutDate;
+    }
+    protected void setTotalWeekdays(int totalWeekdays)  {
+        this.totalWeekdays = totalWeekdays;
+    }
+    protected void setTotalWeekends(int totalWeekends)  {
+        this.totalWeekends = totalWeekends;
     }
     protected void setTax(float tax)    {
         this.tax = tax;
@@ -97,6 +110,12 @@ public class Invoice implements Serializable    {
     public Date getCheckOutDate() {
         return this.checkOutDate;
     } 
+    public int getTotalWeekdays()   {
+        return this.totalWeekdays;
+    }
+    public int getTotalWeekends()   {
+        return this.totalWeekends;
+    }
     public float getTax()  {
         return this.tax;
     } 

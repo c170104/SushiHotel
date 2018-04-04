@@ -44,16 +44,32 @@ public class InvoiceMgr {
         return list;
     }
 
-    public Invoice getPaymentInvoice(int roomNumber) {
+    public Invoice getInvoice(int invoiceID)    {
         Invoice invoice = null;
         try {
-            invoice = InvoiceModel.read(roomNumber);
-        } catch(EmptyDB edb)    {
+            invoice = InvoiceModel.read(invoiceID);
+        } catch (EmptyDB edb) {
             logger.warning(edb.getMessage());
-        } catch(InvalidEntity ie)   {
+        } catch (InvalidEntity ie) {
             logger.warning(ie.getMessage());
         }
         return invoice;
+    }
+
+    public Invoice getUnpaidInvoice(int roomNumber) {
+        List<Invoice> invoices;
+        Invoice invoice = null;
+        try {
+            invoices = InvoiceModel.read();
+            for(int i=0; i<invoices.size(); i++) {
+                invoice = invoices.get(i);
+                if(invoice.getRoomNumber() == roomNumber)
+                    return invoice;
+            }
+        } catch(EmptyDB edb)    {
+            logger.warning(edb.getMessage());
+        }
+        return null;
     }
 
     public boolean editInvoice(int invoiceID, Invoice invoice)  {
@@ -121,15 +137,20 @@ public class InvoiceMgr {
         return false;
     }
 
-    public boolean addCharges(int roomNumber, float discount, float tax, float lateFees, float roomSvcTotalPayable, int totalWeekDay, int totalWeekEnd, float weekDayRate, float weekEndRate)    {
+    public boolean addCharges(int roomNumber, float discount, float tax, float lateFees, float roomSvcTotalPayable, float weekDayRate, float weekEndRate)    {
         Invoice invoice;
         float roomCharges = 0.0f;
         float totalBill = 0.0f;
+        int totalWeekDays;
+        int totalWeekEnds;
 
         try {
             invoice = InvoiceModel.read(roomNumber);
 
-            roomCharges = totalWeekDay * weekDayRate + totalWeekEnd * weekEndRate;
+            totalWeekDays = invoice.getTotalWeekdays();
+            totalWeekEnds = invoice.getTotalWeekends();
+
+            roomCharges = totalWeekDays * weekDayRate + totalWeekEnds * weekEndRate;
             totalBill = ((roomCharges + roomSvcTotalPayable + lateFees) * (1-discount)) * (1+tax);
 
             invoice.setRoomCharges(roomCharges);
