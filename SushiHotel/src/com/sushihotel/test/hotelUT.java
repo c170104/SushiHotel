@@ -55,13 +55,14 @@ public class hotelUT    {
                     "10) Add New Menu Item\n" +
                     "11) Edit Menu Item\n" +
                     "12) Remove Menu Item\n" +
+                    "13) Print list of meals\n" +
                     "============ OPERATIONAL MATTERS ============\n" +
-                    "13) Order Room Service\n"+
-                    "14) Check Room Availability\n" +
-                    "15) Check In\n" +
-                    "16) Check Out\n" +
-                    "17) Print Room Occupancy Rate (One Day)\n" +
-                    "18) Exit\n" +
+                    "14) Order Room Service\n"+
+                    "15) Check Room Availability\n" +
+                    "16) Check In\n" +
+                    "17) Check Out\n" +
+                    "18) Print Room Occupancy Rate (One Day)\n" +
+                    "19) Exit\n" +
                     "=============================================\n" +
                     "Choice (1-18): "
                 );
@@ -105,24 +106,27 @@ public class hotelUT    {
                         hotelMgr.removeMenuItem();
                         break;
                     case 13:
+                    	hotelMgr.printMealList();
+                    	break;
+                    case 14:
                         hotelMgr.callRoomService();
                         break;
-                    case 14:
+                    case 15:
                         hotelMgr.checkRoomAvailability();
                         break;
-                    case 15:
+                    case 16:
                         hotelMgr.checkIn();
                         break;
-                    case 16:
+                    case 17:
                         hotelMgr.checkOut();
                         break;
-                    case 17:
+                    case 18:
                         hotelMgr.printRoomStatusStatisticReport();
                         break;
                     default:
                         break;
                 }
-            } while (choice != 18);
+            } while (choice != 19);
 //        } catch(InputMismatchException ime) {
 //            logger.severe(ime.getMessage());
 //            System.out.println("Invalid Choice. Please try again.");

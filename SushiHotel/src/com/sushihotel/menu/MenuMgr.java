@@ -1,5 +1,6 @@
 package com.sushihotel.menu;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.*;
 
@@ -12,8 +13,10 @@ import com.sushihotel.exception.InvalidEntity;
 
 public class MenuMgr {
 	 private static final Logger logger = Logger.getLogger(MenuMgr.class.getName()); // gets name of the method
+
 	 
 	 public boolean addNewMeal(Meal meal) {
+
 		try {
 			if (MenuModel.create(meal)) {
 				logger.info("[CREATE SUCCESS] Meal ID: " + Integer.toString(meal.getMealID()) + " | Meal Name: " + meal.getMealName());
@@ -59,7 +62,7 @@ public class MenuMgr {
 		try {
 			mealID = meal.getMealID();
 			if(MenuModel.update(mealName, meal)) {
-				logger.info("[UPDATE SUCCESS] Meal ID: " + Integer.toString(mealID) + " | Meal Name: " + meal.getMealName());
+				logger.info("[UPDATE SUCCESS] Meal ID: " + meal.getMealID() + " | Meal Name: " + meal.getMealName());
 			} else {
 				logger.info("[UPDATE FAIL] Meal ID: " + Integer.toString(meal.getMealID()));
 			}
@@ -92,5 +95,17 @@ public class MenuMgr {
 			logger.log(Level.WARNING, edb.getMessage());
 		}
 		 return mealList;
+	 }
+	 
+	 public Meal searchMeal(String mealName) {
+		 Meal meal = null;
+		 try {
+			meal = MenuModel.read(mealName);
+		} catch (EmptyDB edb) {
+			logger.log(Level.WARNING, edb.getMessage());
+		} catch (InvalidEntity ie) {
+			logger.log(Level.WARNING, ie.getMessage());
+		}
+		 return meal;
 	 }
 }

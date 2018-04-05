@@ -15,12 +15,10 @@ public class Meal implements Serializable{
     }
 	
 	public Meal (
-			//int mealID, ben isit no need this in constructor
 			String mealName,
 			String description,
 			String preparedMethod,
 			float mealPrice) {
-		//this.mealID = mealID;
 		this.mealName = mealName;
 		this.description = description;
 		this.preparedMethod = preparedMethod;

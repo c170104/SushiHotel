@@ -884,15 +884,148 @@ public class HotelMgr   {
      */
 
     public void addMenuItem()    {
-
+    			Meal meal;
+    			String mealName;
+    			String description;
+    			String preparedMethod;
+    			float mealPrice;
+    			
+    			try {
+    				System.out.println("===========Insert new meal==============");
+    				System.out.println("Please enter meal name: ");
+    				mealName = sc.nextLine();
+    				System.out.println("Please enter meal description: ");
+    				description = sc.nextLine();
+    				System.out.println("Please enter prepared method: ");
+    				preparedMethod = sc.nextLine();
+    				System.out.println("Please enter meal price: ");
+    				mealPrice = sc.nextFloat();
+    				sc.nextLine();
+    				
+    				meal = new Meal(mealName, description, preparedMethod, mealPrice);
+    				
+    				if (menuMgr.addNewMeal(meal)) {
+    					System.out.println("Meal " + mealName + " has been successfully registered! ");
+    				} else {
+    					System.out.println("System failed to register Meal" + mealName + ". Please try again");
+    				}
+    			} catch(InputMismatchException ime) {
+    	            logger.severe(ime.getMessage());
+    	            System.out.println(ERROR_MSG);
+    	        }
     }
 
     public void editMenuItem()    {
-
+    	Meal meal;
+    	int mealID;
+    	String mealName;
+    	String description;
+    	String preparedMethod;
+    	float mealPrice;
+    	int choice;
+    	try {
+    		System.out.println("Please enter the exact name of the Meal to be updated: ");
+    		mealName = sc.nextLine();
+    		String mealNameSearch = mealName; // if mealname is edited, will have error, store to prevent
+    		meal = menuMgr.searchMeal(mealName);
+    		
+    		mealID = meal.getMealID();
+    		mealName = meal.getMealName();
+    		description = meal.getDesc();
+    		preparedMethod = meal.getPreparedMethod();
+    		mealPrice = meal.getMealPrice();
+    		
+    		do {
+    			System.out.println(
+    					"Choose the option 1-5 to update: \n"
+    					+ "1) Meal Name\n"
+    					+ "2) Description\n"
+    					+ "3) Prepared Method\n"
+    					+ "4) Meal Price\n"
+    					+ "5) Update\n\n"
+    					+ "Choice: "
+    					);
+    		choice = sc.nextInt();
+    		sc.nextLine();
+    		switch (choice) {
+    			case 1:
+    				System.out.println("Meal Name: ");
+    				mealName = sc.nextLine();
+    				break;
+    			case 2:
+    				System.out.println("Description: ");
+    				description = sc.nextLine();
+    				break;
+    			case 3:
+    				System.out.println("Prepared Method: ");
+    				preparedMethod = sc.nextLine();
+    				break;
+    			case 4: 
+    				System.out.println("Meal Price");
+    				mealPrice = sc.nextFloat();
+    				sc.nextLine();
+    				break;
+    			default: 
+    				break;
+    		}
+    		} while (choice != 5);
+    		
+    		meal = new Meal(mealName, description, preparedMethod, mealPrice);
+    		if(menuMgr.editMeal(mealNameSearch, meal)) {
+    			System.out.println("Succesfully updated Meal " + mealName + " details.");
+    		} else {
+    			System.out.println("System failed to update Meal " + mealName + ". Please try again.");
+    		}
+    	} catch(InputMismatchException ime) {
+            logger.severe(ime.getMessage());
+            System.out.println(ERROR_MSG);
+        } catch(NullPointerException npe)   {
+            logger.severe(npe.getMessage());
+            System.out.println("No such meal");
+        }
+    	
     }
 
     public void removeMenuItem()    {
-
+    	int mealID;
+    	try {
+    		System.out.println("Please enter meal ID to be deleted");
+    		mealID = sc.nextInt();
+    		sc.nextLine();
+    		if (menuMgr.removeMeal(mealID)) {
+    			System.out.println("Deletion of meal number " + mealID +" was successful");
+    		} else {
+    			System.out.println("Deletion of meal number " + mealID +" was unsuccessful, please try again");
+    		} 
+    	} catch (NumberFormatException nfe) {
+        		System.out.println("Wrong number input format");
+        } catch (InputMismatchException ime) {
+                logger.severe(ime.getMessage());
+                System.out.println(ERROR_MSG);
+        	}
+    }
+    
+    public void printMealList () {
+    	Meal meal;
+    	List mealList;
+    	Iterator iter;
+    	try {
+    		mealList = menuMgr.getMealOffered();
+    		iter = mealList.iterator();
+    		
+    		while(iter.hasNext()) {
+    			meal = (Meal)iter.next();
+    			System.out.println("Meal ID: " + meal.getMealID()
+				+ "\n Meal Name: " + meal.getMealName()
+				+ "\n Description: " + meal.getDesc()
+				+ "\n Prepared Method: " + meal.getPreparedMethod()
+				+ "\n Meal Price: " + meal.getMealPrice());
+		System.out.println("=======================================");
+    		}
+    	} catch (NullPointerException npe)   {
+            logger.severe(npe.getMessage());
+            System.out.println("No meal data");
+        }
     }
 
     /*

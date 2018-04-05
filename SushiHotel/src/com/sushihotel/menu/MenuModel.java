@@ -21,6 +21,8 @@ public class MenuModel {
 		List list;
 		int size;
 		Meal dbMeal;
+		boolean checker = false;
+		int i;
 		
 		list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.MENU);
 		
@@ -31,15 +33,24 @@ public class MenuModel {
         }    
 		
 // 		Checks Meal against dbMeal(reflects list) for existing meal based on mealID, mealName
-        for(int i=0; i<size; i++)   {
+        for(i=0; i<size; i++)   {
             dbMeal = (Meal)list.get(i);     
             if(dbMeal.getMealName().toLowerCase().equals(meal.getMealName().toLowerCase())) {
             	throw new DuplicateData(meal.getMealName(), Meal.MENU_SEARCH_TYPE.MEAL_NAME);
             }
         }
+//		Check if mealID has been taken, assign a different one
+        for (i=0; i<size; i++) {
+        	dbMeal = (Meal)list.get(i);
+        	if (dbMeal.getMealID() != i && !checker) {
+        		meal.setMealID(i);
+        		checker = true;
+        	}
+        }
         
 // 		mealID automatically set on creation
-        meal.setMealID(size + 1); // 
+        if (!checker)
+        	meal.setMealID(size + 1); // 
         list.add(meal);
         return dataStore.write(list, IDataStore.DB_ENTITY_TYPE.MENU);
 	
@@ -60,6 +71,22 @@ public class MenuModel {
                 return meal;
         }
         throw new InvalidEntity(mealID + " not found.", Meal.MENU_SEARCH_TYPE.MEAL_ID);
+    }
+    
+    protected static Meal read(String mealName) throws EmptyDB, InvalidEntity {
+    	List list;
+    	Meal meal;
+    	
+    	list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.MENU);
+    	if(list == null)
+            new EmptyDB(EMPTY_DB_MSG);
+    	
+        for (int i=0; i<list.size(); i++) {
+        	meal = (Meal)list.get(i);
+            if(meal.getMealName().toLowerCase().equals(mealName.toLowerCase()))
+                return meal;
+        }
+        throw new InvalidEntity(mealName + " not found.", Meal.MENU_SEARCH_TYPE.MEAL_ID);
     }
         
     protected static List<Meal> read() throws EmptyDB{ 
@@ -96,7 +123,8 @@ public class MenuModel {
         while(iter.hasNext())   { //check if there is next item in list
             dbMeal = (Meal)iter.next(); // assign next item
             if(dbMeal.getMealName().toLowerCase().equals((mealName.toLowerCase()))) { // remove if mealname is found
-                iter.remove(); // removes 
+                meal.setMealID(dbMeal.getMealID());
+            	iter.remove(); // removes 
                 trigger_flag = true;
                 break;
             }
