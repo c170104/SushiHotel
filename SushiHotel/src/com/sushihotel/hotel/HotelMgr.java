@@ -988,7 +988,17 @@ public class HotelMgr   {
 
     public void removeMenuItem()    {
     	int mealID;
+    	Meal meal;
+    	List mealList;
+    	Iterator iter;
     	try {
+    		mealList = menuMgr.getMealOffered();
+    		iter = mealList.iterator();
+    		while(iter.hasNext()) {
+    			meal = (Meal)iter.next();
+    			System.out.println("Meal ID: " + meal.getMealID()
+				+ " Meal Name: " + meal.getMealName() );
+    		}
     		System.out.println("Please enter meal ID to be deleted");
     		mealID = sc.nextInt();
     		sc.nextLine();
@@ -1002,7 +1012,10 @@ public class HotelMgr   {
         } catch (InputMismatchException ime) {
                 logger.severe(ime.getMessage());
                 System.out.println(ERROR_MSG);
-        	}
+        } catch (NullPointerException npe)   {
+            logger.severe(npe.getMessage());
+            System.out.println("No meal data");
+        }
     }
     
     public void printMealList () {

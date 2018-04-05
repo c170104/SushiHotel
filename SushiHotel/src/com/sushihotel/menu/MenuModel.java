@@ -23,7 +23,6 @@ public class MenuModel {
 		Meal dbMeal;
 		Meal mealCompare;
 		Iterator iter;
-		int id;
 		
 		list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.MENU);
 		
