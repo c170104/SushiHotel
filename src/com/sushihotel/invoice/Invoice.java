@@ -1,13 +1,19 @@
 package com.sushihotel.invoice;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 
 public class Invoice implements Serializable    {
     private int invoiceID; 
     private int guestID;
     private int roomNumber;
-    private String checkInDate; 
-    private String checkOutDate; 
+    private Date checkInDate; 
+    private Date checkOutDate; 
+    private int totalWeekdays;
+    private int totalWeekends;
     private float tax; 
     private float discount; 
     private float roomCharges; 
@@ -29,12 +35,15 @@ public class Invoice implements Serializable    {
     }
 
     // blank invoice upon check in
-    public Invoice(int guestID, int roomNumber, String checkInDate)   {
+    public Invoice(int guestID, int roomNumber, Date checkInDate, Date checkOutDate, int totalWeekdays, int totalWeekends)   {
         this.guestID = guestID;
         this.roomNumber = roomNumber;
         this.checkInDate = checkInDate;
-        this.roomSvc = 0.0f;
+        this.checkOutDate = checkOutDate;
+        this.totalWeekdays = totalWeekdays;
+        this.totalWeekends = totalWeekends;
         this.invoiceStatus = INVOICE_STATUS.PAYMENT_NOT_MADE;
+        this.roomSvc = new ArrayList();
     }  
 
     protected void setInvoiceID(int invoiceID)  {
@@ -46,11 +55,17 @@ public class Invoice implements Serializable    {
     protected void setRoomNumber(int roomNumber)    {
         this.roomNumber = roomNumber;
     }
-    protected void setCheckInDate(String checkInDate)   {
+    protected void setCheckInDate(Date checkInDate)   {
         this.checkInDate = checkInDate;
     }
-    protected void setCheckOutDate(String checkOutDate) {
+    protected void setCheckOutDate(Date checkOutDate) {
         this.checkOutDate = checkOutDate;
+    }
+    protected void setTotalWeekdays(int totalWeekdays)  {
+        this.totalWeekdays = totalWeekdays;
+    }
+    protected void setTotalWeekends(int totalWeekends)  {
+        this.totalWeekends = totalWeekends;
     }
     protected void setTax(float tax)    {
         this.tax = tax;
@@ -89,12 +104,18 @@ public class Invoice implements Serializable    {
     public boolean getCashPayment()  {
         return this.cashPayment;
     } 
-    public String getCheckInDate()  {
+    public Date getCheckInDate()  {
         return this.checkInDate;
     } 
-    public String getCheckOutDate() {
+    public Date getCheckOutDate() {
         return this.checkOutDate;
     } 
+    public int getTotalWeekdays()   {
+        return this.totalWeekdays;
+    }
+    public int getTotalWeekends()   {
+        return this.totalWeekends;
+    }
     public float getTax()  {
         return this.tax;
     } 

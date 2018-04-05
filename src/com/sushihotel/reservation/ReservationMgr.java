@@ -1,11 +1,9 @@
 package com.sushihotel.reservation;
 
-import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
-import java.util.logging.*;
-
-import com.sushihotel.reservation.Reservation;
-import com.sushihotel.reservation.ReservationModel;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.sushihotel.exception.DuplicateData;
 import com.sushihotel.exception.EmptyDB;
@@ -15,7 +13,24 @@ public class ReservationMgr {
 	private static final Logger logger = Logger.getLogger(ReservationMgr.class.getName());
 	
 	public boolean beginReservation(Reservation reservation) {
+		List<Reservation> list;
+		Reservation dbReservation;
 		try {
+			
+			list = ReservationModel.read();
+			
+			reservation.setReserveStatus(Reservation.RESERVE_STATUS.CONFIRMED);
+
+			for(int i=0; i<list.size(); i++)	{
+				dbReservation = list.get(i);
+				if(reservation.getRoomNumber() == dbReservation.getRoomNumber() && (
+					dbReservation.getReserveStatus() == Reservation.RESERVE_STATUS.CONFIRMED || 
+					dbReservation.getReserveStatus() == Reservation.RESERVE_STATUS.CHECKED_IN)
+				)	{
+					reservation.setReserveStatus(Reservation.RESERVE_STATUS.WAITLIST);
+				}
+			}
+
 			if(ReservationModel.create(reservation)) {
 				logger.info("[CREATE SUCCESS] Reservation ID: " + Integer.toString(reservation.getReservationID()) 
 						+ " | Guest Name: " + reservation.getGuestName());
@@ -23,6 +38,8 @@ public class ReservationMgr {
 			} else {
 				logger.info("[CREATE FAIL] Reservation ID: " + Integer.toString(reservation.getReservationID()));
 			}
+		} catch(EmptyDB edb)	{
+			logger.severe(edb.getMessage());
 		} catch (DuplicateData dd) {
 			logger.log(Level.WARNING, dd.getMessage());
 		}
@@ -53,7 +70,7 @@ public class ReservationMgr {
 		Reservation reservation;
 		
 		try {
-			reservation = ReservationModel.readRID(reservationID);
+			reservation = ReservationModel.read(reservationID);
 			if (reservation == null) {
 				return false;
 			}
@@ -71,29 +88,55 @@ public class ReservationMgr {
 		}
 		return false;
 	}
-	
-	public boolean printRsvDetails(int reservationID) {
-		Reservation reservation;
-		try {
-			reservation = ReservationModel.readRID(reservationID);
-			if (reservation == null) {
-				return false;
-			} else {
-				System.out.println("Reservation ID: " + reservation.getReservationID()
-						+ "\n No. of Adults: " + reservation.getNumAdults()
-						+ "\n No. of Childrens: " + reservation.getNumChild()
-						+ "\n Check In Date: " + reservation.getCheckInDate()
-						+ "\n Check Out Date: " + reservation.getCheckOutDate()
-						+ "\n No. of Weekdays: " + reservation.getNoOfWeekdays() 
-						+ "\n No. of Weekends: " + reservation.getNoOfWeekends()
-						+ "\n Reservation Status: " + reservation.getReserveStatus());
-				return true;
-			}
-		} catch (EmptyDB edb) {
-			logger.log(Level.WARNING, edb.getMessage());
-		} catch (InvalidEntity ie) {
-			logger.log(Level.WARNING, ie.getMessage());
+
+	public Reservation getReservationByID(int reservationID)	{
+		Reservation reservation = null;
+		
+		try	{
+			reservation = ReservationModel.read(reservationID);
+		} catch(EmptyDB edb)	{
+			logger.warning(edb.getMessage());
+		} catch(InvalidEntity ie)	{
+			logger.warning(ie.getMessage());
 		}
-		return false;
+		return reservation;
+	}
+
+	public List<Reservation> getReservationByRoomNumber(int roomNumber)	{
+		List<Reservation> list = null;
+		Reservation reservation;
+		Iterator iter;
+
+		try	{
+			list = ReservationModel.read();
+			iter = list.iterator();
+			
+			while(iter.hasNext())	{
+				reservation = (Reservation)iter.next();
+				if(reservation.getRoomNumber() != roomNumber)
+					iter.remove();
+			}
+		} catch(EmptyDB edb)	{
+			logger.severe(edb.getMessage());
+		}
+		return list;
+	}
+
+	public Reservation getReservationByNameAndRoomNumber(String guestName, int roomNumber)	{
+		Reservation reservation;
+		List<Reservation> list;
+
+		try	{
+			list = ReservationModel.read();
+
+			for(int i=0; i<list.size(); i++)	{
+				reservation = list.get(i);
+				if(reservation.getGuestName().toLowerCase().equals(guestName.toLowerCase()) && reservation.getRoomNumber() == roomNumber && reservation.getReserveStatus() != Reservation.RESERVE_STATUS.CHECKED_OUT)
+					return reservation;
+			}
+		} catch(EmptyDB edb)	{
+			logger.severe(edb.getMessage());
+		}
+		return null;
 	}
 }

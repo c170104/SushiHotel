@@ -53,7 +53,7 @@ public class RoomSvcMgr {
 	
 	public boolean editRoomSvc(int roomSvcID, RoomSvc roomSvc) {
 		try {
-			if (com.sushihotel.roomservice.RSvcModel.update(roomSvcID, roomSvc)) {
+			if (RSvcModel.update(roomSvcID, roomSvc)) {
 				logger.info("[UPDATE SUCCESS] Room ID: " + Integer.toString(roomSvc.getRoomSvcID()) 
 				+ " | Room Number: " + roomSvc.getRoomNumber());
 				return true;
