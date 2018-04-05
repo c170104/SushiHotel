@@ -18,6 +18,7 @@ public class Invoice implements Serializable    {
     private float discount; 
     private float roomCharges; 
     private List<Integer> roomSvc;
+    private float roomSvcTotalCharges;
     private float totalBill; 
     private boolean cashPayment;
     private Enum invoiceStatus; 
@@ -79,6 +80,9 @@ public class Invoice implements Serializable    {
     protected void setRoomSvc(List<Integer> roomSvc)  {
         this.roomSvc = roomSvc;
     }
+    protected void setRoomSvcTotalCharges(float roomSvcTotalCharges)    {
+        this.roomSvcTotalCharges = roomSvcTotalCharges;
+    }
     protected void setTotalBill(float totalBill)    {
         this.totalBill = totalBill;
     }
@@ -130,6 +134,9 @@ public class Invoice implements Serializable    {
     } 
     public List<Integer> getRoomSvc()  {
         return this.roomSvc;
+    }
+    public float getRoomSvcTotalCharges()   {
+        return this.roomSvcTotalCharges;
     }
     public float getTotalBill()    {
         return this.totalBill;

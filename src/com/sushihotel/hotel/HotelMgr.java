@@ -1073,30 +1073,6 @@ public class HotelMgr   {
         }
     }
 
-    private boolean checkExistingGuest()   {
-        int choice = 0;
-        try {
-            do {
-                System.out.print(
-                    "Existing Guest?\n" + 
-                    "1) Yes\n" +
-                    "2) No\n" +
-                    "Choice: "
-                );
-                choice = sc.nextInt();
-                sc.nextLine();
-            } while (choice != 1 && choice != 2);
-            
-        } catch(InputMismatchException ime) {
-            logger.warning(ime.getMessage());
-            System.out.println(ERROR_MSG);
-            return checkExistingGuest();
-        }
-        if (choice == 1)
-            return true;
-        return false;
-    }
-
     public void checkIn()    {
         int choice;
         Guest guest;
@@ -1106,7 +1082,6 @@ public class HotelMgr   {
         int roomNumber;
         int totalWeekdays;
         int totalWeekends;
-        
 
         try {
             System.out.println("============ CHECK IN ============");
@@ -1129,6 +1104,14 @@ public class HotelMgr   {
 
                 if(choice == 1) {
                     // Made prior reservations 
+                    /**
+                     *  PLEASE REMEMBER TO DO HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+                     * 
+                     * 
+                     * 
+                     * 
+                     * 
+                     */
                 }
                 else if(choice == 2)    {
 
@@ -1136,9 +1119,9 @@ public class HotelMgr   {
                     System.out.print("Please input room number: ");
                     roomNumber = sc.nextInt();
                     sc.nextLine();
-                    System.out.print("Please input Check In Date in the format (dd/MM/yyyy HH:mm): ");
+                    System.out.print("Please input Check In Date in the format (dd/MM/yyyy): ");
                     checkInDate = sc.nextLine();
-                    System.out.print("Please input Check Out Date in the format (dd/MM/yyyy HH:mm): ");
+                    System.out.print("Please input Check Out Date in the format (dd/MM/yyyy): ");
                     checkOutDate = sc.nextLine();
                     System.out.print("Please input total weekdays of stay: ");
                     totalWeekdays = sc.nextInt();
@@ -1147,10 +1130,11 @@ public class HotelMgr   {
                     totalWeekends = sc.nextInt();
                     sc.nextLine();
 
-                    invoice = new Invoice(guest.getGuestID(), roomNumber, formatter.parse(checkInDate), formatter.parse(checkOutDate), totalWeekdays, totalWeekends);
+                    invoice = new Invoice(guest.getGuestID(), roomNumber, formatter.parse(checkInDate + " 14:00"), formatter.parse(checkOutDate + " 12:00"), totalWeekdays, totalWeekends);
                     if(invoiceMgr.createBlankInvoice(invoice))  {
                         System.out.println("Check In for guest " + guest.getName() + " into Room number " 
                                 + Integer.toString(roomNumber) + " is successful!");
+                        roomMgr.setRoomToOccupied(roomNumber, Room.ROOM_STATUS.OCCUPIED);
                         break;
                     }
                     else    {
@@ -1172,19 +1156,38 @@ public class HotelMgr   {
 
     private void printBill(Invoice invoice) {
         try {
+            int roomSvcID;
+            RoomSvc roomSvc;
+            List<Integer> list;
             System.out.println(
                 "========== SushiHotel Bill ==========\n" + 
                 "Room number:\t\t" + invoice.getRoomNumber() + "\n" +
-                "Checked in on:\t\t" + invoice.getCheckInDate() + "\n" + 
-                "Checked out on:\t\t" + invoice.getCheckOutDate() + "\n" +
+                "Checked in on:\t\t" + formatter.format(invoice.getCheckInDate())+ "\n" + 
+                "Checked out on:\t\t" + formatter.format(invoice.getCheckOutDate()) + "\n" +
                 "Room charges:\t\t$" + invoice.getRoomCharges() + "\n" + 
-                "Room Service charges:\t$" + invoice.getRoomSvc() + "\n" +
+                "Room Service charges:\t$" + invoice.getRoomSvcTotalCharges() + "\n" +
                 "Late Fees:\t\t$" + invoice.getLateFees() + "\n" +
                 "Discount:\t\t" + invoice.getDiscount() + "%\n" + 
                 "Tax:\t\t\t" + invoice.getTax() + "%\n" +
                 "Total Bill:\t\t$" + invoice.getTotalBill() + "\n" +
                 "====================================="
             );
+            list = invoice.getRoomSvc();
+
+            System.out.println("======= Room Services Ordered =======");
+            if(list.size() == 0)
+                System.out.println("No Room service was ordered during the stay.\n");
+            for(int i=0; i<list.size(); i++)    {
+                roomSvcID = list.get(i);
+                roomSvc = roomSvcMgr.getRoomSvc(roomSvcID);
+                System.out.println(
+                    "Room Service ID: " + Integer.toString(roomSvcID) + "\n" +
+                    "Date Ordered: " + formatter.format(roomSvc.getDateTimeOrdered()) + "\n" +
+                    "Service Bill: " + Float.toString(roomSvc.getAmountPayable()) + "\n" +
+                    "Remarks: " + roomSvc.getRemarks() + "\n" +
+                    "====================================="
+                    );
+            }
         } catch(NullPointerException npe)   {
             logger.severe(npe.getMessage());
             System.out.println("An error has occured. Please contact the System administrator.");
@@ -1232,7 +1235,6 @@ public class HotelMgr   {
             discount = sc.nextFloat();
             sc.nextLine();
                 
-
             // add charges
             if(invoiceMgr.addCharges(roomNumber, discount, TAX_RATE, lateFees, roomSvcTotalPayable, weekDayRate, weekEndRate))  {
                 System.out.println("Payment method (cash/card)(default: cash): ");
@@ -1242,7 +1244,7 @@ public class HotelMgr   {
 
                 if(invoiceMgr.makePayment(roomNumber, cashPayment)) {
                     System.out.println("Check Out for Room " + Integer.toString(roomNumber) + " is successful.");
-
+                    roomMgr.setRoomToOccupied(roomNumber, Room.ROOM_STATUS.VACANT);
                     // print bill
                     invoice = invoiceMgr.getInvoice(invoice.getInvoiceID());
                     printBill(invoice);

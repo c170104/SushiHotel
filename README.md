@@ -32,6 +32,6 @@ HotelMgr:
         Create, Edit (Done)(All tested and working)
     Business Logic:
         Call Room Svc, Check room Availability (Done)
-        Check in (Done)(Not yet tested), Check out (done)(Not tested) Require Meal to test
+        Check in (Done)(working), Check out (done)(working) Require Meal to test
     Logging:
         Global logger (Done)(Tested)

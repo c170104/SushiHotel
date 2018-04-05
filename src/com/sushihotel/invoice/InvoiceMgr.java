@@ -154,6 +154,7 @@ public class InvoiceMgr {
             totalBill = ((roomCharges + roomSvcTotalPayable + lateFees) * (1-discount)) * (1+tax);
 
             invoice.setRoomCharges(roomCharges);
+            invoice.setRoomSvcTotalCharges(roomSvcTotalPayable);
             invoice.setDiscount(discount);
             invoice.setTax(tax);
             invoice.setLateFees(lateFees);

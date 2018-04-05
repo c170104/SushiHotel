@@ -66,6 +66,22 @@ public class RoomMgr    {
         }
         return room;
     }
+
+    public boolean setRoomToOccupied(int roomNumber, Enum roomStatus)    {
+        Room room;
+        try {
+            room = RoomModel.read(roomNumber);
+            room.setRoomStatus(roomStatus);
+            
+            return RoomModel.update(roomNumber, room);
+        } catch(EmptyDB edb)    {
+            logger.warning(edb.getMessage());
+        } catch(InvalidEntity ie)   {
+            logger.warning(ie.getMessage());
+        }
+        return false;
+    }
+
     public boolean checkRoomAvailability(int roomNumber)    {
         try {
             Room room;
