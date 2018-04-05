@@ -21,8 +21,9 @@ public class MenuModel {
 		List list;
 		int size;
 		Meal dbMeal;
-		boolean checker = false;
-		int i;
+		Meal mealCompare;
+		Iterator iter;
+		int id;
 		
 		list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.MENU);
 		
@@ -32,25 +33,18 @@ public class MenuModel {
             list = new ArrayList(); // declare array list without specific <obj> ref
         }    
 		
-// 		Checks Meal against dbMeal(reflects list) for existing meal based on mealID, mealName
-        for(i=0; i<size; i++)   {
+        for(int i=0; i<size; i++)   {
             dbMeal = (Meal)list.get(i);     
             if(dbMeal.getMealName().toLowerCase().equals(meal.getMealName().toLowerCase())) {
             	throw new DuplicateData(meal.getMealName(), Meal.MENU_SEARCH_TYPE.MEAL_NAME);
             }
-        }
-//		Check if mealID has been taken, assign a different one
-        for (i=0; i<size; i++) {
-        	dbMeal = (Meal)list.get(i);
-        	if (dbMeal.getMealID() != i && !checker) {
-        		meal.setMealID(i);
-        		checker = true;
-        	}
+            if(dbMeal.getMealID()!=i+1) {
+            	dbMeal.setMealID(i+1);		// To ensure meal id are in sequence.
+            }
         }
         
 // 		mealID automatically set on creation
-        if (!checker)
-        	meal.setMealID(size + 1); // 
+        meal.setMealID(size + 1);
         list.add(meal);
         return dataStore.write(list, IDataStore.DB_ENTITY_TYPE.MENU);
 	
