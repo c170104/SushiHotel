@@ -9,7 +9,6 @@ import com.sushihotel.database.IDataStore;
 import com.sushihotel.exception.DuplicateData;
 import com.sushihotel.exception.EmptyDB;
 import com.sushihotel.exception.InvalidEntity;
-import com.sushihotel.menu.Meal;
 
 
 public class MenuModel {
@@ -70,7 +69,11 @@ public class MenuModel {
         list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.MENU);
         
         if(list == null)
+<<<<<<< HEAD
+            throw new EmptyDB(EmptyDBMsg);
+=======
             throw new EmptyDB(EMPTY_DB_MSG);
+>>>>>>> 355f7999a85247d68679d0d16d4fc4ae988396f4
 
         for(int i=0; i<list.size(); i++)    {
             meal = (Meal)list.get(i);

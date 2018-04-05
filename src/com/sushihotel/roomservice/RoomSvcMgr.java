@@ -1,10 +1,8 @@
 package com.sushihotel.roomservice;
 
 import java.util.List;
-import java.util.logging.*;
-
-import com.sushihotel.roomservice.RSvcModel;
-import com.sushihotel.roomservice.RoomSvc;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.sushihotel.exception.DuplicateData;
 import com.sushihotel.exception.EmptyDB;
