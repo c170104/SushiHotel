@@ -55,16 +55,21 @@ public class hotelUT    {
                     "10) Add New Menu Item\n" +
                     "11) Edit Menu Item\n" +
                     "12) Remove Menu Item\n" +
-                    "13) Print list of meals\n" +
+                    "13) Print list of Meals\n" +
+                    "================ ROOMSVC MATTERS ===============\n" +
+                    "14) Add New Room Service\n" +
+                    "15) Edit Room Service\n" +
+                    "16) Remove Room Service\n" +
+                    "17) Print list of Room Service\n" +
                     "============ OPERATIONAL MATTERS ============\n" +
-                    "14) Order Room Service\n"+
-                    "15) Check Room Availability\n" +
-                    "16) Check In\n" +
-                    "17) Check Out\n" +
-                    "18) Print Room Occupancy Rate (One Day)\n" +
-                    "19) Exit\n" +
+                    "18) Order Room Service\n"+
+                    "19) Check Room Availability\n" +
+                    "20) Check In\n" +
+                    "21) Check Out\n" +
+                    "22) Print Room Occupancy Rate (One Day)\n" +
+                    "23) Exit\n" +
                     "=============================================\n" +
-                    "Choice (1-18): "
+                    "Choice (1-23): "
                 );
                 choice = sc.nextInt();
 
@@ -109,24 +114,36 @@ public class hotelUT    {
                     	hotelMgr.printMealList();
                     	break;
                     case 14:
+                    	hotelMgr.addRoomService();
+                    	break;
+                    case 15:
+                    	hotelMgr.editRoomService();
+                    	break;
+                    case 16:
+                    	hotelMgr.removeRoomService();
+                    	break;
+                    case 17:
+                    	hotelMgr.printRoomServiceList();
+                    	break;
+                    case 18:
                         hotelMgr.callRoomService();
                         break;
-                    case 15:
+                    case 19:
                         hotelMgr.checkRoomAvailability();
                         break;
-                    case 16:
+                    case 20:
                         hotelMgr.checkIn();
                         break;
-                    case 17:
+                    case 21:
                         hotelMgr.checkOut();
                         break;
-                    case 18:
+                    case 22:
                         hotelMgr.printRoomStatusStatisticReport();
                         break;
                     default:
                         break;
                 }
-            } while (choice != 19);
+            } while (choice != 23);
 //        } catch(InputMismatchException ime) {
 //            logger.severe(ime.getMessage());
 //            System.out.println("Invalid Choice. Please try again.");

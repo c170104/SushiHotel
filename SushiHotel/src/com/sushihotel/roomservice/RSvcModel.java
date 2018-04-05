@@ -27,6 +27,13 @@ public class RSvcModel {
             list = new ArrayList(); // declare array list without specific <obj> ref
         } 
 		
+		for (int i=0; i<size; i++) {
+			dbRoomSvc = (RoomSvc)list.get(i);
+			if (dbRoomSvc.getRoomSvcID()!=i+1) {
+				dbRoomSvc.setRoomSvcID(i+1);
+			}
+		}
+		
 		roomSvc.setRoomSvcID(size+1);
 		list.add(roomSvc);
 		return dataStore.write(list, IDataStore.DB_ENTITY_TYPE.ROOMSERVICE);
@@ -73,16 +80,47 @@ public class RSvcModel {
 		while(iter.hasNext()) {
 			dbRoomSvc = (RoomSvc)iter.next();
 			if(dbRoomSvc.getRoomSvcID() == roomSvcId) {
-				iter.remove();
+				dbRoomSvc.setRoomNumber(roomSvc.getRoomNumber());
+				dbRoomSvc.setAmountPayable(roomSvc.getAmountPayable());
+				dbRoomSvc.setRemarks(roomSvc.getRemarks());
+				dbRoomSvc.setDateTime(roomSvc.getDateTimeOrdered());
+				//iter.remove();
 				trigger_flag = true;
-				roomSvc.setRoomSvcID(roomSvcId);
+				//roomSvc.setRoomSvcID(roomSvcId);
 				break;
 			}
 		}
 		if(!trigger_flag)
 			throw new InvalidEntity(roomSvcId + " not found. ", RoomSvc.ROOMSVC_SEARCH_TYPE.ROOM_SVC_ID);
 		
-		list.add(roomSvc);
+		//list.add(roomSvc);
+		
+		return dataStore.write(list, IDataStore.DB_ENTITY_TYPE.ROOMSERVICE);
+	}
+	
+	protected static boolean updateRSvcStatus(int roomSvcID, Enum status) throws EmptyDB, InvalidEntity {
+		List list;
+		Iterator iter;
+		RoomSvc dbRoomSvc;
+		boolean trigger_flag = false;
+		
+		list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.ROOMSERVICE);
+		if (list == null) { 
+        	throw new EmptyDB(EMPTY_DB_MSG);
+        }
+		iter = list.iterator();
+		while(iter.hasNext()) {
+			dbRoomSvc = (RoomSvc)iter.next();
+			if(dbRoomSvc.getRoomSvcID() == roomSvcID) {
+				dbRoomSvc.setRoomSvcStatus(status);
+				//iter.remove();
+				trigger_flag = true;
+				//roomSvc.setRoomSvcID(roomSvcId);
+				break;
+			}
+		}
+		if(!trigger_flag)
+			throw new InvalidEntity(roomSvcID + " not found. ", RoomSvc.ROOMSVC_SEARCH_TYPE.ROOM_SVC_ID);
 		
 		return dataStore.write(list, IDataStore.DB_ENTITY_TYPE.ROOMSERVICE);
 	}

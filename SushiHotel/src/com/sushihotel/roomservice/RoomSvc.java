@@ -43,7 +43,7 @@ public class RoomSvc implements Serializable{
 	protected void setRoomNumber(int roomNumber) {
 		this.roomNumber = roomNumber;
 	}
-	protected void setAmountPayable(int amountPayable) {
+	protected void setAmountPayable(float amountPayable) {
 		this.amountPayable = amountPayable;
 	}
 	protected void setRemarks(String remarks) {

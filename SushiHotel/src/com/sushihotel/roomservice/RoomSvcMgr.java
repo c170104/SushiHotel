@@ -54,11 +54,11 @@ public class RoomSvcMgr {
 	public boolean editRoomSvc(int roomSvcID, RoomSvc roomSvc) {
 		try {
 			if (RSvcModel.update(roomSvcID, roomSvc)) {
-				logger.info("[UPDATE SUCCESS] Room ID: " + Integer.toString(roomSvc.getRoomSvcID()) 
+				logger.info("[UPDATE SUCCESS] Room ID: " + roomSvcID 
 				+ " | Room Number: " + roomSvc.getRoomNumber());
 				return true;
 			} else {
-				logger.info("[UPDATE FAIL] Room ID: "+ Integer.toString(roomSvc.getRoomSvcID()));
+				logger.info("[UPDATE FAIL] Room ID: "+ roomSvcID );
 			}
 		} catch (EmptyDB edb) {
 			logger.log(Level.WARNING, edb.getMessage());
@@ -95,19 +95,31 @@ public class RoomSvcMgr {
 		}
 		return roomSvc;
 	}
+	
+	public List<RoomSvc> getRoomSvcList() {
+		List<RoomSvc> roomSvcList = null;
+		try {
+			roomSvcList = RSvcModel.read();
+		} catch (EmptyDB edb) {
+			logger.warning(edb.getMessage());
+		}
+		return roomSvcList;
+	}
 
 	public boolean updateRoomSvcStatus(int roomSvcID, Enum status)	{
-		RoomSvc roomSvc = null;
-		try	{
-			roomSvc = RSvcModel.read(roomSvcID);
-			roomSvc.setRoomSvcStatus(status);
-		} catch(EmptyDB edb)	{
-			logger.warning(edb.getMessage());
-		} catch(InvalidEntity ie)	{
-			logger.warning(ie.getMessage());
+		try {
+			if(RSvcModel.updateRSvcStatus(roomSvcID, status)) {
+				return true;
+			} else {
+				System.out.println("Failed to update room status");
+				return false;
+			}
+		} catch (EmptyDB edb) {
+			logger.log(Level.WARNING, edb.getMessage());
+		} catch (InvalidEntity ie) {
+			logger.log(Level.WARNING, ie.getMessage());
 		}
-		if(roomSvc == null)
-			return false;
-		return editRoomSvc(roomSvcID, roomSvc);
+		return false;
 	}
+	
 }

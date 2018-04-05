@@ -22,6 +22,7 @@ import com.sushihotel.reservation.Reservation.RESERVE_STATUS;
 import com.sushihotel.room.Room;
 import com.sushihotel.room.RoomMgr;
 import com.sushihotel.roomservice.RoomSvc;
+import com.sushihotel.roomservice.RoomSvc.ROOM_SVC_STATUS;
 import com.sushihotel.roomservice.RoomSvcMgr;
 
 public class HotelMgr   {
@@ -994,6 +995,7 @@ public class HotelMgr   {
     	try {
     		mealList = menuMgr.getMealOffered();
     		iter = mealList.iterator();
+    		System.out.println("========= Meal List ==========");
     		while(iter.hasNext()) {
     			meal = (Meal)iter.next();
     			System.out.println("Meal ID: " + meal.getMealID()
@@ -1022,19 +1024,23 @@ public class HotelMgr   {
     	Meal meal;
     	List mealList;
     	Iterator iter;
+    	String mealPrice;
     	try {
     		mealList = menuMgr.getMealOffered();
     		iter = mealList.iterator();
     		
     		while(iter.hasNext()) {
     			meal = (Meal)iter.next();
+    			mealPrice = String.format("%.2f", meal.getMealPrice());
     			System.out.println("Meal ID: " + meal.getMealID()
 				+ "\n Meal Name: " + meal.getMealName()
 				+ "\n Description: " + meal.getDesc()
 				+ "\n Prepared Method: " + meal.getPreparedMethod()
-				+ "\n Meal Price: " + meal.getMealPrice());
-		System.out.println("=======================================");
+				+ "\n Meal Price: $"+ mealPrice);
+    			System.out.println("=======================================");
     		}
+    		System.out.println("Press Enter to continue");
+    		sc.nextLine();
     	} catch (NullPointerException npe)   {
             logger.severe(npe.getMessage());
             System.out.println("No meal data");
@@ -1045,7 +1051,221 @@ public class HotelMgr   {
      * END OF MENU CRUD
      * 
      */
+    
+    /*
+     * START OF ROOMSVC CRUD
+     * 
+     */
+    public void addRoomService() {
+    	RoomSvc roomSvc;
+    	Meal meal;
+    	int roomNumber;
+		float amountPayable = (float) 0.0;
+		String remarks;
+		Date dateTimeOrdered = new Date();
+		int mealIDSelect;
+		String formatPrice;
+		try {
+			System.out.println("===========Add Room Service==============");
+			System.out.println("Please enter Room Number: ");
+			roomNumber = sc.nextInt();
+			sc.nextLine();
+			
+			System.out.println("=================== MENU ===================");
+			printMealList();
+			do {
+				System.out.println("Please enter Meal ID of your choice, press 0 to exit");
+				mealIDSelect = sc.nextInt();
+				sc.nextLine();
+				if (mealIDSelect != 0) {
+					meal = menuMgr.getMealDetails(mealIDSelect);
+					formatPrice = String.format("%.2f", meal.getMealPrice());
+					System.out.println("Selected Meal ID: " + meal.getMealID() +" " + meal.getMealName() +" $" + formatPrice);
+					amountPayable = amountPayable + meal.getMealPrice();
+				}
+			} while (mealIDSelect != 0);
+			formatPrice = String.format("%.2f", amountPayable);
+			System.out.println("Amount payable $" + formatPrice);
+			
+			System.out.println("Please enter Room Service Remarks");
+			remarks = sc.nextLine();
+			
+			roomSvc = new RoomSvc(roomNumber, amountPayable, remarks, dateTimeOrdered);
+			
+			if (roomSvcMgr.addNewRoomSvc(roomSvc)) {
+				System.out.println("System has succesfully added Room Service ID " + roomSvc.getRoomSvcID());
+			} else {
+				System.out.println("System failed to add Room Service ID " + roomSvc.getRoomSvcID() +". Please try again");
+			}
+			
+		} catch (InputMismatchException ime) {
+            logger.severe(ime.getMessage());
+            System.out.println(ERROR_MSG);
+        }
+    }
+    
+    public void editRoomService() {
+    	RoomSvc roomSvc;
+    	int roomSvcID;
+    	int roomNumber;
+    	float amountPayable;
+    	String remarks;
+    	Date dateTimeOrdered;
+    	Enum roomSvcStatus;
+    	int choice;
+    	int statusSelect;
+    	boolean selected = true;
+    	try {
+    		System.out.println("Please enter Room Service ID to be updated: ");
+    		roomSvcID = sc.nextInt();
+    		sc.nextLine();
+    		roomSvc = roomSvcMgr.getRoomSvc(roomSvcID);
+    		roomSvcID = roomSvc.getRoomSvcID();
+    		roomNumber = roomSvc.getRoomNumber();
+    		amountPayable = roomSvc.getAmountPayable();
+    		remarks = roomSvc.getRemarks();
+    		dateTimeOrdered = roomSvc.getDateTimeOrdered();
+    		roomSvcStatus = roomSvc.getRoomSvcStatus();
+    		
+    		do {
+    			System.out.println(
+    					"Choose the option 1-5 to update: \n"
+    					+ "1) Room Number\n"
+    					+ "2) Amount Payable\n"
+    					+ "3) Remarks \n"
+    					+ "4) Room Service Status\n"
+    					+ "5) Update\n\n"
+    					+ "Choice: "
+    					);
+    			choice = sc.nextInt();
+    			sc.nextLine();
+    			switch (choice) {
+    			case 1:
+    				System.out.println("Room Number");
+    				roomNumber = sc.nextInt();
+    				sc.nextLine();
+    				break;
+    			case 2:
+    				System.out.println("Amount Payable");
+    				amountPayable = sc.nextFloat();
+    				sc.nextLine();
+    				break;
+    			case 3:
+    				System.out.println("Remarks"); 
+    				remarks = sc.nextLine();
+    				break;
+    			case 4:
+    				System.out.println("Select Room Service Status\n"
+    						+ "1) CONFIRMED \n"
+    						+ "2) PREPARING \n"
+    						+ "3) DELIVERED \n"
+    						+ "Select: ");
+    				do {
+        				statusSelect = sc.nextInt();
+        				sc.nextLine();
+        				if (statusSelect == 1) {
+        					roomSvcStatus = ROOM_SVC_STATUS.CONFIRMED;
+        					selected = false;
+        				} else if (statusSelect == 2) {
+        					roomSvcStatus = ROOM_SVC_STATUS.PREPARING;
+        					selected = false;
+        				} else if (statusSelect == 3) {
+        					roomSvcStatus = ROOM_SVC_STATUS.DELIVERED;
+        					selected = false;
+        				} else {
+        					System.out.println("Invalid selection, please try again\n"
+        							+ "Select: ");
+        					selected = true;
+        				}
+    				} while (selected);
+    				break;
+    			default:
+    				break;
+    			}
+    			} while (choice != 5);
+	    			roomSvc = new RoomSvc(roomNumber, amountPayable, remarks, dateTimeOrdered);
+	    			if(roomSvcMgr.editRoomSvc(roomSvcID, roomSvc)) {
+	    				roomSvcMgr.updateRoomSvcStatus(roomSvcID, roomSvcStatus);
+	    				System.out.println("Succesfully edited Room Service ID " + roomSvc.getRoomSvcID() + " details.");
+	    			} else {
+	    				System.out.println("System failed to edit Room Service ID " + roomSvc.getRoomSvcID() + ". Please try again.");
+	    			}
+    		} catch(InputMismatchException ime) {
+                logger.severe(ime.getMessage());
+                System.out.println(ERROR_MSG);
+            } catch(NullPointerException npe)   {
+                logger.severe(npe.getMessage());
+                System.out.println("No such room service");
+            }
+    }
 
+    public void removeRoomService() {
+    	int roomSvcID;
+    	RoomSvc roomSvc;
+    	List roomSvcList;
+    	Iterator iter;
+    	try {
+    		roomSvcList = roomSvcMgr.getRoomSvcList();
+    		iter = roomSvcList.iterator();
+    		System.out.println("========== List of Room Service =========");
+    		while(iter.hasNext()) {
+    			roomSvc = (RoomSvc)iter.next();
+    			System.out.println("Room Service ID: " + roomSvc.getRoomSvcID()
+    						+ " Room Number: " + roomSvc.getRoomNumber());
+    		}
+    		System.out.println("Please enter Room Service ID to be deleted");
+    		roomSvcID = sc.nextInt();
+    		sc.nextLine();
+    		if (roomSvcMgr.deleteRoomSvc(roomSvcID)) {
+    			System.out.println("Deletion of Room Service ID: " + roomSvcID + " was successful");
+    		} else {
+    			System.out.println("Deletion of Room Service ID: " + roomSvcID + " was unsuccessful. Please try again");
+    		}
+    	} catch (NumberFormatException nfe) {
+    		System.out.println("Wrong number input format");
+    	} catch (InputMismatchException ime) {
+            logger.severe(ime.getMessage());
+            System.out.println(ERROR_MSG);
+    	} catch (NullPointerException npe)   {
+    		logger.severe(npe.getMessage());
+    		System.out.println("No room service data");
+    	}
+    }
+    
+    public void printRoomServiceList() {
+    	RoomSvc roomSvc;
+    	List roomSvcList;
+    	Iterator iter;
+    	String formatPrice;
+    	try {
+    		roomSvcList = roomSvcMgr.getRoomSvcList();
+    		iter = roomSvcList.iterator();
+    		
+    		while(iter.hasNext()) {
+    			roomSvc = (RoomSvc)iter.next();
+    			formatPrice = String.format("%.2f", roomSvc.getAmountPayable());
+    			System.out.println("Room Service ID: " + roomSvc.getRoomSvcID()
+    							+ "\n Room Number:" + roomSvc.getRoomNumber()
+    							+ "\n Amount Payable: $" + formatPrice
+    							+ "\n Remarks:" + roomSvc.getRemarks()
+    							+ "\n Date Time Ordered:" + roomSvc.getDateTimeOrdered()
+    							+ "\n Room Service Status:" + roomSvc.getRoomSvcStatus()
+    							);
+    			System.out.println("=======================================");
+    		}
+			System.out.println("Press Enter to continue");
+			sc.nextLine();
+    	} catch (NullPointerException npe)   {
+            logger.severe(npe.getMessage());
+            System.out.println("No room service data");
+        }
+    }
+
+    /*
+     * END OF ROOMSVC CRUD
+     * 
+     */
+    
     /**
      * START OF OPERATIONAL/BUSINESS LOGIC
      * 
