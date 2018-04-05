@@ -2,8 +2,10 @@ package com.sushihotel.hotel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.InputMismatchException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Logger;
@@ -14,7 +16,9 @@ import com.sushihotel.invoice.Invoice;
 import com.sushihotel.invoice.InvoiceMgr;
 import com.sushihotel.menu.Meal;
 import com.sushihotel.menu.MenuMgr;
+import com.sushihotel.reservation.Reservation;
 import com.sushihotel.reservation.ReservationMgr;
+import com.sushihotel.reservation.Reservation.RESERVE_STATUS;
 import com.sushihotel.room.Room;
 import com.sushihotel.room.RoomMgr;
 import com.sushihotel.roomservice.RoomSvc;
@@ -298,27 +302,308 @@ public class HotelMgr   {
      * START OF RESERVERATION CRUD
      * 
      * METHODS:
-     * newReservation()
+     * newReservation() OK
      * editReservation()
      * removeReservation()
      * printReservation()
      */
 
     public void newReservation()    {
-
+		String guestName;
+		int roomNumber;
+		Date checkInDate = null;
+		Date checkOutDate = null;
+		int numAdults;
+		int numChild;
+		int numberOfWeekdays;
+		int numberOfWeekends;
+		
+		boolean dateCheck = false;
+		try {
+				System.out.println("======Input Reservation Details=====");
+				System.out.println("Please enter Guest Name");
+				guestName = sc.nextLine();
+				System.out.println("Please enter Room Number");
+				roomNumber = Integer.parseInt(sc.nextLine());
+				do {
+					
+					do {
+						System.out.println("Please enter Check In Date dd/MM/yyyy");
+						try {
+							checkInDate = formatter.parse(sc.nextLine() + " 14:00");
+							dateCheck = true;
+						} catch (ParseException pe) {
+							System.out.println("Incorrect date time format");
+							dateCheck = false;
+						}
+					} while (!dateCheck);
+					
+					
+					do {
+						System.out.println("Please enter Check Out Date dd/MM/yyyy");
+						try {
+							checkOutDate = formatter.parse(sc.nextLine() + " 12:00");
+							dateCheck = true;
+						} catch (ParseException pe) {
+							System.out.println("Incorrect date time format");
+							dateCheck = false;
+						}
+					} while (!dateCheck);
+					
+					if (checkInDate.compareTo(checkOutDate) > 0 || checkInDate.compareTo(checkOutDate) == 0 ) {
+						System.out.println("Check in date can't be later than check out date, try again!");
+						dateCheck = false;
+					}
+				} while (!dateCheck);
+				
+				System.out.println("Please enter Number of Adults");
+				numAdults = sc.nextInt();
+				System.out.println("Please enter Number of Children");
+				numChild = sc.nextInt();
+				System.out.println("Please enter Number of Weekdays");
+				numberOfWeekdays = sc.nextInt();
+				System.out.println("Please enter Number of Weekends");
+				numberOfWeekends = sc.nextInt();
+				Reservation reservation = new Reservation(guestName, roomNumber,checkInDate, checkOutDate, 
+						numAdults, numChild, numberOfWeekdays, numberOfWeekends);
+				if(reservationMgr.beginReservation(reservation)) {
+					System.out.println("Reservation has been successfully made");
+				}
+		} catch (InputMismatchException ime) {
+           // logger.severe(ime.getMessage());
+            System.out.println("Invalid input");
+		} catch (NumberFormatException nfe) {
+			System.out.println("Wrong number input format");
+		}
     }
 
     public void editReservation()   {
+    	Reservation reservation;
+    	try {
+    		System.out.println("Please enter reservation ID to be edited ");
+        	int reservationID = Integer.parseInt(sc.nextLine());
+        	reservation = reservationMgr.searchReservationID(reservationID);
+        	String guestName = reservation.getGuestName();
+        	int roomNumber = reservation.getRoomNumber();
+        	Date checkInDate = reservation.getCheckInDate();
+        	Date checkOutDate = reservation.getCheckOutDate();
+        	int numAdults = reservation.getNumAdults();
+        	int numChild = reservation.getNumChild();
+        	Enum reserveStatus = reservation.getReserveStatus();
+        	int numberOfWeekdays = reservation.getNoOfWeekdays();
+        	int numberOfWeekends = reservation.getNoOfWeekends();
+        	int choice;
+        	int statusSelection;
+        	boolean dateCheck;
 
+        	do {
+        		System.out.println("Choose the option (1-10) to update: \n"
+            			+ "1) Name \n"
+            			+ "2) Room number \n"
+            			+ "3) Check in date \n"
+            			+ "4) Check out date \n"
+            			+ "5) Number of adults \n"
+            			+ "6) Number of children \n"
+            			+ "7) Reserve status \n"
+            			+ "8) Number of weekdays \n"
+            			+ "9) Number of weekends \n"
+            			+ "10) Update\n\n");
+            	choice = Integer.parseInt(sc.nextLine());
+            	switch(choice) {
+        	    	case 1:	System.out.println("Input new name"); 
+        	    			reservationMgr.searchReservationID(reservationID);
+        	    			guestName = sc.nextLine();
+        	    			break;
+        	    	case 2: 		
+        		    		List reservationList;
+        		    		Iterator iter;
+        		    		Reservation reservationTraverse;
+        		    		boolean changeable = true;
+        		    		
+        		    		System.out.println("Input new room number"); 
+        		    		int checkRoomNumber = Integer.parseInt(sc.nextLine());
+        		    		sc.nextLine();
+        		    		reservationList = reservationMgr.getRoomReservations(checkRoomNumber);
+        		    		reservation = reservationMgr.searchReservationID(reservationID);
+        		    		iter = reservationList.iterator();
+        		    		while(iter.hasNext()) {
+        						reservationTraverse = (Reservation)iter.next();
+        						Date checkIn = reservationTraverse.getCheckInDate();
+        						Date checkOut = reservationTraverse.getCheckOutDate();
+        						if (reservation.getCheckInDate().before(checkIn) && reservation.getCheckOutDate().after(checkIn) && 
+        								reservation.getCheckOutDate().before(checkOut)) {		// [ check in ] check out
+        							changeable = false;
+        							break;
+        						};						
+        						if (reservation.getCheckInDate().before(checkIn)  && 
+        								reservation.getCheckOutDate().after(checkOut)) { 		// [ check in  check out ]
+        							changeable = false;
+        							break;
+        						};						
+        						if (reservation.getCheckInDate().before(checkOut) 
+        								&& reservation.getCheckOutDate().after(checkOut) ) {	 //  check in [ check out ]
+        							changeable = false;
+        							break;
+        						};			
+        						if (reservation.getCheckInDate().equals(checkIn)  ||
+        								reservation.getCheckOutDate().equals(checkOut)) { 		
+        							changeable = false;
+        							break;
+        						};
+        		    		}
+        				
+        				if (!changeable) {
+        					System.out.println("Room is reserved on this timing, unable to change room number");
+        					break;
+        				} else {
+        					System.out.println("Room is available for change");
+        					roomNumber = checkRoomNumber;
+        					break;
+        				}
+        				
+        	    	case 3:
+        	    		dateCheck = false;
+        	    		do {
+        					System.out.println("Input new check in date dd/MM/yyyy");
+        					try {
+        						checkOutDate = formatter.parse(sc.nextLine() + " 12:00");
+        						dateCheck = true;
+        					} catch (ParseException pe) {
+        						System.out.println("Incorrect date time format");
+        						dateCheck = false;
+        					}
+        				} while (!dateCheck);
+        	    		break;
+        	    		
+        	    	case 4:	
+        	    		dateCheck = false;
+        	    		do {
+        					System.out.println("Input new check out date dd/MM/yyyy");
+        					try {
+        						checkOutDate = formatter.parse(sc.nextLine() + " 12:00");
+        						dateCheck = true;
+        					} catch (ParseException pe) {
+        						System.out.println("Incorrect date time format");
+        						dateCheck = false;
+        					}
+        				} while (!dateCheck);
+        	    		break;
+        	    		
+        	    	case 5:
+        	    		System.out.println("Input new number of adult");
+        	    		numAdults = Integer.parseInt(sc.nextLine());
+        	    		break;
+        	    	case 6:
+        	    		System.out.println("Input new number of children");
+        	    		numChild = Integer.parseInt(sc.nextLine());
+        	    		break;
+        	    	case 7:
+        	    		System.out.println("Select reserve status \n"+ 
+        	    				"1) CONFIRMED\n" + 
+        	    				"2) WAITLIST\n" + 
+        	    				"3) CHECKED_IN\n" + 
+        	    				"4) EXPIRED");
+        	    		statusSelection = Integer.parseInt(sc.nextLine());
+        	    		if (statusSelection == 1) {
+        	    			reserveStatus = RESERVE_STATUS.CONFIRMED;
+        	    			break;
+        	    		} 
+        	    		if (statusSelection == 2) {
+        	    			reserveStatus = RESERVE_STATUS.WAITLIST;
+        	    			break;
+        	    		} 
+        	    		if (statusSelection == 3) {
+        	    			reserveStatus = RESERVE_STATUS.CHECKED_IN;
+        	    			break;
+        	    		} 
+        	    		if (statusSelection == 4) {
+        	    			reserveStatus = RESERVE_STATUS.EXPIRED;
+        	    			break;
+        	    		} 
+        	    		
+        	    	case 8:
+        	    		System.out.println("Input number of weekdays ");
+        	    		numberOfWeekdays = Integer.parseInt(sc.nextLine());
+        	    		sc.nextLine();
+        	    		break;
+        	    		
+        	    	case 9:
+        	    		System.out.println("Input number of weekends ");
+        	    		numberOfWeekends = Integer.parseInt(sc.nextLine());
+        	    		sc.nextLine();
+        	    		break;
+        	    		
+        	    	default:
+        	    		break;
+            	}
+        	} while (choice != 10);
+        	
+        	reservation = new Reservation (guestName,roomNumber,checkInDate,checkOutDate,numAdults,
+        			numChild,numberOfWeekdays,numberOfWeekends);
+        	if(reservationMgr.editReservation(reservationID, reservation)) {
+        		System.out.println("Succesfully updated reservationID " + reservationID + " information.");
+        	} else {
+        		System.out.println("System failed to update reservation " + reservationID + ". Please try again.");
+        	}
+        	
+    	} catch (NumberFormatException nfe) {
+    		System.out.println("Wrong number input format");
+    	} catch (InputMismatchException ime) {
+            logger.severe(ime.getMessage());
+            System.out.println(ERROR_MSG);
+        } catch (NullPointerException npe)   {
+            logger.severe(npe.getMessage());
+            System.out.println("No such reservation");
+        }
     }
 
     public void removeReservation() {
-
+    	try {
+        	System.out.println("Please enter reservation ID to be deleted");
+        	int reservationID = Integer.parseInt(sc.nextLine());
+        	if (reservationMgr.deleteReservation(reservationID)) {
+        		System.out.println("Deletion of resevation " + reservationID +" was successful");
+        	} else {
+        		System.out.println("Deletion of resevation " + reservationID +" was unsuccessful, please try again");
+        	}
+    	} catch (NumberFormatException nfe) {
+    		System.out.println("Wrong number input format");
+    	} catch (InputMismatchException ime) {
+            logger.severe(ime.getMessage());
+            System.out.println(ERROR_MSG);
+    	}
     }
+
 
     public void printReservation()  {
-
-    }
+    	Reservation reservation;
+    	List reservationList;
+    	Iterator iter;
+    	try {
+    		
+    		reservationList = reservationMgr.getReservationList();
+        	iter = reservationList.iterator();
+        	
+        	while(iter.hasNext()) {
+        		reservation = (Reservation)iter.next();
+        		System.out.println("Reservation ID: " + reservation.getReservationID() 
+        				+ "\n Guest Name: " + reservation.getGuestName()
+        				+ "\n Room Number: " + reservation.getRoomNumber()
+        				+ "\n Check In Date: " + reservation.getCheckInDate()
+        				+ "\n Check Out Date: " + reservation.getCheckOutDate()
+        				+ "\n Number of Adults: " + reservation.getNumAdults()
+        				+ "\n Number of Childrens: " + reservation.getNumChild()
+        				+ "\n Reserve Status: " + reservation.getReserveStatus()
+        				+ "\n Number of Weekdays" + reservation.getNoOfWeekdays()
+        				+ "\n Number of Weekends" + reservation.getNoOfWeekends());
+        		System.out.println("=======================================");
+        	}
+        	
+    	} catch (NullPointerException npe)   {
+            logger.severe(npe.getMessage());
+            System.out.println("No reservation data");
+        }
+ }
 
     /**
      * START OF ROOM CRUD

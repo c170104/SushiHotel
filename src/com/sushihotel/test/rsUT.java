@@ -18,7 +18,7 @@ public class rsUT {
 		mgr.addNewRoomSvc(r1);
 		mgr.addNewRoomSvc(r2);
 		mgr.addNewRoomSvc(r3);
-		mgr.editRoomSvc(12, r1);
+		mgr.editRoomSvc(8, r1);
 	}
 	
 }

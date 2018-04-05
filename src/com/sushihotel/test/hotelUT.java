@@ -15,17 +15,17 @@ public class hotelUT    {
     public static void main(String[] args)  {
         int choice;
         String staffName;
-        try {
+//        try {
             /**
              * LOGGING HANDLER
              */
-            Handler files = new FileHandler("log/system.log", true);
-            Handler[] handlers = Logger.getLogger("").getHandlers();
-
-            files.setFormatter(new SimpleFormatter());
-            for(Handler handler : handlers)
-                Logger.getLogger("").removeHandler(handler);
-            Logger.getLogger("").addHandler(files);
+//            Handler files = new FileHandler("log/system.log", true);
+//            Handler[] handlers = Logger.getLogger("").getHandlers();
+//
+//            files.setFormatter(new SimpleFormatter());
+//            for(Handler handler : handlers)
+//                Logger.getLogger("").removeHandler(handler);
+//            Logger.getLogger("").addHandler(files);
             /**
              * LOGGING HANDLER END
              */
@@ -123,12 +123,12 @@ public class hotelUT    {
                         break;
                 }
             } while (choice != 18);
-        } catch(InputMismatchException ime) {
-            logger.severe(ime.getMessage());
-            System.out.println("Invalid Choice. Please try again.");
-        } catch(IOException ioe)    {
-            logger.severe(ioe.getMessage());
-            System.out.println("System failure. Please contact the system developer.");
-        }
+//        } catch(InputMismatchException ime) {
+//            logger.severe(ime.getMessage());
+//            System.out.println("Invalid Choice. Please try again.");
+//        } catch(IOException ioe)    {
+//            logger.severe(ioe.getMessage());
+//            System.out.println("System failure. Please contact the system developer.");
+//        }
     }
 }

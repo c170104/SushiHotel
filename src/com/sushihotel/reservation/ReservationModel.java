@@ -12,6 +12,7 @@ import com.sushihotel.database.IDataStore;
 import com.sushihotel.exception.DuplicateData;
 import com.sushihotel.exception.EmptyDB;
 import com.sushihotel.exception.InvalidEntity;
+import com.sushihotel.menu.Meal;
 
 
 public class ReservationModel {
@@ -72,6 +73,44 @@ public class ReservationModel {
 		throw new InvalidEntity(""+ reservation.getReservationID(), Reservation.RESERVATION_SEARCH_TYPE.RESERVATION_ID);
 	}
 	
+	protected static List<Reservation> readReservationList(int roomNumber) throws EmptyDB{ 
+    	List list = null;
+        List<Reservation> newList = new ArrayList();
+        Reservation reservation;
+
+        list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.RESERVATION);
+        
+        if(list == null)
+            throw new EmptyDB( EmptyDBMsg);
+
+        for(int i=0; i<list.size(); i++)    {
+            reservation = (Reservation)list.get(i);
+            if (reservation.getRoomNumber() == roomNumber && !reservation.getReserveStatus().equals("EXPIRED")) {
+            	newList.add(reservation);
+            }
+        }
+        return newList;
+    	
+    }
+	
+	protected static List<Reservation> readReservationList() throws EmptyDB{ 
+    	List list = null;
+        List<Reservation> newList = new ArrayList();
+        Reservation reservation;
+
+        list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.RESERVATION);
+        
+        if(list == null)
+            throw new EmptyDB( EmptyDBMsg);
+
+        for(int i=0; i<list.size(); i++)    {
+            reservation = (Reservation)list.get(i);
+            newList.add(reservation);
+        }
+        return newList;
+    	
+    }
+	
 	protected static boolean update(int reservationID, Reservation reservation) throws EmptyDB, InvalidEntity{
 		List list;
 		Iterator iter;
@@ -87,6 +126,7 @@ public class ReservationModel {
 			if(dbReservation.getReservationID() == reservationID) {
 				iter.remove();
 				trigger_flag = true;
+				reservation.setReservation(reservationID);
 				break;
 			}
 		}

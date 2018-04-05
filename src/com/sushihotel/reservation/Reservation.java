@@ -1,6 +1,7 @@
 package com.sushihotel.reservation;
 
 import java.io.Serializable;
+import java.util.Date;
 
 //import com.sushihotel.guest.Guest;
 //import com.sushihotel.room.Room;
@@ -9,8 +10,8 @@ public class Reservation implements Serializable{
 	private int reservationID;
 	private String guestName;
 	private int roomNumber;
-	private String checkInDate;
-	private String checkOutDate;
+	private Date checkInDate;
+	private Date checkOutDate;
 	private int numAdults;
 	private int numChild;
 	private Enum reserveStatus;
@@ -33,8 +34,8 @@ public class Reservation implements Serializable{
 	public Reservation (
 			String guestName,
 			int roomNumber,
-			String checkInDate,
-			String checkOutDate,
+			Date checkInDate,
+			Date checkOutDate,
 			int numAdults,
 			int numChild,
 			int numberOfWeekdays,
@@ -61,10 +62,10 @@ public class Reservation implements Serializable{
 	protected void setRoomDetails(int roomNumber) {
 		this.roomNumber = roomNumber;
 	}
-	protected void setCheckInDate(String checkInDate) {
+	protected void setCheckInDate(Date checkInDate) {
 		this.checkInDate = checkInDate;
 	}
-	protected void setCheckOutDate(String checkOutDate) {
+	protected void setCheckOutDate(Date checkOutDate) {
 		this.checkOutDate = checkOutDate;
 	}
 	protected void setNumAdults(int numAdults) {
@@ -92,10 +93,10 @@ public class Reservation implements Serializable{
 	public int getRoomNumber() {
 		return this.roomNumber;
 	}
-	public String getCheckInDate() {
+	public Date getCheckInDate() {
 		return this.checkInDate;
 	}
-	public String getCheckOutDate() {
+	public Date getCheckOutDate() {
 		return this.checkOutDate;
 	}
 	public int getNumAdults() {
