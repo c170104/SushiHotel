@@ -1,8 +1,5 @@
 package com.sushihotel.reservation;
 
-import com.sushihotel.database.DataStoreFactory;
-import com.sushihotel.database.IDataStore;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -18,7 +15,7 @@ public class ReservationModel {
 	private static IDataStore dataStore = DataStoreFactory.getDataStore();
 	
 
-	private static final String EmptyDBMsg = "Reservation DB not found.";
+	private static final String EMPTY_DB_MSG = "Reservation DB not found.";
 
 	protected static boolean create(Reservation reservation) throws DuplicateData{
 		List list;
@@ -27,49 +24,38 @@ public class ReservationModel {
 		
 		list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.RESERVATION);
 		size = list == null ? 0 : list.size();
-		
+
 		if (list == null ) {
 			list = new ArrayList();
 		}
-		for (int i=0; i<size; i++) {
-			dbReservation = (Reservation)list.get(i);
-			if(dbReservation.getReservationID() == reservation.getReservationID()) {
-				throw new DuplicateData(""+reservation.getReservationID(), Reservation.RESERVATION_SEARCH_TYPE.RESERVATION_ID);
-			}
-		}
-		reservation.setReservation(size+1);
+
+		reservation.setReservationID(size+1);
 		list.add(reservation);
 		return dataStore.write(list, IDataStore.DB_ENTITY_TYPE.RESERVATION);
 	}
 	
-	protected static Reservation read(String guestName) throws EmptyDB, InvalidEntity {
-		List list;
-		Reservation reservation = null;
+	protected static List<Reservation> read() throws EmptyDB {
+		List<Reservation> list;
 		list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.RESERVATION);
 		if (list == null)
-			new EmptyDB(EmptyDBMsg);
-		for (int i = 0; i<list.size(); i++) {
-			reservation = (Reservation)list.get(i);
-			if (reservation.getGuestName().toLowerCase().equals(guestName.toLowerCase())) {
-				return reservation;
-			}
-		}
-		throw new InvalidEntity(""+ reservation.getGuestName(),  Reservation.RESERVATION_SEARCH_TYPE.GUEST_NAME);
+			new EmptyDB(EMPTY_DB_MSG);
+		
+		return list;
 	}
 	
-	protected static Reservation readRID(int reservationID) throws EmptyDB, InvalidEntity {
+	protected static Reservation read(int reservationID) throws EmptyDB, InvalidEntity {
 		List list;
 		Reservation reservation = null;
 		list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.RESERVATION);
 		if (list == null)
-			new EmptyDB(EmptyDBMsg);
+			new EmptyDB(EMPTY_DB_MSG);
 		for (int i = 0; i<list.size(); i++) {
 			reservation = (Reservation)list.get(i);
 			if (reservation.getReservationID() == reservationID) {
 				return reservation;
 			}
 		}
-		throw new InvalidEntity(""+ reservation.getReservationID(), Reservation.RESERVATION_SEARCH_TYPE.RESERVATION_ID);
+		throw new InvalidEntity(Integer.toString(reservation.getReservationID()) + " not found.", Reservation.RESERVATION_SEARCH_TYPE.RESERVATION_ID);
 	}
 	
 	protected static boolean update(int reservationID, Reservation reservation) throws EmptyDB, InvalidEntity{
@@ -80,7 +66,7 @@ public class ReservationModel {
 		
 		list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.RESERVATION);
 		if (list == null)
-			new EmptyDB(EmptyDBMsg);
+			new EmptyDB(EMPTY_DB_MSG);
 		iter = list.iterator();
 		while(iter.hasNext()) {
 			dbReservation = (Reservation)iter.next();
@@ -92,6 +78,8 @@ public class ReservationModel {
 		}
 		if (!trigger_flag)
 			throw new InvalidEntity(reservationID + " not found. ", Reservation.RESERVATION_SEARCH_TYPE.RESERVATION_ID);
+		
+		reservation.setReservationID(reservationID);
 		list.add(reservation);
 		return dataStore.write(list, IDataStore.DB_ENTITY_TYPE.RESERVATION);
 	}
@@ -104,7 +92,7 @@ public class ReservationModel {
 		
 		list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.RESERVATION);
 		if (list == null)
-			new EmptyDB(EmptyDBMsg);
+			new EmptyDB(EMPTY_DB_MSG);
 		iter = list.iterator();
 		while(iter.hasNext()) {
 			dbReservation = (Reservation)iter.next();
