@@ -117,7 +117,12 @@ public class MenuModel {
             dbMeal = (Meal)iter.next(); // assign next item
             if(dbMeal.getMealName().toLowerCase().equals((mealName.toLowerCase()))) { // remove if mealname is found
                 meal.setMealID(dbMeal.getMealID());
-            	iter.remove(); // removes 
+                dbMeal.setMealName(meal.getMealName());
+                dbMeal.setDesc(meal.getDesc());
+                dbMeal.setMealPrice(meal.getMealPrice());
+                dbMeal.setPreparedMethod(meal.getPreparedMethod());
+                
+            	//iter.remove(); // removes 
                 trigger_flag = true;
                 break;
             }
@@ -125,7 +130,7 @@ public class MenuModel {
         if(!trigger_flag) 
             throw new InvalidEntity(mealName + " not found. ", Meal.MENU_SEARCH_TYPE.MEAL_NAME);
         
-        list.add(meal); 
+        //list.add(meal); 
         
         return dataStore.write(list, IDataStore.DB_ENTITY_TYPE.MENU);
 	}
