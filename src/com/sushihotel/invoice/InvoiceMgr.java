@@ -1,29 +1,75 @@
 package com.sushihotel.invoice;
 
-import java.awt.List;
-import java.util.logging.*;
-import java.util.Date;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+import java.util.Iterator;
 
 import com.sushihotel.exception.EmptyDB;
 import com.sushihotel.exception.InvalidEntity;
-import com.sushihotel.invoice.Invoice;
-import com.sushihotel.invoice.InvoiceModel;
-
-import sun.invoke.empty.Empty;
+import com.sushihotel.exception.PaymentNotMade;
 
 public class InvoiceMgr {
     private static final Logger logger = Logger.getLogger(InvoiceMgr.class.getName());
 
     public boolean createBlankInvoice(Invoice invoice)  {
-        if(InvoiceModel.create(invoice))    {
-            logger.info("[CREATE SUCCESS] Invoice ID: " + invoice.getInvoiceID());
-            return true;
+        try {
+            if(InvoiceModel.create(invoice))    {
+                logger.info("[CREATE SUCCESS] Invoice ID: " + invoice.getInvoiceID());
+                return true;
+            }
+            else    {
+                logger.info("[CREATE FAIL] Invoice ID: " + invoice.getInvoiceID());
+            }
+        } catch(PaymentNotMade pnm) {
+            logger.warning(pnm.getMessage());
         }
-        else    {
-            logger.info("[CREATE FAIL] Invoice ID: " + invoice.getInvoiceID());
-            return false;
+        return false;
+    }
+
+    public List<Invoice> getInvoicesOfGuest(int guestID)   {
+        List<Invoice> list = new ArrayList();
+        Iterator iter;
+
+        try {
+            list = InvoiceModel.read();
+            iter = list.iterator();
+            while(iter.hasNext())   {
+                if(((Invoice)iter.next()).getGuestID() != guestID)
+                    iter.remove();
+            }
+        } catch(EmptyDB edb)    {
+            logger.warning(edb.getMessage());
         }
+        return list;
+    }
+
+    public Invoice getInvoice(int invoiceID)    {
+        Invoice invoice = null;
+        try {
+            invoice = InvoiceModel.read(invoiceID);
+        } catch (EmptyDB edb) {
+            logger.warning(edb.getMessage());
+        } catch (InvalidEntity ie) {
+            logger.warning(ie.getMessage());
+        }
+        return invoice;
+    }
+
+    public Invoice getUnpaidInvoice(int roomNumber) {
+        List<Invoice> invoices;
+        Invoice invoice = null;
+        try {
+            invoices = InvoiceModel.read();
+            for(int i=0; i<invoices.size(); i++) {
+                invoice = invoices.get(i);
+                if(invoice.getRoomNumber() == roomNumber)
+                    return invoice;
+            }
+        } catch(EmptyDB edb)    {
+            logger.warning(edb.getMessage());
+        }
+        return null;
     }
 
     public boolean editInvoice(int invoiceID, Invoice invoice)  {
@@ -58,14 +104,24 @@ public class InvoiceMgr {
         return false;
     }
 
-    public boolean addRoomSvc(int roomNumber, float roomSvc)  {
+    public boolean addRoomSvc(int roomNumber, int roomSvcID)  {
         Invoice invoice;
+        List<Integer> roomSvcList;
+        boolean roomSvcIDExists = false;
 
         try {
-            invoice = InvoiceModel.readByOccupiedRoomNumber(roomNumber);
+            invoice = InvoiceModel.read(roomNumber);
 
-            roomSvc += invoice.getRoomSvc();
-            invoice.setRoomSvc(roomSvc);
+            roomSvcList = invoice.getRoomSvc();
+            for(int i=0; i<roomSvcList.size(); i++) {
+                roomSvcIDExists = (roomSvcList.get(i) == roomSvcID);       
+            }
+
+            // If exists, dont have to add duplicate
+            if(!roomSvcIDExists)
+                roomSvcList.add(roomSvcID);
+
+            invoice.setRoomSvc(roomSvcList);
 
             if(InvoiceModel.update(invoice.getInvoiceID(), invoice))    {
                 logger.info("[ADD ROOM SVC SUCCESS] Invoice ID: " + invoice.getInvoiceID());
@@ -81,29 +137,27 @@ public class InvoiceMgr {
         return false;
     }
 
-    public boolean addCharges(int roomNumber, float discount, float tax, float lateFees, String checkOutDate)    {
+    public boolean addCharges(int roomNumber, float discount, float tax, float lateFees, float roomSvcTotalPayable, float weekDayRate, float weekEndRate)    {
         Invoice invoice;
+        float roomCharges = 0.0f;
         float totalBill = 0.0f;
-        int totalDays;
-        String checkInDate;
-        Date cIn;
-        Date cOut;
-        SimpleDateFormat myFormat = new SimpleDateFormat("dd/MM/yyyy");
+        int totalWeekDays;
+        int totalWeekEnds;
 
         try {
-            invoice = InvoiceModel.readByOccupiedRoomNumber(roomNumber);
+            invoice = InvoiceModel.read(roomNumber);
 
-            checkInDate = invoice.getCheckInDate();
-            cIn = new Date(myFormat.parse(checkOutDate)); 
-            cOut = new Date(myFormat.parse(checkInDate));
-            
-            totalDays = (dateDiff / (1000*60*60*24));
-            // totalBill = ((totalDays * ))
+            totalWeekDays = invoice.getTotalWeekdays();
+            totalWeekEnds = invoice.getTotalWeekends();
+
+            roomCharges = totalWeekDays * weekDayRate + totalWeekEnds * weekEndRate;
+            totalBill = ((roomCharges + roomSvcTotalPayable + lateFees) * (1-discount)) * (1+tax);
+
+            invoice.setRoomCharges(roomCharges);
             invoice.setDiscount(discount);
             invoice.setTax(tax);
-            invoice.setLateFee(lateFee);
+            invoice.setLateFees(lateFees);
             invoice.setTotalBill(totalBill);
-
 
             if(InvoiceModel.update(invoice.getInvoiceID(), invoice))    {
                 logger.info("[ADD CHARGES SUCCESS] Invoice ID: " + invoice.getInvoiceID());
@@ -119,23 +173,11 @@ public class InvoiceMgr {
         return false;
     }
 
-    public boolean checkOutInvoice(int guestID, int roomNumber, String checkOutDate, boolean cashPayment)    {
-        List<Invoice> invoices;
+    public boolean makePayment(int roomNumber, boolean cashPayment)    {
         Invoice invoice;
         try {
-            invoices = InvoiceModel.readByGuestID(guestID);
-            
-            for(int i=0; invoices.size(); i++)  {
-                invoice = invoices.get(i);
-                if(invoice.getRoomNumber() == roomNumber && invoice.getInvoiceStatus() == Invoice.INVOICE_STATUS.PAYMENT_NOT_MADE)
-                    break;
-                invoice = null;
-            }
+            invoice = InvoiceModel.read(roomNumber);
 
-            if(invoice == null)
-                return false;
-
-            invoice.setCheckOutDate(checkOutDate);
             invoice.setCashPayment(cashPayment);
             invoice.setInvoiceStatus(Invoice.INVOICE_STATUS.PAYMENT_MADE);
 

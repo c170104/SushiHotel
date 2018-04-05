@@ -9,14 +9,12 @@ import com.sushihotel.database.IDataStore;
 import com.sushihotel.exception.DuplicateData;
 import com.sushihotel.exception.EmptyDB;
 import com.sushihotel.exception.InvalidEntity;
-import com.sushihotel.menu.Meal;
 
 
 public class MenuModel {
 	private static IDataStore dataStore = DataStoreFactory.getDataStore();
 	
-
-	private static final String EmptyDBMsg = "Menu DB not found.";
+	private static final String EMPTY_DB_MSG = "Menu DB not found.";
 	
 	protected static boolean create(Meal meal) throws DuplicateData{
 		List list;
@@ -33,10 +31,7 @@ public class MenuModel {
 		
 // 		Checks Meal against dbMeal(reflects list) for existing meal based on mealID, mealName
         for(int i=0; i<size; i++)   {
-            dbMeal = (Meal)list.get(i);
-//            if(dbMeal.getMealID() == Meal.getMealID()) {
-//            	throw new DuplicateData(""+Meal.getMealID(), MENU_SEARCH_TYPE.MEAL_ID); // DuplicateData(String duplicateData, Enum type)
-//            }
+            dbMeal = (Meal)list.get(i);     
             if(dbMeal.getMealName().toLowerCase().equals(meal.getMealName().toLowerCase())) {
             	throw new DuplicateData(meal.getMealName(), Meal.MENU_SEARCH_TYPE.MEAL_NAME);
             }
@@ -50,23 +45,20 @@ public class MenuModel {
 	}
         
         
-    protected static Meal read(String mealName) throws EmptyDB, InvalidEntity {
-    	
+    protected static Meal read(int mealID) throws EmptyDB, InvalidEntity {
     	List list;
     	Meal meal;
     	
     	list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.MENU);
     	if(list == null)
-            new EmptyDB(EmptyDBMsg);
+            new EmptyDB(EMPTY_DB_MSG);
     	
         for (int i=0; i<list.size(); i++) {
-        	meal =(Meal)list.get(i);
-        	
-        	if (meal.getMealName().toLowerCase().equals((mealName.toLowerCase())));
-        	return meal;
+        	meal = (Meal)list.get(i);
+            if(meal.getMealID() == mealID)
+                return meal;
         }
-    	
-        throw new InvalidEntity(mealName + " not found.", Meal.MENU_SEARCH_TYPE.MEAL_NAME);
+        throw new InvalidEntity(mealID + " not found.", Meal.MENU_SEARCH_TYPE.MEAL_ID);
     }
         
     protected static List<Meal> read() throws EmptyDB{ 
@@ -77,7 +69,11 @@ public class MenuModel {
         list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.MENU);
         
         if(list == null)
+<<<<<<< HEAD
             throw new EmptyDB(EmptyDBMsg);
+=======
+            throw new EmptyDB(EMPTY_DB_MSG);
+>>>>>>> 355f7999a85247d68679d0d16d4fc4ae988396f4
 
         for(int i=0; i<list.size(); i++)    {
             meal = (Meal)list.get(i);
@@ -96,7 +92,7 @@ public class MenuModel {
         list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.MENU); //assign Menu data from database into a List, (can use either arraylist/list)??
 		
         if (list == null) { // empty list, throw exception EmptyDB
-        	throw new EmptyDB(EmptyDBMsg);
+        	throw new EmptyDB(EMPTY_DB_MSG);
         }
         
         iter = list.iterator(); // returns an object of type iterator, points above the first MealName, must use .next();
@@ -125,7 +121,7 @@ public class MenuModel {
 		list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.MENU);
 		
 		if(list == null) {
-			throw new EmptyDB(EmptyDBMsg);
+			throw new EmptyDB(EMPTY_DB_MSG);
 		}
 		
 		iter = list.iterator();

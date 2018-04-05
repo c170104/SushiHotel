@@ -6,12 +6,62 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Debug (Launch)",
+            "name": "Debug rmsvctest",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "com.sushihotel.test.rsUT",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Debug hotelUT",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "stopOnEntry": false,
+            "mainClass": "com.sushihotel.test.hotelUT",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Debug invUT",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "com.sushihotel.test.invUT",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Debug rUT",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "com.sushihotel.test.rUT",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Debug gUT",
             "request": "launch",
             "cwd": "${workspaceFolder}",
             "console": "internalConsole",
             "stopOnEntry": false,
             "mainClass": "com.sushihotel.test.gUT",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Debug dbUT",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "com.sushihotel.test.dbUT",
             "args": ""
         },
         {

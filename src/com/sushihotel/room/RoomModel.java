@@ -13,14 +13,7 @@ import com.sushihotel.room.Room;
 
 public class RoomModel   {
     private static IDataStore dataStore = DataStoreFactory.getDataStore();
-    public enum ROOM_SEARCH_TYPE    {
-        ROOM_NUMBER,
-        ROOM_TYPE,
-        WIFI_ENABLED,
-        SMOKING_ENABLED,
-        UNIT_NUMBER
-    }
-    private static final String EmptyDBMsg = "Room DB not found.";
+    private static final String EMPTY_DB_MSG = "Room DB not found.";
 
     protected static boolean create(Room room) throws DuplicateData  {
         List list;
@@ -39,10 +32,10 @@ public class RoomModel   {
         for(int i=0; i<size; i++)   {
             dbRoom = (Room)list.get(i);
             if(dbRoom.getRoomNumber() == room.getRoomNumber())  {
-                throw new DuplicateData(Integer.toString(room.getRoomNumber()), ROOM_SEARCH_TYPE.ROOM_NUMBER);
+                throw new DuplicateData(Integer.toString(room.getRoomNumber()), Room.ROOM_SEARCH_TYPE.ROOM_NUMBER);
             }
             else if(dbRoom.getUnitNumber().toLowerCase().equals(room.getUnitNumber().toLowerCase()))
-                throw new DuplicateData(room.getUnitNumber(), ROOM_SEARCH_TYPE.UNIT_NUMBER);
+                throw new DuplicateData(room.getUnitNumber(), Room.ROOM_SEARCH_TYPE.UNIT_NUMBER);
         }
         list.add(room);
         
@@ -56,7 +49,7 @@ public class RoomModel   {
         list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.ROOM);
         
         if(list == null)
-            throw new EmptyDB(EmptyDBMsg);
+            throw new EmptyDB(EMPTY_DB_MSG);
 
         for(int i=0; i<list.size(); i++)    {
             room = (Room)list.get(i);
@@ -64,7 +57,7 @@ public class RoomModel   {
                 return room;
         }
         
-        throw new InvalidEntity(roomNumber + " not found.", ROOM_SEARCH_TYPE.ROOM_NUMBER);
+        throw new InvalidEntity(roomNumber + " not found.", Room.ROOM_SEARCH_TYPE.ROOM_NUMBER);
     }
 
     protected static List<Room> read() throws EmptyDB   {
@@ -73,7 +66,7 @@ public class RoomModel   {
         list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.ROOM);
 
         if(list == null)
-            throw new EmptyDB(EmptyDBMsg);
+            throw new EmptyDB(EMPTY_DB_MSG);
         
         return list;
     }
@@ -87,7 +80,7 @@ public class RoomModel   {
         list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.ROOM);
 
         if(list == null)
-            throw new EmptyDB(EmptyDBMsg);
+            throw new EmptyDB(EMPTY_DB_MSG);
 
         room.setRoomNumber(roomNumber);
 
@@ -101,7 +94,7 @@ public class RoomModel   {
             }
         }
         if(!trigger_flag)
-            throw new InvalidEntity(roomNumber + " not found.", ROOM_SEARCH_TYPE.ROOM_NUMBER);
+            throw new InvalidEntity(roomNumber + " not found.", Room.ROOM_SEARCH_TYPE.ROOM_NUMBER);
         
         list.add(room);
 
@@ -117,7 +110,7 @@ public class RoomModel   {
         list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.ROOM);
 
         if(list == null)
-            throw new EmptyDB(EmptyDBMsg);
+            throw new EmptyDB(EMPTY_DB_MSG);
 
         iter = list.iterator();
 
@@ -131,7 +124,7 @@ public class RoomModel   {
         }
 
         if(!trigger_flag)
-            throw new InvalidEntity(roomNumber + " not found.", ROOM_SEARCH_TYPE.ROOM_NUMBER);
+            throw new InvalidEntity(roomNumber + " not found.", Room.ROOM_SEARCH_TYPE.ROOM_NUMBER);
         
         return dataStore.write(list, IDataStore.DB_ENTITY_TYPE.ROOM);
     }
