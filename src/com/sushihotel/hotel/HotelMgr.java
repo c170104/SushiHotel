@@ -305,6 +305,7 @@ public class HotelMgr   {
      */
 
     public void newReservation() {
+        Guest guest;
         String guestName;
         int roomNumber;
         Date checkInDate = null;
@@ -319,16 +320,22 @@ public class HotelMgr   {
 
         try {
             System.out.println("======Input Reservation Details=====");
-            System.out.println("Please enter Guest Name");
-            guestName = sc.nextLine();
+            while(true) {
+                System.out.println("Please enter Guest Name");
+                guestName = sc.nextLine();
+                guest = guestMgr.searchGuest(guestName, Guest.GUEST_SEARCH_TYPE.GUEST_NAME);
+                if(guest == null)
+                    System.out.println("Guest does not exist");
+                else
+                    break;
+            }
             System.out.println("Please enter Room Number");
             roomNumber = sc.nextInt();
             sc.nextLine();
             
             do {
-
                 do {
-                    System.out.println("Please enter Check In Date dd/MM/yyyy");
+                    System.out.println("Please enter Check In Date (dd/MM/yyyy)");
                     try {
                         checkInDateInput = sc.nextLine();
                         checkInDate = formatter.parse(checkInDateInput + " 14:00");
@@ -340,7 +347,7 @@ public class HotelMgr   {
                 } while (!dateCheck);
 
                 do {
-                    System.out.println("Please enter Check Out Date dd/MM/yyyy");
+                    System.out.println("Please enter Check Out Date (dd/MM/yyyy)");
                     try {
                         checkOutDateInput =sc.nextLine();
                         checkOutDate = formatter.parse(checkOutDateInput + " 12:00");
@@ -357,18 +364,20 @@ public class HotelMgr   {
                 }
             } while (!dateCheck);
 
-            System.out.println("Please enter Number of Adults");
-            numAdults = sc.nextInt();
-            sc.nextLine();
-            System.out.println("Please enter Number of Children");
-            numChild = sc.nextInt();
-            sc.nextLine();
             System.out.println("Please enter Number of Weekdays");
             numberOfWeekdays = sc.nextInt();
             sc.nextLine();
             System.out.println("Please enter Number of Weekends");
             numberOfWeekends = sc.nextInt();
             sc.nextLine();
+
+            System.out.println("Please enter Number of Adults");
+            numAdults = sc.nextInt();
+            sc.nextLine();
+            System.out.println("Please enter Number of Children");
+            numChild = sc.nextInt();
+            sc.nextLine();
+            
 
             Reservation reservation = new Reservation(guestName, roomNumber, checkInDate, checkOutDate, numAdults, numChild, numberOfWeekdays, numberOfWeekends);
             
@@ -380,6 +389,9 @@ public class HotelMgr   {
         } catch (InputMismatchException ime) {
             logger.severe(ime.getMessage());
             System.out.println(ERROR_MSG);
+        } catch (NullPointerException npe)  {
+            logger.severe(npe.getMessage());
+            System.out.println("Error please try again.");
         }
     }
 
@@ -445,8 +457,9 @@ public class HotelMgr   {
                             guest = guestMgr.searchGuest(guestName, Guest.GUEST_SEARCH_TYPE.GUEST_NAME);
                             if(guest == null)   {
                                 System.out.println("Guest does no exist, please try again.");
-                                break;
                             }
+                            else
+                                break;
                         }
                         break;
                     case 2:
