@@ -28,7 +28,6 @@ public class Reservation implements Serializable{
 		
 	}
 	
-	
 	public Reservation (
 			String guestName,
 			int roomNumber,
@@ -48,6 +47,28 @@ public class Reservation implements Serializable{
 		this.numberOfWeekdays = numberOfWeekdays;
 		this.numberOfWeekends = numberOfWeekends;
 		
+	}
+
+	public Reservation (
+			String guestName,
+			int roomNumber,
+			Date checkInDate,
+			Date checkOutDate,
+			int numAdults,
+			int numChild,
+			int numberOfWeekdays,
+			int numberOfWeekends,
+			Enum reserveStatus
+			) {
+		this.guestName = guestName;
+		this.roomNumber = roomNumber;
+		this.checkInDate = checkInDate;
+		this.checkOutDate = checkOutDate;
+		this.numAdults = numAdults;
+		this.numChild = numChild;
+		this.numberOfWeekdays = numberOfWeekdays;
+		this.numberOfWeekends = numberOfWeekends;
+		this.reserveStatus = reserveStatus;		
 	}
 	
 	protected void setReservationID(int reservationID) {

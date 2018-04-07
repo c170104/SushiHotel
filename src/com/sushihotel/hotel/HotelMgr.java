@@ -305,8 +305,11 @@ public class HotelMgr   {
      */
 
     public void newReservation() {
+        Guest guest;
+        Reservation reservation;
         String guestName;
         int roomNumber;
+        int reservationID;
         Date checkInDate = null;
         Date checkOutDate = null;
         String checkInDateInput;
@@ -319,16 +322,22 @@ public class HotelMgr   {
 
         try {
             System.out.println("======Input Reservation Details=====");
-            System.out.println("Please enter Guest Name");
-            guestName = sc.nextLine();
+            while(true) {
+                System.out.println("Please enter Guest Name");
+                guestName = sc.nextLine();
+                guest = guestMgr.searchGuest(guestName, Guest.GUEST_SEARCH_TYPE.GUEST_NAME);
+                if(guest == null)
+                    System.out.println("Guest does not exist");
+                else
+                    break;
+            }
             System.out.println("Please enter Room Number");
             roomNumber = sc.nextInt();
             sc.nextLine();
             
             do {
-
                 do {
-                    System.out.println("Please enter Check In Date dd/MM/yyyy");
+                    System.out.println("Please enter Check In Date (dd/MM/yyyy)");
                     try {
                         checkInDateInput = sc.nextLine();
                         checkInDate = formatter.parse(checkInDateInput + " 14:00");
@@ -340,7 +349,7 @@ public class HotelMgr   {
                 } while (!dateCheck);
 
                 do {
-                    System.out.println("Please enter Check Out Date dd/MM/yyyy");
+                    System.out.println("Please enter Check Out Date (dd/MM/yyyy)");
                     try {
                         checkOutDateInput =sc.nextLine();
                         checkOutDate = formatter.parse(checkOutDateInput + " 12:00");
@@ -357,12 +366,6 @@ public class HotelMgr   {
                 }
             } while (!dateCheck);
 
-            System.out.println("Please enter Number of Adults");
-            numAdults = sc.nextInt();
-            sc.nextLine();
-            System.out.println("Please enter Number of Children");
-            numChild = sc.nextInt();
-            sc.nextLine();
             System.out.println("Please enter Number of Weekdays");
             numberOfWeekdays = sc.nextInt();
             sc.nextLine();
@@ -370,16 +373,30 @@ public class HotelMgr   {
             numberOfWeekends = sc.nextInt();
             sc.nextLine();
 
-            Reservation reservation = new Reservation(guestName, roomNumber, checkInDate, checkOutDate, numAdults, numChild, numberOfWeekdays, numberOfWeekends);
+            System.out.println("Please enter Number of Adults");
+            numAdults = sc.nextInt();
+            sc.nextLine();
+            System.out.println("Please enter Number of Children");
+            numChild = sc.nextInt();
+            sc.nextLine();
             
-            if (reservationMgr.beginReservation(reservation)) {
-                System.out.println("Reservation has been successfully made");
+
+            reservation = new Reservation(guestName, roomNumber, checkInDate, checkOutDate, numAdults, numChild, numberOfWeekdays, numberOfWeekends);
+            
+            reservationID = reservationMgr.beginReservation(reservation);
+
+            if (reservationID != -1) {
+                System.out.println("Reservation has been successfully made for guest " + guestName);
+                printReservation(reservationID);
             }
             else
                 System.out.println("Reservation was unsuccessful. Please try again.");
         } catch (InputMismatchException ime) {
             logger.severe(ime.getMessage());
             System.out.println(ERROR_MSG);
+        } catch (NullPointerException npe) {
+            logger.severe(npe.getMessage());
+            System.out.println("No such reservation");
         }
     }
 
@@ -422,15 +439,15 @@ public class HotelMgr   {
             do {
                 System.out.print(
                     "Choose the option (1-10) to update: \n" +
-                    "1) Name \n" +
-                    "2) Room number \n" +
-                    "3) Check in date \n" +
-                    "4) Check out date \n" +
-                    "5) Number of adults \n" +
-                    "6) Number of children \n" +
-                    "7) Reserve status \n" +
-                    "8) Number of weekdays \n" +
-                    "9) Number of weekends \n" +
+                    "1) Name: " + guestName +
+                    "2) Room number: " + Integer.toString(roomNumber) + "\n" +
+                    "3) Check in date: " + formatter.format(checkInDate)+ "\n" +
+                    "4) Check out date: " + formatter.format(checkOutDate) + "\n" +
+                    "5) Number of adults: " + Integer.toString(numAdults) + "\n" +
+                    "6) Number of children: " + Integer.toString(numChild) + "\n" +
+                    "7) Reserve status: " + reserveStatus.toString() + "\n" +
+                    "8) Number of weekdays: " + Integer.toString(numberOfWeekdays) + "\n" +
+                    "9) Number of weekends: " + Integer.toString(numberOfWeekends) + "\n" +
                     "10) Exit/Update\n\n" +
                     "Choice: "
                 );
@@ -445,8 +462,9 @@ public class HotelMgr   {
                             guest = guestMgr.searchGuest(guestName, Guest.GUEST_SEARCH_TYPE.GUEST_NAME);
                             if(guest == null)   {
                                 System.out.println("Guest does no exist, please try again.");
-                                break;
                             }
+                            else
+                                break;
                         }
                         break;
                     case 2:
@@ -542,7 +560,7 @@ public class HotelMgr   {
                 }
             } while (choice != 10);
 
-            reservation = new Reservation(guestName, roomNumber, checkInDate, checkOutDate, numAdults, numChild, numberOfWeekdays, numberOfWeekends);
+            reservation = new Reservation(guestName, roomNumber, checkInDate, checkOutDate, numAdults, numChild, numberOfWeekdays, numberOfWeekends, reserveStatus);
             if (reservationMgr.editReservation(reservationID, reservation)) {
                 System.out.println("Succesfully updated reservationID " + reservationID + " information.");
             } else {
@@ -586,85 +604,27 @@ public class HotelMgr   {
         }
     }
 
-    public void printReservation() {
+    public void printReservation(int reservationID) {
         Reservation reservation = null;
-        List<Reservation> reservationList = null;
-        int reservationID;
-        int roomNumber;
-        String guestName = "";
-        int choice = 0;
-        Guest guest = null;
-        int size = 0;
         
         try {
-            while(choice != 4)  {
-                System.out.print(
-                    "Please select a print option:\n" +
-                    "1) By Reservation ID\n" +
-                    "2) By Room Number(Non-checked out reservations)\n" +
-                    "3) By Guest Name and Room Number\n" + 
-                    "4) Exit\n" +
-                    "Choice: "
-                );
-                
-                choice = sc.nextInt();
-                sc.nextLine();
-                
-                switch(choice)  {
-                    case 1:
-                        System.out.print("Please input the Reservation ID to print: ");
-                        reservationID = sc.nextInt();
-                        sc.nextLine();
-                        reservation = reservationMgr.getReservationByID(reservationID);
-                        break;
-                    case 2:
-                        System.out.print("Please input the Room Number to print: ");
-                        roomNumber = sc.nextInt();
-                        sc.nextLine();
-                        reservationList = reservationMgr.getReservationByRoomNumber(roomNumber);
-                        break;
-                    case 3:
-                        while(guest == null)    {
-                            System.out.print("Please input Guest name: ");
-                            guestName = sc.nextLine();
-                            guest = guestMgr.searchGuest(guestName, Guest.GUEST_SEARCH_TYPE.GUEST_NAME);
-                            if(guest == null)   {
-                                System.out.println("Guest does not exist. Please try again.");
-                            }
-                        }
-                        System.out.print("Please input Room number: ");
-                        roomNumber = sc.nextInt();
-                        sc.nextLine();
-                        reservation = reservationMgr.getReservationByNameAndRoomNumber(guestName, roomNumber);
-                        break;
-                    default:
-                        break;
-                }
-                if(reservationList != null)
-                    size = reservationList.size();
-
-                for(int i=0; i<size; i++)   {
-                    System.out.println(
-                        "====================================================================" +
-                        "\nReservation ID: " + Integer.toString(reservation.getReservationID()) + 
-                        "\n No. of Adults: " + Integer.toString(reservation.getNumAdults()) + 
-                        "\n No. of Childrens: " + Integer.toString(reservation.getNumChild()) + 
-                        "\n Check In Date: " + reservation.getCheckInDate() + 
-                        "\n Check Out Date: " + reservation.getCheckOutDate() + 
-                        "\n No. of Weekdays: " + Integer.toString(reservation.getNoOfWeekdays()) + 
-                        "\n No. of Weekends: " + Integer.toString(reservation.getNoOfWeekends()) + 
-                        "\n Reservation Status: " + reservation.getReserveStatus().toString() +
-                        "\n===================================================================="
-                    );
-                }
-
-            }
-        } catch(InputMismatchException ime) {
-            logger.severe(ime.getMessage());
-            System.out.println(ERROR_MSG);
+            reservation = reservationMgr.getReservationByID(reservationID);
+            System.out.println(
+                "====================================================================" +
+                "\nReservation ID: " + Integer.toString(reservation.getReservationID()) +
+                "\nRoom Number: " + Integer.toString(reservation.getRoomNumber()) + 
+                "\nNo. of Adults: " + Integer.toString(reservation.getNumAdults()) + 
+                "\nNo. of Childrens: " + Integer.toString(reservation.getNumChild()) + 
+                "\nCheck In Date: " + reservation.getCheckInDate() + 
+                "\nCheck Out Date: " + reservation.getCheckOutDate() + 
+                "\nNo. of Weekdays: " + Integer.toString(reservation.getNoOfWeekdays()) + 
+                "\nNo. of Weekends: " + Integer.toString(reservation.getNoOfWeekends()) + 
+                "\nReservation Status: " + reservation.getReserveStatus().toString() +
+                "\n===================================================================="
+            );
         } catch (NullPointerException npe) {
             logger.severe(npe.getMessage());
-            System.out.println("No reservation data");
+            System.out.println("No such reservation.");
         }
     }
 
@@ -947,15 +907,167 @@ public class HotelMgr   {
      */
 
     public void addMenuItem()    {
-
+        Meal meal;
+        String mealName;
+        String description;
+        String preparedMethod;
+        float mealPrice;
+        
+        try {
+            System.out.println("===========Insert new meal==============");
+            System.out.println("Please enter meal name: ");
+            mealName = sc.nextLine();
+            System.out.println("Please enter meal description: ");
+            description = sc.nextLine();
+            System.out.println("Please enter prepared method: ");
+            preparedMethod = sc.nextLine();
+            System.out.println("Please enter meal price: ");
+            mealPrice = sc.nextFloat();
+            sc.nextLine();
+            
+            meal = new Meal(mealName, description, preparedMethod, mealPrice);
+            
+            if (menuMgr.addNewMeal(meal)) {
+                System.out.println("Meal " + mealName + " has been successfully registered! ");
+            } else {
+                System.out.println("System failed to register Meal" + mealName + ". Please try again");
+            }
+        } catch(InputMismatchException ime) {
+            logger.severe(ime.getMessage());
+            System.out.println(ERROR_MSG);
+        }
     }
 
     public void editMenuItem()    {
-
+        Meal meal;
+        int mealID;
+        String mealName;
+        String description;
+        String preparedMethod;
+        float mealPrice;
+        int choice;
+        try {
+            System.out.println("Please enter the meal ID you want to edit: ");
+            mealID = sc.nextInt();
+            sc.nextLine();
+            
+            meal = menuMgr.getMealDetails(mealID);
+            
+            mealID = meal.getMealID();
+            mealName = meal.getMealName();
+            description = meal.getDesc();
+            preparedMethod = meal.getPreparedMethod();
+            mealPrice = meal.getMealPrice();
+            
+            do {
+                System.out.println(
+                    "Choose the option 1-5 to update: \n" +
+                    "1) Meal Name: " + mealName + "\n" +
+                    "2) Description: " + description + "\n" +
+                    "3) Prepared Method: " + preparedMethod + "\n" +
+                    "4) Meal Price: " + mealPrice + "\n" +
+                    "5) Exit/Update" + "\n\n" +
+                    "Choice: "
+                );
+                choice = sc.nextInt();
+                sc.nextLine();
+                switch (choice) {
+                    case 1:
+                        System.out.println("Meal Name: ");
+                        mealName = sc.nextLine();
+                        break;
+                    case 2:
+                        System.out.println("Description: ");
+                        description = sc.nextLine();
+                        break;
+                    case 3:
+                        System.out.println("Prepared Method: ");
+                        preparedMethod = sc.nextLine();
+                        break;
+                    case 4: 
+                        System.out.println("Meal Price");
+                        mealPrice = sc.nextFloat();
+                        sc.nextLine();
+                        break;
+                    default:
+                        System.out.println("Please enter a valid choice (1-5).");
+                        break;
+                }
+            } while (choice != 5);
+            
+            meal = new Meal(mealName, description, preparedMethod, mealPrice);
+            if(menuMgr.editMeal(mealID, meal)) {
+                System.out.println("Succesfully updated Meal ID " + Integer.toString(mealID) + " details.");
+            } else {
+                System.out.println("System failed to update Meal ID " + Integer.toString(mealID) + ". Please try again.");
+            }
+        } catch(InputMismatchException ime) {
+            logger.severe(ime.getMessage());
+            System.out.println(ERROR_MSG);
+        } catch(NullPointerException npe)   {
+            logger.severe(npe.getMessage());
+            System.out.println("No such meal");
+        }
     }
 
     public void removeMenuItem()    {
+        int mealID;
+        String decision;
 
+        try {  
+            System.out.println("Please enter meal ID to be deleted");
+            mealID = sc.nextInt();
+            sc.nextLine();
+
+            System.out.println("Are you sure you want to delete Meal ID: " + Integer.toString(mealID) + "? (Y/N): ");
+            decision = sc.nextLine();
+
+            if(!decision.toLowerCase().equals("yes") && !decision.toLowerCase().equals("y"))    {
+                System.out.println("Deletion has been canceled.");
+                return;
+            }
+
+            if (menuMgr.removeMeal(mealID)) {
+                System.out.println("Deletion of meal number " + mealID +" was successful");
+            } else {
+                System.out.println("Deletion of meal number " + mealID +" was unsuccessful, please try again");
+            } 
+        } catch (InputMismatchException ime) {
+                logger.severe(ime.getMessage());
+                System.out.println(ERROR_MSG);
+        } catch (NullPointerException npe)   {
+            logger.severe(npe.getMessage());
+            System.out.println("No meal data");
+        }
+    }
+
+    public void printMealList() {
+        Meal meal;
+        List<Meal> mealList;
+        String mealPrice;
+        try {
+            mealList = menuMgr.getMealOffered();
+            if(mealList.size() == 0)    {
+                System.out.println("The Menu is currently empty.");
+                return;
+            }
+            System.out.println("========================== MENU ==========================");
+            for(int i=0; i<mealList.size(); i++)    {
+                meal = mealList.get(i);
+                mealPrice = String.format("%.2f", meal.getMealPrice());
+                System.out.println(
+                    "Meal ID: " + meal.getMealID() + 
+                    "\n Meal Name: " + meal.getMealName() + 
+                    "\n Description: " + meal.getDesc() + 
+                    "\n Prepared Method: " + meal.getPreparedMethod() + 
+                    "\n Meal Price: $"+ mealPrice
+                );
+            }
+            System.out.println("==========================================================");
+        } catch (NullPointerException npe)   {
+            logger.severe(npe.getMessage());
+            System.out.println("The Menu is currently empty.");
+        }
     }
 
     /*
@@ -989,26 +1101,23 @@ public class HotelMgr   {
             System.out.println("============== Room Service ==============");
             System.out.println("Please enter the Room number: ");
             roomNumber = sc.nextInt();
+            sc.nextLine();
 
             // Print Menu by roomSvcMgr
-            menu = menuMgr.getMealOffered();
-            System.out.println("========================== MENU ==========================");
-            for(int i=0; i<menu.size(); i++)    {
-                meal = menu.get(i);
-                System.out.println(
-                    "| ID: " + Integer.toString(meal.getMealID()) + "\tName: " + meal.getMealName() + "\tPrice ($):" + meal.getMealPrice() + "\t|\n"
-                );
-            }
-            System.out.println("==========================================================");
+            printMealList();
             
-            do {
+            while(true) {
                 System.out.println("Choice of meal by Meal ID (0 to exit): ");
                 // get individual meal by roomsvcMgr
                 menuChoice = sc.nextInt();
+                sc.nextLine();
+
+                if(menuChoice == 0)
+                    break;
                 meal = menuMgr.getMealDetails(menuChoice);
                 amountPayable += meal.getMealPrice();
-            } while (menuChoice != 0);
-
+            }
+            
             System.out.println("Please enter the room service remarks: ");
             remarks = sc.nextLine();
             roomSvc = new RoomSvc(roomNumber, amountPayable, remarks, dateTimeOrdered);
@@ -1048,11 +1157,13 @@ public class HotelMgr   {
                 "Choice: "
                 );
             choice = sc.nextInt();
+            sc.nextLine();
 
             switch(choice)  {
                 case 1:
                     System.out.println("Please enter Room number: ");
                     roomNumber = sc.nextInt();
+                    sc.nextLine();
                     if(roomMgr.checkRoomAvailability(roomNumber))
                         System.out.println("Room number " + roomNumber + " is Available.");
                     else
@@ -1076,12 +1187,16 @@ public class HotelMgr   {
     public void checkIn()    {
         int choice;
         Guest guest;
+        Reservation reservation = null;
         Invoice invoice;
-        String checkInDate;
-        String checkOutDate;
-        int roomNumber;
-        int totalWeekdays;
-        int totalWeekends;
+        Date checkInDate = null;
+        Date checkOutDate = null;
+        String checkInDateInput;
+        String checkOutDateInput;
+        int roomNumber = 0;
+        int reservationID = -1;
+        int totalWeekdays = 0;
+        int totalWeekends = 0;
 
         try {
             System.out.println("============ CHECK IN ============");
@@ -1096,22 +1211,37 @@ public class HotelMgr   {
                 choice = sc.nextInt();
                 sc.nextLine();
 
+                // get guest details
                 guest = searchGuest();
                 if(guest == null)   {
                     System.out.println("Guest does not exist. Please register first, then try again.");
-                    break;
+                    return;
                 }
 
                 if(choice == 1) {
-                    // Made prior reservations 
-                    /**
-                     *  PLEASE REMEMBER TO DO HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-                     * 
-                     * 
-                     * 
-                     * 
-                     * 
-                     */
+                    System.out.print("Please input the Reservation ID: ");
+                    reservationID = sc.nextInt();
+                    sc.nextLine();
+
+                    reservation = reservationMgr.getReservationByID(reservationID);
+                    if(reservation == null) {
+                        System.out.println("Reservation ID " + Integer.toString(reservationID) + " does not exist.");
+                        return;
+                    }
+
+                    if(reservation.getReserveStatus() == Reservation.RESERVE_STATUS.CHECKED_IN) {
+                        System.out.println("Reservation ID " + Integer.toString(reservationID) + " has already checked in.");
+                        return;
+                    }
+
+                    // Next in the waitlist to check in
+                    if(reservation.getReserveStatus() == Reservation.RESERVE_STATUS.CONFIRMED)  {
+                        roomNumber = reservation.getRoomNumber();
+                        totalWeekdays = reservation.getNoOfWeekdays();
+                        totalWeekends = reservation.getNoOfWeekends();
+                        checkInDate = reservation.getCheckInDate();
+                        checkOutDate = reservation.getCheckOutDate();
+                    }
                 }
                 else if(choice == 2)    {
 
@@ -1120,31 +1250,37 @@ public class HotelMgr   {
                     roomNumber = sc.nextInt();
                     sc.nextLine();
                     System.out.print("Please input Check In Date in the format (dd/MM/yyyy): ");
-                    checkInDate = sc.nextLine();
+                    checkInDateInput = sc.nextLine();
+                    checkInDate = formatter.parse(checkInDateInput + " 14:00");
                     System.out.print("Please input Check Out Date in the format (dd/MM/yyyy): ");
-                    checkOutDate = sc.nextLine();
+                    checkOutDateInput = sc.nextLine();
+                    checkOutDate = formatter.parse(checkOutDateInput + " 12:00");
                     System.out.print("Please input total weekdays of stay: ");
                     totalWeekdays = sc.nextInt();
                     sc.nextLine();
                     System.out.print("Please input total weekends of stay: ");
                     totalWeekends = sc.nextInt();
                     sc.nextLine();
+                }
 
-                    invoice = new Invoice(guest.getGuestID(), roomNumber, formatter.parse(checkInDate + " 14:00"), formatter.parse(checkOutDate + " 12:00"), totalWeekdays, totalWeekends);
-                    if(invoiceMgr.createBlankInvoice(invoice))  {
+                invoice = new Invoice(guest.getGuestID(), roomNumber, checkInDate, checkOutDate, totalWeekdays, totalWeekends);
+
+                if(invoiceMgr.createBlankInvoice(invoice))  {
+                    if(reservationMgr.reservationCheckInChanges(reservationID))  {
                         System.out.println("Check In for guest " + guest.getName() + " into Room number " 
                                 + Integer.toString(roomNumber) + " is successful!");
                         roomMgr.setRoomToOccupied(roomNumber, Room.ROOM_STATUS.OCCUPIED);
-                        break;
-                    }
-                    else    {
-                        System.out.println("Check In for guest " + guest.getName() + " into Room number "
-                                + Integer.toString(roomNumber) + " is unsuccessful. Please try again.");
-                        break;
+                        return;
                     }
                 }
-
+                else    {
+                    System.out.println("Check In for guest " + guest.getName() + " into Room number "
+                            + Integer.toString(roomNumber) + " is unsuccessful. Please try again.");
+                    return;
+                }
+                
             } while (choice != 3);
+            
         } catch(InputMismatchException ime) {
             logger.severe(ime.getMessage());
             System.out.println(ERROR_MSG);
@@ -1244,7 +1380,10 @@ public class HotelMgr   {
 
                 if(invoiceMgr.makePayment(roomNumber, cashPayment)) {
                     System.out.println("Check Out for Room " + Integer.toString(roomNumber) + " is successful.");
+                    // change room status back to vacant
                     roomMgr.setRoomToOccupied(roomNumber, Room.ROOM_STATUS.VACANT);
+                    // remove reservation
+                    reservationMgr.removeReservationAfterCheckOut(roomNumber);
                     // print bill
                     invoice = invoiceMgr.getInvoice(invoice.getInvoiceID());
                     printBill(invoice);

@@ -42,9 +42,7 @@ public class MenuModel {
         meal.setMealID(size + 1); // 
         list.add(meal);
         return dataStore.write(list, IDataStore.DB_ENTITY_TYPE.MENU);
-	
 	}
-        
         
     protected static Meal read(int mealID) throws EmptyDB, InvalidEntity {
     	List list;
@@ -80,7 +78,7 @@ public class MenuModel {
     	
     }
     
-	protected static boolean update(String mealName, Meal meal) throws EmptyDB, InvalidEntity{ 
+	protected static boolean update(int mealID, Meal meal) throws EmptyDB, InvalidEntity{ 
 		List list;
         Iterator iter; // iterator used to traverse through list
         Meal dbMeal;
@@ -95,15 +93,16 @@ public class MenuModel {
         iter = list.iterator(); // returns an object of type iterator, points above the first MealName, must use .next();
         while(iter.hasNext())   { //check if there is next item in list
             dbMeal = (Meal)iter.next(); // assign next item
-            if(dbMeal.getMealName().toLowerCase().equals((mealName.toLowerCase()))) { // remove if mealname is found
+            if(dbMeal.getMealID() == mealID) { // remove if mealname is found
                 iter.remove(); // removes 
                 trigger_flag = true;
                 break;
             }
         }
         if(!trigger_flag) 
-            throw new InvalidEntity(mealName + " not found. ", Meal.MENU_SEARCH_TYPE.MEAL_NAME);
-        
+            throw new InvalidEntity(mealID + " not found. ", Meal.MENU_SEARCH_TYPE.MEAL_ID);
+            
+        meal.setMealID(mealID);
         list.add(meal); 
         
         return dataStore.write(list, IDataStore.DB_ENTITY_TYPE.MENU);

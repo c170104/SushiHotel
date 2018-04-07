@@ -84,7 +84,11 @@ public class hotelUT    {
                         hotelMgr.editReservation();
                         break;
                     case 6:
-                        hotelMgr.printReservation();
+                        int reservationID;
+                        System.out.println("Please input Reservation ID to print: ");
+                        reservationID = sc.nextInt();
+                        sc.nextLine();
+                        hotelMgr.printReservation(reservationID);
                         break;
                     case 7:
                         hotelMgr.removeReservation();

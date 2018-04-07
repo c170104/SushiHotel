@@ -5,23 +5,27 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.sushihotel.exception.DuplicateData;
 import com.sushihotel.exception.EmptyDB;
 import com.sushihotel.exception.InvalidEntity;
 
 public class ReservationMgr {
 	private static final Logger logger = Logger.getLogger(ReservationMgr.class.getName());
 	
-	public boolean beginReservation(Reservation reservation) {
+	public int beginReservation(Reservation reservation) {
 		List<Reservation> list;
 		Reservation dbReservation;
+		int size;
+		int reservationID;
+
 		try {
 			
 			list = ReservationModel.read();
 			
 			reservation.setReserveStatus(Reservation.RESERVE_STATUS.CONFIRMED);
 
-			for(int i=0; i<list.size(); i++)	{
+			size = list == null ? 0 : list.size();
+			
+			for(int i=0; i<size; i++)	{
 				dbReservation = list.get(i);
 				if(reservation.getRoomNumber() == dbReservation.getRoomNumber() && (
 					dbReservation.getReserveStatus() == Reservation.RESERVE_STATUS.CONFIRMED || 
@@ -30,20 +34,19 @@ public class ReservationMgr {
 					reservation.setReserveStatus(Reservation.RESERVE_STATUS.WAITLIST);
 				}
 			}
-
-			if(ReservationModel.create(reservation)) {
+			
+			reservationID = ReservationModel.create(reservation);
+			if(reservationID != ReservationModel.RESERVATION_CREATION_ERROR) {
 				logger.info("[CREATE SUCCESS] Reservation ID: " + Integer.toString(reservation.getReservationID()) 
 						+ " | Guest Name: " + reservation.getGuestName());
-				return true;
+				return reservationID;
 			} else {
 				logger.info("[CREATE FAIL] Reservation ID: " + Integer.toString(reservation.getReservationID()));
 			}
 		} catch(EmptyDB edb)	{
 			logger.severe(edb.getMessage());
-		} catch (DuplicateData dd) {
-			logger.log(Level.WARNING, dd.getMessage());
 		}
-		return false;
+		return ReservationModel.RESERVATION_CREATION_ERROR;
 	}
 	
 	public boolean editReservation(int reservationID, Reservation reservation) {
@@ -120,6 +123,40 @@ public class ReservationMgr {
 			logger.severe(edb.getMessage());
 		}
 		return list;
+	}
+
+	public boolean reservationCheckInChanges(int reservationID)	{
+		Reservation reservation;
+
+		reservation = getReservationByID(reservationID);
+		reservation.setReserveStatus(Reservation.RESERVE_STATUS.CHECKED_IN);
+		
+		return editReservation(reservationID, reservation);
+	}
+
+	public boolean removeReservationAfterCheckOut(int roomNumber)	{
+		List<Reservation> reservationList;
+		Reservation reservation = null;
+		boolean trigger_flag = false;
+	
+		try	{
+			reservationList = getReservationByRoomNumber(roomNumber);
+
+			for(int i=0; i<reservationList.size(); i++)	{
+				reservation = reservationList.get(i);
+				if(reservation.getReserveStatus() == Reservation.RESERVE_STATUS.CHECKED_IN)	{
+					trigger_flag = true;
+					break;
+				}
+			}
+			if(trigger_flag)
+				return ReservationModel.delete(reservation.getReservationID());
+		} catch(EmptyDB edb)	{
+			logger.warning(edb.getMessage());
+		} catch(InvalidEntity ie)	{
+			logger.warning(ie.getMessage());
+		}
+		return false;
 	}
 
 	public Reservation getReservationByNameAndRoomNumber(String guestName, int roomNumber)	{
