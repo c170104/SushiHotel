@@ -17,7 +17,7 @@ public class ReservationModel {
 
 	private static final String EMPTY_DB_MSG = "Reservation DB not found.";
 
-	protected static boolean create(Reservation reservation) throws DuplicateData{
+	protected static boolean create(Reservation reservation) {
 		List list;
 		int size;
 		Reservation dbReservation;

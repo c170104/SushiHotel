@@ -15,13 +15,17 @@ public class ReservationMgr {
 	public boolean beginReservation(Reservation reservation) {
 		List<Reservation> list;
 		Reservation dbReservation;
+		int size;
+
 		try {
 			
 			list = ReservationModel.read();
 			
 			reservation.setReserveStatus(Reservation.RESERVE_STATUS.CONFIRMED);
 
-			for(int i=0; i<list.size(); i++)	{
+			size = list == null ? 0 : list.size();
+			
+			for(int i=0; i<size; i++)	{
 				dbReservation = list.get(i);
 				if(reservation.getRoomNumber() == dbReservation.getRoomNumber() && (
 					dbReservation.getReserveStatus() == Reservation.RESERVE_STATUS.CONFIRMED || 
@@ -40,8 +44,6 @@ public class ReservationMgr {
 			}
 		} catch(EmptyDB edb)	{
 			logger.severe(edb.getMessage());
-		} catch (DuplicateData dd) {
-			logger.log(Level.WARNING, dd.getMessage());
 		}
 		return false;
 	}

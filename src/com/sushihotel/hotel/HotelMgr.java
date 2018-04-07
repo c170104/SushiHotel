@@ -306,6 +306,7 @@ public class HotelMgr   {
 
     public void newReservation() {
         Guest guest;
+        Reservation reservation;
         String guestName;
         int roomNumber;
         Date checkInDate = null;
@@ -379,19 +380,19 @@ public class HotelMgr   {
             sc.nextLine();
             
 
-            Reservation reservation = new Reservation(guestName, roomNumber, checkInDate, checkOutDate, numAdults, numChild, numberOfWeekdays, numberOfWeekends);
+            reservation = new Reservation(guestName, roomNumber, checkInDate, checkOutDate, numAdults, numChild, numberOfWeekdays, numberOfWeekends);
             
             if (reservationMgr.beginReservation(reservation)) {
-                System.out.println("Reservation has been successfully made");
+                System.out.println("Reservation has been successfully made for guest " + guestName);
             }
             else
                 System.out.println("Reservation was unsuccessful. Please try again.");
         } catch (InputMismatchException ime) {
             logger.severe(ime.getMessage());
             System.out.println(ERROR_MSG);
-        } catch (NullPointerException npe)  {
+        } catch (NullPointerException npe) {
             logger.severe(npe.getMessage());
-            System.out.println("Error please try again.");
+            System.out.println("No such reservation");
         }
     }
 
