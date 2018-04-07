@@ -19,6 +19,7 @@ public class Reservation implements Serializable{
 		CONFIRMED,
 		WAITLIST,
 		CHECKED_IN,
+		CHECKED_OUT,
 		EXPIRED
 	}
 	public enum RESERVATION_SEARCH_TYPE {

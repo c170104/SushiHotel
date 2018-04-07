@@ -132,7 +132,8 @@ public class ReservationMgr {
 		reservation.setReserveStatus(Reservation.RESERVE_STATUS.CHECKED_IN);
 		
 		return editReservation(reservationID, reservation);
-	}	
+	}
+
 	public boolean removeReservationAfterCheckOut(int roomNumber)	{
 		List<Reservation> reservationList;
 		Reservation reservation = null;
@@ -156,5 +157,23 @@ public class ReservationMgr {
 			logger.warning(ie.getMessage());
 		}
 		return false;
+	}
+
+	public Reservation getReservationByNameAndRoomNumber(String guestName, int roomNumber)	{
+		Reservation reservation;
+		List<Reservation> list;
+
+		try	{
+			list = ReservationModel.read();
+
+			for(int i=0; i<list.size(); i++)	{
+				reservation = list.get(i);
+				if(reservation.getGuestName().toLowerCase().equals(guestName.toLowerCase()) && reservation.getRoomNumber() == roomNumber && reservation.getReserveStatus() != Reservation.RESERVE_STATUS.CHECKED_OUT)
+					return reservation;
+			}
+		} catch(EmptyDB edb)	{
+			logger.severe(edb.getMessage());
+		}
+		return null;
 	}
 }

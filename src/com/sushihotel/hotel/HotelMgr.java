@@ -1272,17 +1272,15 @@ public class HotelMgr   {
                         roomMgr.setRoomToOccupied(roomNumber, Room.ROOM_STATUS.OCCUPIED);
                         return;
                     }
-                    else    {
-                        invoiceMgr.deleteInvoice(invoiceMgr.getUnpaidInvoice(roomNumber).getInvoiceID());
-                        System.out.println("Reservation Check In Failed. Please contact the adminsitrator.");
-                    }
                 }
                 else    {
                     System.out.println("Check In for guest " + guest.getName() + " into Room number "
                             + Integer.toString(roomNumber) + " is unsuccessful. Please try again.");
                     return;
                 }
+                
             } while (choice != 3);
+            
         } catch(InputMismatchException ime) {
             logger.severe(ime.getMessage());
             System.out.println(ERROR_MSG);
