@@ -13,11 +13,10 @@ import com.sushihotel.exception.InvalidEntity;
 
 public class ReservationModel {
 	private static IDataStore dataStore = DataStoreFactory.getDataStore();
-	
-
 	private static final String EMPTY_DB_MSG = "Reservation DB not found.";
+	public static final int RESERVATION_CREATION_ERROR = -1;
 
-	protected static boolean create(Reservation reservation) {
+	protected static int create(Reservation reservation) {
 		List list;
 		int size;
 		Reservation dbReservation;
@@ -31,7 +30,10 @@ public class ReservationModel {
 
 		reservation.setReservationID(size+1);
 		list.add(reservation);
-		return dataStore.write(list, IDataStore.DB_ENTITY_TYPE.RESERVATION);
+		if(dataStore.write(list, IDataStore.DB_ENTITY_TYPE.RESERVATION))
+			return reservation.getReservationID();
+		else
+			return RESERVATION_CREATION_ERROR;
 	}
 	
 	protected static List<Reservation> read() throws EmptyDB {
