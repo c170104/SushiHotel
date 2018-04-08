@@ -1,4 +1,4 @@
-package com.sushihotel.test;
+/*package com.sushihotel.test;
 
 import com.sushihotel.room.Room;
 import com.sushihotel.room.RoomMgr;
@@ -25,4 +25,4 @@ public class rUT    {
         // Delete room
         // rMgr.removeRoom(1);
     }
-}
+}*/

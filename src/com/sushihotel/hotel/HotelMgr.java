@@ -63,32 +63,32 @@ public class HotelMgr   {
         try {
             // Guest Registration Begins
             System.out.println("============ Guest Registration ============");
-            System.out.println("Please enter Identification Number: ");
-            identificationNo = sc.nextLine();
             System.out.println("Please enter Name: ");
             name = sc.nextLine();
+            System.out.println("Please enter Gender (F/M/O): ");
+            gender = sc.nextLine();
+            System.out.println("Please enter Identification Number: ");
+            identificationNo = sc.nextLine();
+            System.out.println("Please enter Passport Number: ");
+            passportNo = sc.nextLine();
+            System.out.println("Please enter Nationality: ");
+            nationality = sc.nextLine();
+            System.out.println("Please enter Address: ");
+            address = sc.nextLine();
+            System.out.println("Please enter Contact Number: ");
+            contactNo = sc.nextLine();
             System.out.println("Please enter Credit Card Number: ");
             creditCardNo = sc.nextLine();
             System.out.println("Please enter Billing Address: ");
             billingAddress = sc.nextLine();
-            System.out.println("Please enter Address: ");
-            address = sc.nextLine();
             System.out.println("Please enter Country: ");
             country = sc.nextLine();
-            System.out.println("Please enter Gender: ");
-            gender = sc.nextLine();
-            System.out.println("Please enter Nationality: ");
-            nationality = sc.nextLine();
-            System.out.println("Please enter Contact Number: ");
-            contactNo = sc.nextLine();
-            System.out.println("Please enter Passport Number: ");
-            passportNo = sc.nextLine();
 
             // Guest object creation
             guest = new Guest(identificationNo, name, creditCardNo, billingAddress, address, country, gender, nationality, contactNo, passportNo);
 
             if(guestMgr.registerGuest(guest))
-                System.out.println("Guest " + name + " has been succesfully registered!");
+                System.out.println("Guest " + name + " has been successfully registered!");
             else
                 System.out.println("System failed to register Guest " + name + ". Please try again.");
         } catch(InputMismatchException ime) {
@@ -133,62 +133,62 @@ public class HotelMgr   {
 
             do {
                 System.out.print(
-                    "Choose the option (1-11) to update: \n" + 
-                    "1) Identification Number\n" +
-                    "2) Name\n" +
-                    "3) Credit Card Number\n" +
-                    "4) Billing Address\n" +
-                    "5) Address\n" +
-                    "6) Country\n" +
-                    "7) Gender\n" +
-                    "8) Nationality\n" +
-                    "9) Contact Number\n" +
-                    "10) Passport Number\n" +
-                    "11) Update\n\n" + 
+                    "Choose the option (1-10) to update: \n" +
+                    "1) Name\n" +
+                    "2) Gender\n" +
+                    "3) Identification Number\n" +
+                    "4) Passport Number\n" +
+                    "5) Nationality\n" +
+                    "6) Address\n" +
+                    "7) Contact Number\n" +
+                    "8) Credit Card Number\n" +
+                    "9) Billing Address\n" +
+                    "10) Country\n" +
+                    "11) Exit\n\n"+
                     "Choice: "
                 );
                 choice = sc.nextInt();
                 sc.nextLine();
                 switch (choice) {
                     case 1:
-                        System.out.println("Identification Number: ");
-                        identificationNo = sc.nextLine();
-                        break;
-                    case 2:
                         System.out.println("Name: ");
                         name = sc.nextLine();
                         break;
-                    case 3:
-                        System.out.println("Credit Card Number: ");
-                        creditCardNo = sc.nextLine();
-                        break;
-                    case 4:
-                        System.out.println("Billing Address: ");
-                        billingAddress = sc.nextLine();
-                        break;
-                    case 5:
-                        System.out.println("Address: ");
-                        address = sc.nextLine();
-                        break;
-                    case 6:
-                        System.out.println("Country: ");
-                        country = sc.nextLine();
-                        break;
-                    case 7:
-                        System.out.println("Gender: ");
+                    case 2:
+                        System.out.println("Gender ");
                         gender = sc.nextLine();
                         break;
-                    case 8:
+                    case 3:
+                        System.out.println("Identification Number: ");
+                        identificationNo = sc.nextLine();
+                        break;
+                    case 4:
+                        System.out.println("Passport Number: ");
+                        passportNo = sc.nextLine();
+                        break;
+                    case 5:
                         System.out.println("Nationality: ");
                         nationality = sc.nextLine();
                         break;
-                    case 9:
+                    case 6:
+                        System.out.println("Address: ");
+                        address = sc.nextLine();
+                        break;
+                    case 7:
                         System.out.println("Contact Number: ");
                         contactNo = sc.nextLine();
                         break;
+                    case 8:
+                        System.out.println("Credit Card Number: ");
+                        creditCardNo = sc.nextLine();
+                        break;
+                    case 9:
+                        System.out.println("Billing Address ");
+                        billingAddress = sc.nextLine();
+                        break;
                     case 10:
-                        System.out.println("Passport Number: ");
-                        passportNo = sc.nextLine();
+                        System.out.println("Country: ");
+                        country = sc.nextLine();
                         break;
                     default:
                         break;
@@ -656,7 +656,7 @@ public class HotelMgr   {
         try {
             // Room creation begins
             System.out.println("========== Room Creation ==========");
-            System.out.println("Please Enter Room Number: ");
+            System.out.println("Please Enter Room Number (1 - 48): ");
             roomNumber = sc.nextInt();
 
             sc.nextLine(); // Remove line carriage
@@ -695,7 +695,7 @@ public class HotelMgr   {
             System.out.println("Please Enter Weekend Rate: ");
             rateWeekends = sc.nextFloat();
             sc.nextLine();
-            System.out.println("Please Enter Bed Type Information: ");
+            System.out.println("Please Enter Bed Type Information (Single/Double/Master): ");
             bedType = sc.nextLine();
             System.out.println("Wifi Enabled (Yes/No)(default: No): ");
             wifiEnabledInput = sc.nextLine();
@@ -707,7 +707,7 @@ public class HotelMgr   {
             smokingAllowedInput = sc.nextLine();
             if(smokingAllowedInput.toLowerCase().equals("yes"))
                 smokingAllowed = true;
-            System.out.println("Please Enter Unit Number: ");
+            System.out.println("Please Enter Unit Number (e.g. 02-01): ");
             unitNumber = sc.nextLine();
 
             room = new Room(roomNumber, roomType, maxNoAdults, maxNoChild, rateWeekdays, rateWeekends, bedType, wifiEnabled, facingView, smokingAllowed, unitNumber);
