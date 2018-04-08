@@ -111,13 +111,13 @@ public class RoomMgr    {
             for (int i = 0; i < list.size(); i++) {
                 room = list.get(i);
                 if(room.getRoomStatus() == Room.ROOM_STATUS.VACANT)
-                    vacantRooms += room.getUnitNumber() + ", ";
+                    vacantRooms += room.getUnitNumber() + "(" + room.getRoomNumber() + ") , ";
                 else if(room.getRoomStatus() == Room.ROOM_STATUS.OCCUPIED)
-                    occupiedRooms += room.getUnitNumber() + ", ";
+                    occupiedRooms += room.getUnitNumber() + "(" + room.getRoomNumber() + ") , ";
                 else if(room.getRoomStatus() == Room.ROOM_STATUS.RESERVED)
-                    reservedRooms += room.getUnitNumber() + ", ";
+                    reservedRooms += room.getUnitNumber() + "(" + room.getRoomNumber() + ") , ";
                 else
-                    underMaintanenceRooms += room.getUnitNumber() + ", ";
+                    underMaintanenceRooms += room.getUnitNumber() + "(" + room.getRoomNumber() + ") , ";
             }
 
             System.out.println(
