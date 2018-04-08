@@ -156,28 +156,28 @@ public class RoomMgr    {
                     singleTotal++;
                     if(room.getRoomStatus() == Room.ROOM_STATUS.VACANT) {
                         singleVacant++;
-                        singleUnitNumber += room.getUnitNumber() + ", ";
+                        singleUnitNumber += room.getUnitNumber() + "(" + room.getRoomNumber() + ") , ";
                     }
                 }
                 else if(room.getRoomType() == Room.ROOM_TYPE.DOUBLE)    {
                     doubleTotal++;
                     if(room.getRoomStatus() == Room.ROOM_STATUS.VACANT) {
                         doubleVacant++;
-                        doubleUnitNumber += room.getUnitNumber() + ", ";
+                        doubleUnitNumber += room.getUnitNumber() + "(" + room.getRoomNumber() + ") , ";
                     }
                 }
                 else if(room.getRoomType() == Room.ROOM_TYPE.DELUXE)    {
                     deluxeTotal++;
                     if(room.getRoomStatus() == Room.ROOM_STATUS.VACANT) {
                         deluxeVacant++;
-                        deluxeUnitNumber += room.getUnitNumber() + ", ";
+                        deluxeUnitNumber += room.getUnitNumber() + "(" + room.getRoomNumber() + ") , ";
                     }
                 }
                 else    {
                     vipTotal++;
                     if(room.getRoomStatus() == Room.ROOM_STATUS.VACANT) {
                         vipVacant++;
-                        vipUnitNumber += room.getUnitNumber() + ", ";
+                        vipUnitNumber += room.getUnitNumber() + "(" + room.getRoomNumber() + ") , ";
                     }
                 }
             }
