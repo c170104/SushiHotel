@@ -1266,12 +1266,14 @@ public class HotelMgr   {
                 invoice = new Invoice(guest.getGuestID(), roomNumber, checkInDate, checkOutDate, totalWeekdays, totalWeekends);
 
                 if(invoiceMgr.createBlankInvoice(invoice))  {
-                    if(reservationMgr.reservationCheckInChanges(reservationID))  {
-                        System.out.println("Check In for guest " + guest.getName() + " into Room number " 
-                                + Integer.toString(roomNumber) + " is successful!");
-                        roomMgr.setRoomToOccupied(roomNumber, Room.ROOM_STATUS.OCCUPIED);
-                        return;
+                    if(choice == 1) {
+                        if(!reservationMgr.reservationCheckInChanges(reservationID)) 
+                            System.out.println("Reservation Check In is currently not working. Please contact the administrator.");
                     }
+                    roomMgr.setRoomToOccupied(roomNumber, Room.ROOM_STATUS.OCCUPIED);
+                    System.out.println("Check In for guest " + guest.getName() + " into Room number " 
+                                    + Integer.toString(roomNumber) + " is successful!");
+                    return;
                 }
                 else    {
                     System.out.println("Check In for guest " + guest.getName() + " into Room number "
@@ -1382,7 +1384,7 @@ public class HotelMgr   {
                     System.out.println("Check Out for Room " + Integer.toString(roomNumber) + " is successful.");
                     // change room status back to vacant
                     roomMgr.setRoomToOccupied(roomNumber, Room.ROOM_STATUS.VACANT);
-                    // remove reservation
+                    // remove reservation if there is
                     reservationMgr.removeReservationAfterCheckOut(roomNumber);
                     // print bill
                     invoice = invoiceMgr.getInvoice(invoice.getInvoiceID());
