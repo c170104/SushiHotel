@@ -303,6 +303,37 @@ public class HotelMgr   {
      * removeReservation()
      * printReservation()
      */
+    
+    public void printReservationList() {
+    	Reservation reservation;
+    	List<Reservation> reservationList;
+    	try {
+    		reservationList = reservationMgr.getReservationList();
+    		if (reservationList.size()==0) {
+    			System.out.println("There are currently no reservations");
+    			return;
+    		}
+    		for (int i=0;i<reservationList.size();i++) {
+    			reservation = reservationList.get(i);
+    			System.out.println(
+    	                "====================================================================" +
+    	                "\nReservation ID: " + Integer.toString(reservation.getReservationID()) +
+    	                "\nRoom Number: " + Integer.toString(reservation.getRoomNumber()) + 
+    	                "\nNo. of Adults: " + Integer.toString(reservation.getNumAdults()) + 
+    	                "\nNo. of Childrens: " + Integer.toString(reservation.getNumChild()) + 
+    	                "\nCheck In Date: " + reservation.getCheckInDate() + 
+    	                "\nCheck Out Date: " + reservation.getCheckOutDate() + 
+    	                "\nNo. of Weekdays: " + Integer.toString(reservation.getNoOfWeekdays()) + 
+    	                "\nNo. of Weekends: " + Integer.toString(reservation.getNoOfWeekends()) + 
+    	                "\nReservation Status: " + reservation.getReserveStatus().toString() +
+    	                "\n===================================================================="
+    	            );
+    		}
+    	} catch (NullPointerException npe) {
+    		logger.severe(npe.getMessage());
+            System.out.println("The reservation is currently empty.");
+    	}
+    }
 
     public void newReservation() {
         Guest guest;

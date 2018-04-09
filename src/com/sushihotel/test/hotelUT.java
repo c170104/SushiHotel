@@ -123,10 +123,13 @@ public class hotelUT    {
                     case 17:
                         hotelMgr.printRoomStatusStatisticReport();
                         break;
+                    case 18:
+                        hotelMgr.printReservationList();
+                        break;
                     default:
                         break;
                 }
-            } while (choice != 18);
+            } while (choice != 19);
         } catch(InputMismatchException ime) {
             logger.severe(ime.getMessage());
             System.out.println("Invalid Choice. Please try again.");
