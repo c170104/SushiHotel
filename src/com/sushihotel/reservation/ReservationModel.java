@@ -52,7 +52,7 @@ public class ReservationModel {
 
 		for (int i =0; i<list.size(); i++) {
 			sReservation = (Reservation)list.get(i);
-			if (sReservation.getReservationID() != i+1) {
+			if (sReservation.getReservationID() != i+1 && idSet == false) {
 				reservation.setReservationID(i+1);
 				idSet = true;
 			}
