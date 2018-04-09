@@ -6,13 +6,13 @@ public class Guest implements Serializable {
     private int guestID;
     private String identificationNo;
     private String name;
-    private int creditCardNo;
+    private String creditCardNo;
     private String billingAddress;
     private String address;
     private String country;
     private String gender;
     private String nationality;
-    private int contactNo;
+    private String contactNo;
     private String passportNo;
 
     public enum GUEST_SEARCH_TYPE {
@@ -25,13 +25,13 @@ public class Guest implements Serializable {
     public Guest(
         String identificationNo,
         String name,
-        int creditCardNo,
+        String creditCardNo,
         String billingAddress,
         String address,
         String country,
         String gender,
         String nationality,
-        int contactNo,
+        String contactNo,
         String passportNo
     )  {
         this.identificationNo = identificationNo;
@@ -55,7 +55,7 @@ public class Guest implements Serializable {
     protected void setName(String name){
         this.name = name;
     }
-    protected void setCreditCardNumber(int creditCardNumber){
+    protected void setCreditCardNumber(String creditCardNumber){
         this.creditCardNo = creditCardNumber;
     }
     protected void setAddress(String address){
@@ -70,7 +70,7 @@ public class Guest implements Serializable {
     protected void setNationality(String nationality){
         this.nationality = nationality;
     }
-    protected void setContactNumber(int contactNumber){
+    protected void setContactNumber(String contactNumber){
         this.contactNo = contactNumber;
     }
     protected void setPassportNumber(String passportNo){
@@ -89,7 +89,7 @@ public class Guest implements Serializable {
     public String getName() {
         return this.name;
     } 
-    public int getCreditCardNumber() {
+    public String getCreditCardNumber() {
         return this.creditCardNo;
     } 
     public String getAddress() {
@@ -104,7 +104,7 @@ public class Guest implements Serializable {
     public String getNationality() {
         return this.nationality;
     } 
-    public int getContactNumber() {
+    public String getContactNumber() {
         return this.contactNo;
     } 
     public String getPassportNumber() {

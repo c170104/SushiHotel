@@ -1,16 +1,14 @@
 package com.sushihotel.reservation;
 
 import java.io.Serializable;
-
-//import com.sushihotel.guest.Guest;
-//import com.sushihotel.room.Room;
+import java.util.Date;
 
 public class Reservation implements Serializable{
 	private int reservationID;
 	private String guestName;
 	private int roomNumber;
-	private String checkInDate;
-	private String checkOutDate;
+	private Date checkInDate;
+	private Date checkOutDate;
 	private int numAdults;
 	private int numChild;
 	private Enum reserveStatus;
@@ -21,6 +19,7 @@ public class Reservation implements Serializable{
 		CONFIRMED,
 		WAITLIST,
 		CHECKED_IN,
+		CHECKED_OUT,
 		EXPIRED
 	}
 	public enum RESERVATION_SEARCH_TYPE {
@@ -29,12 +28,11 @@ public class Reservation implements Serializable{
 		
 	}
 	
-	
 	public Reservation (
 			String guestName,
 			int roomNumber,
-			String checkInDate,
-			String checkOutDate,
+			Date checkInDate,
+			Date checkOutDate,
 			int numAdults,
 			int numChild,
 			int numberOfWeekdays,
@@ -46,13 +44,34 @@ public class Reservation implements Serializable{
 		this.checkOutDate = checkOutDate;
 		this.numAdults = numAdults;
 		this.numChild = numChild;
-		this.reserveStatus = RESERVE_STATUS.CONFIRMED;
 		this.numberOfWeekdays = numberOfWeekdays;
 		this.numberOfWeekends = numberOfWeekends;
 		
 	}
+
+	public Reservation (
+			String guestName,
+			int roomNumber,
+			Date checkInDate,
+			Date checkOutDate,
+			int numAdults,
+			int numChild,
+			int numberOfWeekdays,
+			int numberOfWeekends,
+			Enum reserveStatus
+			) {
+		this.guestName = guestName;
+		this.roomNumber = roomNumber;
+		this.checkInDate = checkInDate;
+		this.checkOutDate = checkOutDate;
+		this.numAdults = numAdults;
+		this.numChild = numChild;
+		this.numberOfWeekdays = numberOfWeekdays;
+		this.numberOfWeekends = numberOfWeekends;
+		this.reserveStatus = reserveStatus;		
+	}
 	
-	protected void setReservation(int reservationID) {
+	protected void setReservationID(int reservationID) {
 		this.reservationID = reservationID;
 	}
 	protected void setGuestDetails(String guestName) {
@@ -61,10 +80,10 @@ public class Reservation implements Serializable{
 	protected void setRoomDetails(int roomNumber) {
 		this.roomNumber = roomNumber;
 	}
-	protected void setCheckInDate(String checkInDate) {
+	protected void setCheckInDate(Date checkInDate) {
 		this.checkInDate = checkInDate;
 	}
-	protected void setCheckOutDate(String checkOutDate) {
+	protected void setCheckOutDate(Date checkOutDate) {
 		this.checkOutDate = checkOutDate;
 	}
 	protected void setNumAdults(int numAdults) {
@@ -92,10 +111,10 @@ public class Reservation implements Serializable{
 	public int getRoomNumber() {
 		return this.roomNumber;
 	}
-	public String getCheckInDate() {
+	public Date getCheckInDate() {
 		return this.checkInDate;
 	}
-	public String getCheckOutDate() {
+	public Date getCheckOutDate() {
 		return this.checkOutDate;
 	}
 	public int getNumAdults() {

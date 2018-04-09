@@ -66,6 +66,22 @@ public class RoomMgr    {
         }
         return room;
     }
+
+    public boolean setRoomToOccupied(int roomNumber, Enum roomStatus)    {
+        Room room;
+        try {
+            room = RoomModel.read(roomNumber);
+            room.setRoomStatus(roomStatus);
+            
+            return RoomModel.update(roomNumber, room);
+        } catch(EmptyDB edb)    {
+            logger.warning(edb.getMessage());
+        } catch(InvalidEntity ie)   {
+            logger.warning(ie.getMessage());
+        }
+        return false;
+    }
+
     public boolean checkRoomAvailability(int roomNumber)    {
         try {
             Room room;
@@ -95,13 +111,13 @@ public class RoomMgr    {
             for (int i = 0; i < list.size(); i++) {
                 room = list.get(i);
                 if(room.getRoomStatus() == Room.ROOM_STATUS.VACANT)
-                    vacantRooms += room.getUnitNumber() + ", ";
+                    vacantRooms += room.getUnitNumber() + "(" + room.getRoomNumber() + ") , ";
                 else if(room.getRoomStatus() == Room.ROOM_STATUS.OCCUPIED)
-                    occupiedRooms += room.getUnitNumber() + ", ";
+                    occupiedRooms += room.getUnitNumber() + "(" + room.getRoomNumber() + ") , ";
                 else if(room.getRoomStatus() == Room.ROOM_STATUS.RESERVED)
-                    reservedRooms += room.getUnitNumber() + ", ";
+                    reservedRooms += room.getUnitNumber() + "(" + room.getRoomNumber() + ") , ";
                 else
-                    underMaintanenceRooms += room.getUnitNumber() + ", ";
+                    underMaintanenceRooms += room.getUnitNumber() + "(" + room.getRoomNumber() + ") , ";
             }
 
             System.out.println(
@@ -140,28 +156,28 @@ public class RoomMgr    {
                     singleTotal++;
                     if(room.getRoomStatus() == Room.ROOM_STATUS.VACANT) {
                         singleVacant++;
-                        singleUnitNumber += room.getUnitNumber() + ", ";
+                        singleUnitNumber += room.getUnitNumber() + "(" + room.getRoomNumber() + ") , ";
                     }
                 }
                 else if(room.getRoomType() == Room.ROOM_TYPE.DOUBLE)    {
                     doubleTotal++;
                     if(room.getRoomStatus() == Room.ROOM_STATUS.VACANT) {
                         doubleVacant++;
-                        doubleUnitNumber += room.getUnitNumber() + ", ";
+                        doubleUnitNumber += room.getUnitNumber() + "(" + room.getRoomNumber() + ") , ";
                     }
                 }
                 else if(room.getRoomType() == Room.ROOM_TYPE.DELUXE)    {
                     deluxeTotal++;
                     if(room.getRoomStatus() == Room.ROOM_STATUS.VACANT) {
                         deluxeVacant++;
-                        deluxeUnitNumber += room.getUnitNumber() + ", ";
+                        deluxeUnitNumber += room.getUnitNumber() + "(" + room.getRoomNumber() + ") , ";
                     }
                 }
                 else    {
                     vipTotal++;
                     if(room.getRoomStatus() == Room.ROOM_STATUS.VACANT) {
                         vipVacant++;
-                        vipUnitNumber += room.getUnitNumber() + ", ";
+                        vipUnitNumber += room.getUnitNumber() + "(" + room.getRoomNumber() + ") , ";
                     }
                 }
             }
