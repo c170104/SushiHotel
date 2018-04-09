@@ -57,6 +57,10 @@ public class ReservationModel {
 				idSet = true;
 			}
 		}
+		
+        if (idSet == false) {
+      	  reservation.setReservationID(size + 1);
+        }
 		//reservation.setReservationID(size+1); // will have error if you delete one reservation in the middle of a list of reservation, 
 												///because the following add will take the same reservation id as the last reservation id
 		list.add(reservation);
