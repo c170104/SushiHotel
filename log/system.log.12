@@ -1,0 +1,4 @@
+Apr 09, 2018 11:01:08 AM com.sushihotel.room.RoomMgr getRoom
+WARNING: (ROOM_NUMBER) 200 not found.
+Apr 09, 2018 11:01:08 AM com.sushihotel.hotel.HotelMgr printRoomStatusStatisticReport
+SEVERE: null

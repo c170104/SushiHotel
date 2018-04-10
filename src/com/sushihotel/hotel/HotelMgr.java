@@ -18,6 +18,7 @@ import com.sushihotel.reservation.Reservation;
 import com.sushihotel.reservation.Reservation.RESERVE_STATUS;
 import com.sushihotel.reservation.ReservationMgr;
 import com.sushihotel.room.Room;
+import com.sushihotel.room.Room.ROOM_TYPE;
 import com.sushihotel.room.RoomMgr;
 import com.sushihotel.roomservice.RoomSvc;
 import com.sushihotel.roomservice.RoomSvcMgr;
@@ -303,6 +304,37 @@ public class HotelMgr   {
      * removeReservation()
      * printReservation()
      */
+    
+    public void printReservationList() {
+    	Reservation reservation;
+    	List<Reservation> reservationList;
+    	try {
+    		reservationList = reservationMgr.getReservationList();
+    		if (reservationList.size()==0) {
+    			System.out.println("There are currently no reservations");
+    			return;
+    		}
+    		for (int i=0;i<reservationList.size();i++) {
+    			reservation = reservationList.get(i);
+    			System.out.println(
+    	                "====================================================================" +
+    	                "\nReservation ID: " + Integer.toString(reservation.getReservationID()) +
+    	                "\nRoom Number: " + Integer.toString(reservation.getRoomNumber()) + 
+    	                "\nNo. of Adults: " + Integer.toString(reservation.getNumAdults()) + 
+    	                "\nNo. of Childrens: " + Integer.toString(reservation.getNumChild()) + 
+    	                "\nCheck In Date: " + reservation.getCheckInDate() + 
+    	                "\nCheck Out Date: " + reservation.getCheckOutDate() + 
+    	                "\nNo. of Weekdays: " + Integer.toString(reservation.getNoOfWeekdays()) + 
+    	                "\nNo. of Weekends: " + Integer.toString(reservation.getNoOfWeekends()) + 
+    	                "\nReservation Status: " + reservation.getReserveStatus().toString() +
+    	                "\n===================================================================="
+    	            );
+    		}
+    	} catch (NullPointerException npe) {
+    		logger.severe(npe.getMessage());
+            System.out.println("The reservation is currently empty.");
+    	}
+    }
 
     public void newReservation() {
         Guest guest;
@@ -484,7 +516,7 @@ public class HotelMgr   {
                             System.out.println("Input new check in date dd/MM/yyyy");
                             try {
                                 checkInDateInput = sc.nextLine();
-                                checkInDate = formatter.parse(checkInDateInput + " 12:00");
+                                checkInDate = formatter.parse(checkInDateInput + " 14:00");
                                 dateCheck = true;
                             } catch (ParseException pe) {
                                 System.out.println("Incorrect date time format");
@@ -1397,8 +1429,125 @@ public class HotelMgr   {
         }
     }
 
-    public void printRoomStatusStatisticReport()    {
+    public void printRoomStatusStatisticReport()    {	
 
+    		Reservation reservation;
+    		Room room;
+    		int roomNumber = 0;
+            int singleOccupied = 0, singleTotal = 0;
+            int doubleOccupied = 0, doubleTotal = 0;
+            int deluxeOccupied = 0, deluxeTotal = 0;
+            int totalOccupied = 0, hotelTotal = 0;
+            double orSingle;
+            double orDouble;
+            double orDeluxe;
+            double orVip;
+            double orTotal;
+            int vipOccupied = 0, vipTotal = 0;
+            String singleUnitNumber = "";
+            String doubleUnitNumber = "";
+            String deluxeUnitNumber = "";
+            String vipUnitNumber = "";
+
+    		List reservationList;
+    		Date date = null;
+    		boolean dateCheck = false;
+    		
+    		System.out.println("Enter required occupancy (date dd/MM/yyyy)");
+    		do {
+        		try {
+        			String inputDate = sc.nextLine();
+            		date = formatter.parse(inputDate + " 14:00");
+            		dateCheck = true;
+        		} catch (ParseException pe) {
+        			System.out.println("Incorrect date time format");
+        			dateCheck = false;
+        		}
+    		} while (!dateCheck);
+
+    		try {
+    			reservationList = reservationMgr.getReservationList();
+    			if (reservationList.size() == 0) {
+    				System.out.println("Hotel is not occupied");
+    				return;
+    			}
+    			for (int i = 0; i<reservationList.size(); i++) {
+    				reservation = (Reservation)reservationList.get(i);
+    				roomNumber = reservation.getRoomNumber();
+    				room = roomMgr.getRoom(roomNumber);
+
+    				if (room.getRoomType() == Room.ROOM_TYPE.SINGLE) {
+    					singleTotal++;
+    					if (date.after(reservation.getCheckInDate()) && date.before(reservation.getCheckOutDate())) {
+        						singleUnitNumber += room.getUnitNumber() + "(" + room.getRoomNumber() + ") , ";
+        						singleOccupied++;
+    						}
+    					}
+    				if (room.getRoomType() == ROOM_TYPE.DOUBLE) {
+    					doubleTotal++;
+    					if (date.after(reservation.getCheckInDate()) && date.before(reservation.getCheckOutDate())) {
+    							doubleUnitNumber += room.getUnitNumber() + "(" + room.getRoomNumber() + ") , ";
+    							doubleOccupied++;
+    						}
+    					}
+    					
+    				if (room.getRoomType() == ROOM_TYPE.DELUXE) {
+    					deluxeTotal++;
+    					if (date.after(reservation.getCheckInDate()) && date.before(reservation.getCheckOutDate())) {
+    							deluxeUnitNumber += room.getUnitNumber() + "(" + room.getRoomNumber() + ") , ";
+    							deluxeOccupied++;
+    						}
+    					}
+    					
+    				if (room.getRoomType() == ROOM_TYPE.VIP) {
+    					vipTotal++; 
+    					if (date.after(reservation.getCheckInDate()) && date.before(reservation.getCheckOutDate())) {
+    							vipUnitNumber += room.getUnitNumber() + "(" + room.getRoomNumber() + ") , ";
+    							vipOccupied++;
+    						}
+    					}
+    				}
+    			orSingle = (double)singleOccupied/(double)singleTotal * 100.0;
+    			orDouble = (double)doubleOccupied/(double)doubleTotal * 100.0;
+    			orDeluxe = (double)deluxeOccupied/(double)deluxeTotal * 100.0;
+    			orVip = (double)vipOccupied/(double)vipTotal * 100.0;
+    			totalOccupied = singleOccupied + doubleOccupied + deluxeOccupied + vipOccupied;
+    			hotelTotal = singleTotal + doubleTotal + deluxeTotal + vipTotal;
+    			orTotal = (double)totalOccupied / (double)hotelTotal * 100;
+                System.out.println(
+                        "==============ROOM OCCUPANCY REPORT==============\n"  +
+                        "On Date: " + date +"\n" +
+                        "Single Room\n" +
+                        "Total Single Rooms: " + singleTotal + "\n" +
+                        "Occupied Single Rooms: " + singleOccupied +"\n" +
+                        "Occupancy Rate: " + String.format("%.2f", orSingle) +"%\n" +
+                        "Occupied Rooms: " + singleUnitNumber + "\n" +
+                        "--------------------------------------------------\n" +
+                        "Double Room\n" +
+                        "Total Double Rooms: " + doubleTotal + "\n" +
+                        "Occupied Double Rooms: " + doubleOccupied +"\n" +
+                        "Occupancy Rate: " + String.format("%.2f", orDouble) +"%\n" +
+                        "Occupied Rooms: " + doubleUnitNumber + "\n" +
+                        "--------------------------------------------------\n" +
+                        "Deluxe Room\n" +
+                        "Total Deluxe Rooms: " + deluxeTotal + "\n" +
+                        "Occupied Deluxe Rooms: " + deluxeOccupied +"\n" +
+                        "Occupancy Rate: " + String.format("%.2f", orDeluxe) +"%\n" +
+                        "Occupied Rooms: " + deluxeUnitNumber + "\n" +
+                        "--------------------------------------------------\n" +
+                        "VIP Room\n" +
+                        "Total VIP Rooms: " + vipTotal + "\n" +
+                        "Occupied VIP Rooms: " + vipOccupied +"\n" +
+                        "Occupancy Rate: " + String.format("%.2f", orVip) +"%\n" +
+                        "Occupied Rooms: " + vipUnitNumber + "\n" +
+                        "--------------------------------------------------\n" +
+                        "Hotel Occupany Rate: " +  String.format("%.2f", orTotal) +"%\n"
+                    );
+    		} catch (NullPointerException npe)   {
+                logger.severe(npe.getMessage());
+                npe.printStackTrace(System.out);
+                System.out.println("The hotel is currently empty.");
+            }
     }
 
     /**

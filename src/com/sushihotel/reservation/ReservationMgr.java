@@ -11,6 +11,17 @@ import com.sushihotel.exception.InvalidEntity;
 public class ReservationMgr {
 	private static final Logger logger = Logger.getLogger(ReservationMgr.class.getName());
 	
+	
+	public List<Reservation> getReservationList() {
+			List<Reservation> reservationList = null;
+			try {
+				reservationList = ReservationModel.read();
+			} catch (EmptyDB edb) {
+				logger.log(Level.WARNING, edb.getMessage());
+			}
+			return reservationList;
+	}
+	
 	public int beginReservation(Reservation reservation) {
 		List<Reservation> list;
 		Reservation dbReservation;

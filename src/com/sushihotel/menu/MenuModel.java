@@ -1,6 +1,7 @@
 package com.sushihotel.menu;
 
 import java.util.ArrayList ;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -21,26 +22,35 @@ public class MenuModel {
 		List list;
 		int size;
 		Meal dbMeal;
+		boolean idSet = false;
 		
 		list = (ArrayList)dataStore.read(IDataStore.DB_ENTITY_TYPE.MENU);
 		
-		size = list == null ? 0 : list.size(); // size assigned to 0 if list == null else size == list.size()
+		size = list == null ? 0 : list.size();
 		
 		if(list == null)    {
             list = new ArrayList(); // declare array list without specific <obj> ref
         }    
 		
 // 		Checks Meal against dbMeal(reflects list) for existing meal based on mealID, mealName
-        for(int i=0; i<size; i++)   {
+        for(int i=0; i<list.size(); i++)   {
             dbMeal = (Meal)list.get(i);     
             if(dbMeal.getMealName().toLowerCase().equals(meal.getMealName().toLowerCase())) {
             	throw new DuplicateData(meal.getMealName(), Meal.MENU_SEARCH_TYPE.MEAL_NAME);
             }
+            if (dbMeal.getMealID() != i+1 && idSet == false) {
+            	meal.setMealID(i+1);
+            	idSet = true;
+            }
+        }
+        if (idSet == false) {
+        	  meal.setMealID(size + 1);
         }
         
 // 		mealID automatically set on creation
-        meal.setMealID(size + 1); // 
+//        meal.setMealID(size + 1); // 
         list.add(meal);
+        list.sort(Comparator.comparing(Meal::getMealID));
         return dataStore.write(list, IDataStore.DB_ENTITY_TYPE.MENU);
 	}
         
@@ -94,7 +104,11 @@ public class MenuModel {
         while(iter.hasNext())   { //check if there is next item in list
             dbMeal = (Meal)iter.next(); // assign next item
             if(dbMeal.getMealID() == mealID) { // remove if mealname is found
-                iter.remove(); // removes 
+                dbMeal.setDesc(meal.getDesc());
+                dbMeal.setMealName(meal.getMealName());
+                dbMeal.setMealPrice(meal.getMealPrice());
+                dbMeal.setPreparedMethod(meal.getPreparedMethod());
+            	//iter.remove(); // removes 
                 trigger_flag = true;
                 break;
             }
@@ -103,7 +117,7 @@ public class MenuModel {
             throw new InvalidEntity(mealID + " not found. ", Meal.MENU_SEARCH_TYPE.MEAL_ID);
             
         meal.setMealID(mealID);
-        list.add(meal); 
+        //list.add(meal); 
         
         return dataStore.write(list, IDataStore.DB_ENTITY_TYPE.MENU);
 	}
