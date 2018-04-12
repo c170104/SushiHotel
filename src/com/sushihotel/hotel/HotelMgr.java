@@ -1295,12 +1295,16 @@ public class HotelMgr   {
         Invoice invoice;
         Date checkInDate = null;
         Date checkOutDate = null;
+        Date currentDate = new Date();
         String checkInDateInput;
         String checkOutDateInput;
+        Calendar startCal = Calendar.getInstance();
+        Calendar endCal = Calendar.getInstance();
         int roomNumber = 0;
         int reservationID = -1;
         int totalWeekdays = 0;
         int totalWeekends = 0;
+        boolean dateCheck = false;
 
         try {
             System.out.println("============ CHECK IN ============");
@@ -1353,18 +1357,70 @@ public class HotelMgr   {
                     System.out.print("Please input room number: ");
                     roomNumber = sc.nextInt();
                     sc.nextLine();
-                    System.out.print("Please input Check In Date in the format (dd/MM/yyyy): ");
-                    checkInDateInput = sc.nextLine();
-                    checkInDate = formatter.parse(checkInDateInput + " 14:00");
-                    System.out.print("Please input Check Out Date in the format (dd/MM/yyyy): ");
-                    checkOutDateInput = sc.nextLine();
-                    checkOutDate = formatter.parse(checkOutDateInput + " 12:00");
-                    System.out.print("Please input total weekdays of stay: ");
-                    totalWeekdays = sc.nextInt();
-                    sc.nextLine();
-                    System.out.print("Please input total weekends of stay: ");
-                    totalWeekends = sc.nextInt();
-                    sc.nextLine();
+           
+                    
+                    do {
+                        do {
+                            System.out.println("Please enter Check In Date (dd/MM/yyyy)");
+                            try {
+                                checkInDateInput = sc.nextLine();
+                                checkInDate = formatter.parse(checkInDateInput + " 14:00");
+                                if (checkInDate.before(currentDate)) {
+                                	dateCheck = false;
+                                	System.out.println("Check in date has already passed current date. Try again");
+                                } else {
+                                    dateCheck = true;
+                                }
+                            } catch (ParseException pe) {
+                                System.out.println("Incorrect date time format");
+                                dateCheck = false;
+                            }
+                        } while (!dateCheck);
+
+                        do {
+                            System.out.println("Please enter Check Out Date (dd/MM/yyyy)");
+                            try {
+                                checkOutDateInput =sc.nextLine();
+                                checkOutDate = formatter.parse(checkOutDateInput + " 12:00");
+                                dateCheck = true;
+                            } catch (ParseException pe) {
+                                System.out.println("Incorrect date time format");
+                                dateCheck = false;
+                            }
+                        } while (!dateCheck);
+
+                        if (checkInDate.compareTo(checkOutDate) >= 0) {
+                            System.out.println("Check in date can't be the same or later than the check out date, try again!");
+                            dateCheck = false;
+                        }
+                    } while (!dateCheck);
+                    
+                	startCal.setTime(checkInDate);
+                	endCal.setTime(checkOutDate);
+                    do {
+                        if (startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+                            totalWeekdays++;
+                        } else {
+                        	totalWeekends++;
+                        }
+                    	startCal.add(Calendar.DAY_OF_MONTH, 1);
+                    } while (startCal.getTimeInMillis() < endCal.getTimeInMillis()); //excluding end date
+                    
+                    if (startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+                        totalWeekdays++;
+                    } else {
+                    	totalWeekends++;
+                    }
+                    System.out.println("Weekdays & Weekends: " + totalWeekdays + " " + totalWeekends);
+                    
+                    
+                    
+//                    System.out.print("Please input total weekdays of stay: ");
+//                    totalWeekdays = sc.nextInt();
+//                    sc.nextLine();
+//                    System.out.print("Please input total weekends of stay: ");
+//                    totalWeekends = sc.nextInt();
+//                    sc.nextLine();
                 }
 
                 invoice = new Invoice(guest.getGuestID(), roomNumber, checkInDate, checkOutDate, totalWeekdays, totalWeekends);
@@ -1388,9 +1444,6 @@ public class HotelMgr   {
         } catch(InputMismatchException ime) {
             logger.severe(ime.getMessage());
             System.out.println(ERROR_MSG);
-        } catch(ParseException pe)  {
-            logger.severe(pe.getMessage());
-            System.out.println("Date Time format is wrong. Please try again.");
         }
     }
 
