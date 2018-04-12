@@ -145,7 +145,7 @@ public class InvoiceMgr {
         int totalWeekEnds;
 
         try {
-            invoice = InvoiceModel.read(roomNumber);
+            invoice = getUnpaidInvoice(roomNumber);
 
             totalWeekDays = invoice.getTotalWeekdays();
             totalWeekEnds = invoice.getTotalWeekends();
