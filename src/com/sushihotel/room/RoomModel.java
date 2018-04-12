@@ -34,8 +34,8 @@ public class RoomModel   {
             if(dbRoom.getRoomNumber() == room.getRoomNumber())  {
                 throw new DuplicateData(Integer.toString(room.getRoomNumber()), Room.ROOM_SEARCH_TYPE.ROOM_NUMBER);
             }
-//            else if(dbRoom.getUnitNumber().toLowerCase().equals(room.getUnitNumber().toLowerCase()))
-//                throw new DuplicateData(room.getUnitNumber(), Room.ROOM_SEARCH_TYPE.UNIT_NUMBER);
+            else if(dbRoom.getUnitNumber().toLowerCase().equals(room.getUnitNumber().toLowerCase()))
+                throw new DuplicateData(room.getUnitNumber(), Room.ROOM_SEARCH_TYPE.UNIT_NUMBER);
         }
         list.add(room);
         

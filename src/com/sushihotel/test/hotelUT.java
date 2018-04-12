@@ -15,6 +15,8 @@ public class hotelUT    {
     public static void main(String[] args)  {
         int choice;
         String staffName;
+        
+        hotelMgr.updateExpiredStatus();
         try {
             /**
              * LOGGING HANDLER
@@ -122,6 +124,15 @@ public class hotelUT    {
                     case 17:
                         hotelMgr.printRoomStatusStatisticReport();
                         break;
+                    case 19:
+                    	hotelMgr.printMealList();
+                    	break;
+                    case 20:
+                    	hotelMgr.printReservationList();     
+                    	break;
+                    case 21:
+                    	hotelMgr.checkRoomServiceStatus();
+                    	break;
                     default:
                         break;
                 }

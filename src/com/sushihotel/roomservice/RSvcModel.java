@@ -59,6 +59,7 @@ public class RSvcModel {
 		throw new InvalidEntity(roomSvcId + " not found. ", RoomSvc.ROOMSVC_SEARCH_TYPE.ROOM_SVC_ID);
 	}
 	
+	
 	protected static boolean update(int roomSvcId, RoomSvc roomSvc) throws EmptyDB, InvalidEntity{
 		List list;
 		Iterator iter;

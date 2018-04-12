@@ -3,6 +3,8 @@ package com.sushihotel.test;
 import com.sushihotel.room.Room;
 import com.sushihotel.room.Room.ROOM_TYPE;
 import com.sushihotel.room.RoomMgr;
+import com.sushihotel.roomservice.RoomSvc;
+import com.sushihotel.roomservice.RoomSvcMgr;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,6 +14,24 @@ import com.sushihotel.reservation.*;
 
 public class rUT    {
     public static void main(String[] args) throws ParseException  {
+    	
+    	Date date = new Date();
+    	
+    	RoomSvcMgr rsMgr = new RoomSvcMgr();
+    	RoomSvc rms1 = new RoomSvc(100, 999, "TEST", date);
+    	RoomSvc rms2 = new RoomSvc(100, 999, "TEST", date);
+    	RoomSvc rms3 = new RoomSvc(100, 999, "TEST", date);
+    	RoomSvc rms4 = new RoomSvc(100, 999, "TEST", date);
+    	RoomSvc rms5 = new RoomSvc(100, 999, "TEST", date);
+    	rsMgr.addNewRoomSvc(rms1);
+    	rsMgr.addNewRoomSvc(rms2);
+    	rsMgr.addNewRoomSvc(rms3);
+    	rsMgr.addNewRoomSvc(rms4);
+    	rsMgr.addNewRoomSvc(rms5);
+    	
+    	
+
+    	
         RoomMgr rMgr = new RoomMgr();
         
         // single room (20)
@@ -36,36 +56,36 @@ public class rUT    {
         Room r118 = new Room (118, Room.ROOM_TYPE.SINGLE, 1,1,1,1,"TEST",true,"TEST",true,"19");
         Room r119 = new Room (119, Room.ROOM_TYPE.SINGLE, 1,1,1,1,"TEST",true,"TEST",true,"20");
         // double room (15)
-        Room r200 = new Room (200, Room.ROOM_TYPE.DOUBLE, 1,1,1,1,"TEST",true,"TEST",true,"01");
-        Room r201 = new Room (201, Room.ROOM_TYPE.DOUBLE, 1,1,1,1,"TEST",true,"TEST",true,"02");
-        Room r202 = new Room (202, Room.ROOM_TYPE.DOUBLE, 1,1,1,1,"TEST",true,"TEST",true,"03");
-        Room r203 = new Room (203, Room.ROOM_TYPE.DOUBLE, 1,1,1,1,"TEST",true,"TEST",true,"04");
-        Room r204 = new Room (204, Room.ROOM_TYPE.DOUBLE, 1,1,1,1,"TEST",true,"TEST",true,"05");
-        Room r205 = new Room (205, Room.ROOM_TYPE.DOUBLE, 1,1,1,1,"TEST",true,"TEST",true,"06");
-        Room r206 = new Room (206, Room.ROOM_TYPE.DOUBLE, 1,1,1,1,"TEST",true,"TEST",true,"07");
-        Room r207 = new Room (207, Room.ROOM_TYPE.DOUBLE, 1,1,1,1,"TEST",true,"TEST",true,"08");
-        Room r208 = new Room (208, Room.ROOM_TYPE.DOUBLE, 1,1,1,1,"TEST",true,"TEST",true,"09");
-        Room r209 = new Room (209, Room.ROOM_TYPE.DOUBLE, 1,1,1,1,"TEST",true,"TEST",true,"10");
-        Room r210 = new Room (210, Room.ROOM_TYPE.DOUBLE, 1,1,1,1,"TEST",true,"TEST",true,"11");
-        Room r211 = new Room (211, Room.ROOM_TYPE.DOUBLE, 1,1,1,1,"TEST",true,"TEST",true,"12");
-        Room r212 = new Room (212, Room.ROOM_TYPE.DOUBLE, 1,1,1,1,"TEST",true,"TEST",true,"13");
-        Room r213 = new Room (213, Room.ROOM_TYPE.DOUBLE, 1,1,1,1,"TEST",true,"TEST",true,"14");
-        Room r214 = new Room (214, Room.ROOM_TYPE.DOUBLE, 1,1,1,1,"TEST",true,"TEST",true,"15");
+        Room r200 = new Room (200, Room.ROOM_TYPE.DOUBLE, 1,1,1,1,"TEST",true,"TEST",true,"21");
+        Room r201 = new Room (201, Room.ROOM_TYPE.DOUBLE, 1,1,1,1,"TEST",true,"TEST",true,"22");
+        Room r202 = new Room (202, Room.ROOM_TYPE.DOUBLE, 1,1,1,1,"TEST",true,"TEST",true,"23");
+        Room r203 = new Room (203, Room.ROOM_TYPE.DOUBLE, 1,1,1,1,"TEST",true,"TEST",true,"24");
+        Room r204 = new Room (204, Room.ROOM_TYPE.DOUBLE, 1,1,1,1,"TEST",true,"TEST",true,"25");
+        Room r205 = new Room (205, Room.ROOM_TYPE.DOUBLE, 1,1,1,1,"TEST",true,"TEST",true,"26");
+        Room r206 = new Room (206, Room.ROOM_TYPE.DOUBLE, 1,1,1,1,"TEST",true,"TEST",true,"27");
+        Room r207 = new Room (207, Room.ROOM_TYPE.DOUBLE, 1,1,1,1,"TEST",true,"TEST",true,"28");
+        Room r208 = new Room (208, Room.ROOM_TYPE.DOUBLE, 1,1,1,1,"TEST",true,"TEST",true,"29");
+        Room r209 = new Room (209, Room.ROOM_TYPE.DOUBLE, 1,1,1,1,"TEST",true,"TEST",true,"30");
+        Room r210 = new Room (210, Room.ROOM_TYPE.DOUBLE, 1,1,1,1,"TEST",true,"TEST",true,"31");
+        Room r211 = new Room (211, Room.ROOM_TYPE.DOUBLE, 1,1,1,1,"TEST",true,"TEST",true,"32");
+        Room r212 = new Room (212, Room.ROOM_TYPE.DOUBLE, 1,1,1,1,"TEST",true,"TEST",true,"33");
+        Room r213 = new Room (213, Room.ROOM_TYPE.DOUBLE, 1,1,1,1,"TEST",true,"TEST",true,"34");
+        Room r214 = new Room (214, Room.ROOM_TYPE.DOUBLE, 1,1,1,1,"TEST",true,"TEST",true,"35");
         // deluxe room (8)
-        Room r300 = new Room (300, Room.ROOM_TYPE.DELUXE, 1,1,1,1,"TEST",true,"TEST",true,"01");
-        Room r301 = new Room (301, Room.ROOM_TYPE.DELUXE, 1,1,1,1,"TEST",true,"TEST",true,"02");
-        Room r302 = new Room (302, Room.ROOM_TYPE.DELUXE, 1,1,1,1,"TEST",true,"TEST",true,"03");
-        Room r303 = new Room (303, Room.ROOM_TYPE.DELUXE, 1,1,1,1,"TEST",true,"TEST",true,"04");
-        Room r304 = new Room (304, Room.ROOM_TYPE.DELUXE, 1,1,1,1,"TEST",true,"TEST",true,"05");
-        Room r305 = new Room (305, Room.ROOM_TYPE.DELUXE, 1,1,1,1,"TEST",true,"TEST",true,"06");
-        Room r306 = new Room (306, Room.ROOM_TYPE.DELUXE, 1,1,1,1,"TEST",true,"TEST",true,"07");
-        Room r307 = new Room (307, Room.ROOM_TYPE.DELUXE, 1,1,1,1,"TEST",true,"TEST",true,"08");
+        Room r300 = new Room (300, Room.ROOM_TYPE.DELUXE, 1,1,1,1,"TEST",true,"TEST",true,"36");
+        Room r301 = new Room (301, Room.ROOM_TYPE.DELUXE, 1,1,1,1,"TEST",true,"TEST",true,"37");
+        Room r302 = new Room (302, Room.ROOM_TYPE.DELUXE, 1,1,1,1,"TEST",true,"TEST",true,"38");
+        Room r303 = new Room (303, Room.ROOM_TYPE.DELUXE, 1,1,1,1,"TEST",true,"TEST",true,"39");
+        Room r304 = new Room (304, Room.ROOM_TYPE.DELUXE, 1,1,1,1,"TEST",true,"TEST",true,"40");
+        Room r305 = new Room (305, Room.ROOM_TYPE.DELUXE, 1,1,1,1,"TEST",true,"TEST",true,"41");
+        Room r306 = new Room (306, Room.ROOM_TYPE.DELUXE, 1,1,1,1,"TEST",true,"TEST",true,"42");
+        Room r307 = new Room (307, Room.ROOM_TYPE.DELUXE, 1,1,1,1,"TEST",true,"TEST",true,"43");
         // vip room (5)
-        Room r400 = new Room (400, Room.ROOM_TYPE.VIP, 1,1,1,1,"TEST",true,"TEST",true,"01");
-        Room r401 = new Room (401, Room.ROOM_TYPE.VIP, 1,1,1,1,"TEST",true,"TEST",true,"02");
-        Room r402 = new Room (402, Room.ROOM_TYPE.VIP, 1,1,1,1,"TEST",true,"TEST",true,"03");
-        Room r403 = new Room (403, Room.ROOM_TYPE.VIP, 1,1,1,1,"TEST",true,"TEST",true,"04");
-        Room r404 = new Room (404, Room.ROOM_TYPE.VIP, 1,1,1,1,"TEST",true,"TEST",true,"05");
+        Room r400 = new Room (400, Room.ROOM_TYPE.VIP, 1,1,1,1,"TEST",true,"TEST",true,"44");
+        Room r401 = new Room (401, Room.ROOM_TYPE.VIP, 1,1,1,1,"TEST",true,"TEST",true,"45");
+        Room r402 = new Room (402, Room.ROOM_TYPE.VIP, 1,1,1,1,"TEST",true,"TEST",true,"46");
+        Room r403 = new Room (403, Room.ROOM_TYPE.VIP, 1,1,1,1,"TEST",true,"TEST",true,"47");
+        Room r404 = new Room (404, Room.ROOM_TYPE.VIP, 1,1,1,1,"TEST",true,"TEST",true,"48");
         
         rMgr.createRoom(r100);
         rMgr.createRoom(r101);
@@ -124,8 +144,8 @@ public class rUT    {
         Date co = null;
         Date co2 = null;
         ReservationMgr reservationMgr = new ReservationMgr();
-        ci = formatter.parse("11/11/1995 14:01");
-        co = formatter.parse("11/11/2000 12:00");
+        ci = formatter.parse("11/11/2018 14:01");
+        co = formatter.parse("11/11/2019 12:00");
         ci2 = formatter.parse("11/11/1000 14:01");
         co2 = formatter.parse("11/11/1001 12:00");
         

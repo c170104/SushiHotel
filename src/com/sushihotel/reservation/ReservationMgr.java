@@ -7,10 +7,37 @@ import java.util.logging.Logger;
 
 import com.sushihotel.exception.EmptyDB;
 import com.sushihotel.exception.InvalidEntity;
+import com.sushihotel.reservation.Reservation.RESERVE_STATUS;
 
 public class ReservationMgr {
 	private static final Logger logger = Logger.getLogger(ReservationMgr.class.getName());
 	
+	
+	public boolean updateExpiredReservation() {
+		Reservation reservation;
+		List<Reservation> reservationList;
+		try {
+			reservationList = ReservationModel.read();
+			
+			for (int i = 0; i < reservationList.size(); i++) {
+				reservation = reservationList.get(i);
+				if (reservation.getReserveStatus().equals(RESERVE_STATUS.CONFIRMED)) {
+					if (System.currentTimeMillis() - reservation.getCheckInDate().getTime() >= 3600000L ) {
+						reservation.setReserveStatus(RESERVE_STATUS.EXPIRED);
+						ReservationModel.update(reservation.getReservationID(), reservation);
+//						System.out.println(reservation.getReservationID() + 
+//								"\n " + reservation.getCheckInDate() +
+//								"\n " + reservation.getReserveStatus());
+					}
+				}
+			}
+		} catch (EmptyDB edb) {
+			logger.log(Level.WARNING, edb.getMessage());
+		} catch (InvalidEntity ie) {
+			logger.log(Level.WARNING, ie.getMessage());
+		}
+		return true;
+	}
 	
 	public List<Reservation> getReservationList() {
 			List<Reservation> reservationList = null;
