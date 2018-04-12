@@ -983,8 +983,9 @@ public class HotelMgr   {
                 }
             } while (choice != 12);
 
+            room = new Room(roomNumber, roomType, maxNoAdults, maxNoChild, rateWeekdays, rateWeekends, bedType, wifiEnabled, facingView, smokingAllowed, roomStatus, unitNumber);
             if(roomMgr.editRoom(roomNumber, room))
-                System.out.println("Successfully updated Room number " + roomNumber);
+                System.out.println("Successfully updated Room number " + roomNumber + ".");
             else
                 System.out.println("System failed to update Room number " + roomNumber + ". Please try again.");
         } catch(InputMismatchException ime) {
@@ -1696,37 +1697,51 @@ public class HotelMgr   {
 		}, initialDelay, 86400000L, TimeUnit.MILLISECONDS); 
     }
     
-    /*
-     * Checks reservation list at set timing, currently is 1300hrs
-     * if any confirmed reserve status on the same day has not checked in by 1300
-     * sets reserve status to expired.
-     */
-//	Date timeCheck = new Date();
-//	timeCheck.setHours(13);
-//	timeCheck.setMinutes(00);
-//	timeCheck.setSeconds(00);
-//	long initialDelay = new Date(timeCheck.getTime()-System.currentTimeMillis()).getTime();
-//	System.out.println(initialDelay);
-//	if (initialDelay <= 0 ) {
-//		initialDelay = initialDelay + 86400000L;
-//	}
-//	ScheduledExecutorService execService = Executors.newScheduledThreadPool(5);
-//	execService.scheduleAtFixedRate(()->{
-//		 hotelMgr.updateExpiredStatus();
-//	}, initialDelay, 86400000L, TimeUnit.MILLISECONDS); 
-	
-
-    
-    /*
-     * Checks reservation list every hour 
-     * if any confirmed reserve status on the same day has not checked in with an hour's grace
-     * sets reserve status to expired.
-     */
-//	ScheduledExecutorService execService = Executors.newScheduledThreadPool(5);			
-//	execService.scheduleAtFixedRate(()->{
-//		 hotelMgr.updateExpiredStatus();
-//	}, initialDelay, 3600000L, TimeUnit.MILLISECONDS);
-
+    public void setDummyData()  {
+         roomMgr.createRoom(new Room(6, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", true, "02-06"));
+         roomMgr.createRoom(new Room(7, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", true, "02-07"));
+         roomMgr.createRoom(new Room(8, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", true, "02-08"));
+         roomMgr.createRoom(new Room(9, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "03-01"));
+         roomMgr.createRoom(new Room(10, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "03-02"));
+         roomMgr.createRoom(new Room(11, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "03-03"));
+         roomMgr.createRoom(new Room(12, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "03-04"));
+         roomMgr.createRoom(new Room(13, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "03-05"));
+         roomMgr.createRoom(new Room(14, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "03-06"));
+         roomMgr.createRoom(new Room(15, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", false, "Lake", false, "03-07"));
+         roomMgr.createRoom(new Room(16, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", false, "Lake", false, "03-08"));
+         roomMgr.createRoom(new Room(17, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "04-01"));
+         roomMgr.createRoom(new Room(18, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "04-02"));
+         roomMgr.createRoom(new Room(19, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "04-03"));
+         roomMgr.createRoom(new Room(20, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "04-04"));
+         roomMgr.createRoom(new Room(21, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "04-05"));
+         roomMgr.createRoom(new Room(22, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", false, "04-06"));
+         roomMgr.createRoom(new Room(23, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", false, "04-07"));
+         roomMgr.createRoom(new Room(24, Room.ROOM_TYPE.VIP, 4, 1, 430f, 500f, "Master", true, "Sea", false, "04-08"));
+         roomMgr.createRoom(new Room(25, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "05-01"));
+         roomMgr.createRoom(new Room(26, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "05-02"));
+         roomMgr.createRoom(new Room(27, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "05-03"));
+         roomMgr.createRoom(new Room(28, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "05-04"));
+         roomMgr.createRoom(new Room(29, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "05-05"));
+         roomMgr.createRoom(new Room(30, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", false, "05-06"));
+         roomMgr.createRoom(new Room(31, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", false, "05-07"));
+         roomMgr.createRoom(new Room(32, Room.ROOM_TYPE.VIP, 4, 1, 430f, 500f, "Master", true, "Sea", false, "05-08"));
+         roomMgr.createRoom(new Room(33, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "06-01"));
+         roomMgr.createRoom(new Room(34, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "06-02"));
+         roomMgr.createRoom(new Room(35, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "06-03"));
+         roomMgr.createRoom(new Room(36, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "06-04"));
+         roomMgr.createRoom(new Room(37, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "06-05"));
+         roomMgr.createRoom(new Room(38, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "06-06"));
+         roomMgr.createRoom(new Room(39, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", false, "06-07"));
+         roomMgr.createRoom(new Room(40, Room.ROOM_TYPE.VIP, 4, 1, 430f, 500f, "Master", true, "Sea", false, "06-08"));
+         roomMgr.createRoom(new Room(41, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "07-01"));
+         roomMgr.createRoom(new Room(42, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "07-02"));
+         roomMgr.createRoom(new Room(43, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "07-03"));
+         roomMgr.createRoom(new Room(44, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "07-04"));
+         roomMgr.createRoom(new Room(45, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "07-05"));
+         roomMgr.createRoom(new Room(46, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "07-06"));
+         roomMgr.createRoom(new Room(47, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", false, "07-07"));
+         roomMgr.createRoom(new Room(48, Room.ROOM_TYPE.VIP, 4, 1, 430f, 500f, "Master", true, "Sea", false, "07-08"));
+    }
     
     /**
      * 

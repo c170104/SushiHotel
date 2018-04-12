@@ -65,6 +65,22 @@ public class Room implements Serializable {
         this.unitNumber = unitNumber;
     }
 
+    public Room(int roomNumber, Enum roomType, int maxNoAdults, int maxNoChild, float rateWeekdays, float rateWeekends,
+            String bedType, boolean wifiEnabled, String facingView, boolean smokingAllowed, Enum roomStatus, String unitNumber) {
+        this.roomNumber = roomNumber;
+        this.roomType = roomType;
+        this.maxNoAdults = maxNoAdults;
+        this.maxNoChild = maxNoChild;
+        this.rateWeekdays = rateWeekdays;
+        this.rateWeekends = rateWeekends;
+        this.bedType = bedType;
+        this.wifiEnabled = wifiEnabled;
+        this.facingView = facingView;
+        this.smokingAllowed = smokingAllowed;
+        this.roomStatus = roomStatus;
+        this.unitNumber = unitNumber;
+    }
+
     protected void setRoomType(Enum roomType) {
         this.roomType = roomType;
     }
