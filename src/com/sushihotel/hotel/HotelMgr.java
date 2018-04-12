@@ -18,7 +18,6 @@ import com.sushihotel.reservation.Reservation;
 import com.sushihotel.reservation.Reservation.RESERVE_STATUS;
 import com.sushihotel.reservation.ReservationMgr;
 import com.sushihotel.room.Room;
-import com.sushihotel.room.Room.ROOM_TYPE;
 import com.sushihotel.room.RoomMgr;
 import com.sushihotel.roomservice.RoomSvc;
 import com.sushihotel.roomservice.RoomSvcMgr;
@@ -64,32 +63,32 @@ public class HotelMgr   {
         try {
             // Guest Registration Begins
             System.out.println("============ Guest Registration ============");
-            System.out.println("Please enter Identification Number: ");
-            identificationNo = sc.nextLine();
             System.out.println("Please enter Name: ");
             name = sc.nextLine();
+            System.out.println("Please enter Gender (F/M/O): ");
+            gender = sc.nextLine();
+            System.out.println("Please enter Identification Number: ");
+            identificationNo = sc.nextLine();
+            System.out.println("Please enter Passport Number: ");
+            passportNo = sc.nextLine();
+            System.out.println("Please enter Nationality: ");
+            nationality = sc.nextLine();
+            System.out.println("Please enter Address: ");
+            address = sc.nextLine();
+            System.out.println("Please enter Contact Number: ");
+            contactNo = sc.nextLine();
             System.out.println("Please enter Credit Card Number: ");
             creditCardNo = sc.nextLine();
             System.out.println("Please enter Billing Address: ");
             billingAddress = sc.nextLine();
-            System.out.println("Please enter Address: ");
-            address = sc.nextLine();
             System.out.println("Please enter Country: ");
             country = sc.nextLine();
-            System.out.println("Please enter Gender: ");
-            gender = sc.nextLine();
-            System.out.println("Please enter Nationality: ");
-            nationality = sc.nextLine();
-            System.out.println("Please enter Contact Number: ");
-            contactNo = sc.nextLine();
-            System.out.println("Please enter Passport Number: ");
-            passportNo = sc.nextLine();
 
             // Guest object creation
             guest = new Guest(identificationNo, name, creditCardNo, billingAddress, address, country, gender, nationality, contactNo, passportNo);
 
             if(guestMgr.registerGuest(guest))
-                System.out.println("Guest " + name + " has been succesfully registered!");
+                System.out.println("Guest " + name + " has been successfully registered!");
             else
                 System.out.println("System failed to register Guest " + name + ". Please try again.");
         } catch(InputMismatchException ime) {
@@ -134,62 +133,62 @@ public class HotelMgr   {
 
             do {
                 System.out.print(
-                    "Choose the option (1-11) to update: \n" + 
-                    "1) Identification Number\n" +
-                    "2) Name\n" +
-                    "3) Credit Card Number\n" +
-                    "4) Billing Address\n" +
-                    "5) Address\n" +
-                    "6) Country\n" +
-                    "7) Gender\n" +
-                    "8) Nationality\n" +
-                    "9) Contact Number\n" +
-                    "10) Passport Number\n" +
-                    "11) Update\n\n" + 
+                    "Choose the option (1-10) to update: \n" +
+                    "1) Name\n" +
+                    "2) Gender\n" +
+                    "3) Identification Number\n" +
+                    "4) Passport Number\n" +
+                    "5) Nationality\n" +
+                    "6) Address\n" +
+                    "7) Contact Number\n" +
+                    "8) Credit Card Number\n" +
+                    "9) Billing Address\n" +
+                    "10) Country\n" +
+                    "11) Exit\n\n"+
                     "Choice: "
                 );
                 choice = sc.nextInt();
                 sc.nextLine();
                 switch (choice) {
                     case 1:
-                        System.out.println("Identification Number: ");
-                        identificationNo = sc.nextLine();
-                        break;
-                    case 2:
                         System.out.println("Name: ");
                         name = sc.nextLine();
                         break;
-                    case 3:
-                        System.out.println("Credit Card Number: ");
-                        creditCardNo = sc.nextLine();
-                        break;
-                    case 4:
-                        System.out.println("Billing Address: ");
-                        billingAddress = sc.nextLine();
-                        break;
-                    case 5:
-                        System.out.println("Address: ");
-                        address = sc.nextLine();
-                        break;
-                    case 6:
-                        System.out.println("Country: ");
-                        country = sc.nextLine();
-                        break;
-                    case 7:
-                        System.out.println("Gender: ");
+                    case 2:
+                        System.out.println("Gender ");
                         gender = sc.nextLine();
                         break;
-                    case 8:
+                    case 3:
+                        System.out.println("Identification Number: ");
+                        identificationNo = sc.nextLine();
+                        break;
+                    case 4:
+                        System.out.println("Passport Number: ");
+                        passportNo = sc.nextLine();
+                        break;
+                    case 5:
                         System.out.println("Nationality: ");
                         nationality = sc.nextLine();
                         break;
-                    case 9:
+                    case 6:
+                        System.out.println("Address: ");
+                        address = sc.nextLine();
+                        break;
+                    case 7:
                         System.out.println("Contact Number: ");
                         contactNo = sc.nextLine();
                         break;
+                    case 8:
+                        System.out.println("Credit Card Number: ");
+                        creditCardNo = sc.nextLine();
+                        break;
+                    case 9:
+                        System.out.println("Billing Address ");
+                        billingAddress = sc.nextLine();
+                        break;
                     case 10:
-                        System.out.println("Passport Number: ");
-                        passportNo = sc.nextLine();
+                        System.out.println("Country: ");
+                        country = sc.nextLine();
                         break;
                     default:
                         break;
@@ -200,7 +199,7 @@ public class HotelMgr   {
             guest = new Guest(identificationNo, name, creditCardNo, billingAddress, address, country, gender, nationality, contactNo, passportNo);
 
             if(guestMgr.editGuest(guestID, guest))
-                System.out.println("Succesfully updated Guest " + name + " information.");
+                System.out.println("Successfully updated Guest " + name + " information.");
             else
                 System.out.println("System failed to update Guest " + name + ". Please try again.");
 
@@ -232,7 +231,7 @@ public class HotelMgr   {
                 guest = guestList.get(i);
                 System.out.println(
                     "Guest Name:\t\t" + guest.getName() + "\n" +
-                    "Identification Number:\t" + guest.getIdentificationNo() + "\n" + 
+                    "ID Number:\t" + guest.getIdentificationNo() + "\n" +
                     "Address:\t\t" + guest.getAddress() + "\n" +
                     "Country:\t\t" + guest.getCountry() + "\n" +
                     "Gender:\t\t\t" + guest.getGender() + "\n" +
@@ -304,37 +303,6 @@ public class HotelMgr   {
      * removeReservation()
      * printReservation()
      */
-    
-    public void printReservationList() {
-    	Reservation reservation;
-    	List<Reservation> reservationList;
-    	try {
-    		reservationList = reservationMgr.getReservationList();
-    		if (reservationList.size()==0) {
-    			System.out.println("There are currently no reservations");
-    			return;
-    		}
-    		for (int i=0;i<reservationList.size();i++) {
-    			reservation = reservationList.get(i);
-    			System.out.println(
-    	                "====================================================================" +
-    	                "\nReservation ID: " + Integer.toString(reservation.getReservationID()) +
-    	                "\nRoom Number: " + Integer.toString(reservation.getRoomNumber()) + 
-    	                "\nNo. of Adults: " + Integer.toString(reservation.getNumAdults()) + 
-    	                "\nNo. of Childrens: " + Integer.toString(reservation.getNumChild()) + 
-    	                "\nCheck In Date: " + reservation.getCheckInDate() + 
-    	                "\nCheck Out Date: " + reservation.getCheckOutDate() + 
-    	                "\nNo. of Weekdays: " + Integer.toString(reservation.getNoOfWeekdays()) + 
-    	                "\nNo. of Weekends: " + Integer.toString(reservation.getNoOfWeekends()) + 
-    	                "\nReservation Status: " + reservation.getReserveStatus().toString() +
-    	                "\n===================================================================="
-    	            );
-    		}
-    	} catch (NullPointerException npe) {
-    		logger.severe(npe.getMessage());
-            System.out.println("The reservation is currently empty.");
-    	}
-    }
 
     public void newReservation() {
         Guest guest;
@@ -516,7 +484,7 @@ public class HotelMgr   {
                             System.out.println("Input new check in date dd/MM/yyyy");
                             try {
                                 checkInDateInput = sc.nextLine();
-                                checkInDate = formatter.parse(checkInDateInput + " 14:00");
+                                checkInDate = formatter.parse(checkInDateInput + " 12:00");
                                 dateCheck = true;
                             } catch (ParseException pe) {
                                 System.out.println("Incorrect date time format");
@@ -688,7 +656,7 @@ public class HotelMgr   {
         try {
             // Room creation begins
             System.out.println("========== Room Creation ==========");
-            System.out.println("Please Enter Room Number: ");
+            System.out.println("Please Enter Room Number (1 - 48): ");
             roomNumber = sc.nextInt();
 
             sc.nextLine(); // Remove line carriage
@@ -727,7 +695,7 @@ public class HotelMgr   {
             System.out.println("Please Enter Weekend Rate: ");
             rateWeekends = sc.nextFloat();
             sc.nextLine();
-            System.out.println("Please Enter Bed Type Information: ");
+            System.out.println("Please Enter Bed Type Information (Single/Double/Master): ");
             bedType = sc.nextLine();
             System.out.println("Wifi Enabled (Yes/No)(default: No): ");
             wifiEnabledInput = sc.nextLine();
@@ -739,7 +707,7 @@ public class HotelMgr   {
             smokingAllowedInput = sc.nextLine();
             if(smokingAllowedInput.toLowerCase().equals("yes"))
                 smokingAllowed = true;
-            System.out.println("Please Enter Unit Number: ");
+            System.out.println("Please Enter Unit Number (e.g. 02-01): ");
             unitNumber = sc.nextLine();
 
             room = new Room(roomNumber, roomType, maxNoAdults, maxNoChild, rateWeekdays, rateWeekends, bedType, wifiEnabled, facingView, smokingAllowed, unitNumber);
@@ -902,6 +870,7 @@ public class HotelMgr   {
                             else
                                 System.out.println("Please input only (Vacant/Occupied/Reserved/Under Maintenance).");
                         }
+                        break;
                     case 11:
                         System.out.println("Please Enter Unit Number: ");
                         unitNumber = sc.nextLine();
@@ -1164,7 +1133,7 @@ public class HotelMgr   {
                     System.out.println("System has failed to place Room service for Room number " + roomNumber + ". Please try again.");
             }
             else
-                System.out.println("System has failed to add new room service. Please try again");
+                System.out.println("System has failed to add new room service. Please try again.");
                 
         } catch(InputMismatchException ime) {
             logger.severe(ime.getMessage());
@@ -1358,7 +1327,7 @@ public class HotelMgr   {
             }
         } catch(NullPointerException npe)   {
             logger.severe(npe.getMessage());
-            System.out.println("An error has occured. Please contact the System administrator.");
+            System.out.println("An error has occurred. Please contact the System administrator.");
         }
     }
 
@@ -1421,7 +1390,7 @@ public class HotelMgr   {
                     printBill(invoice);
                 }
                 else
-                    System.out.println("Check Out is unsuccesfull for Room " + Integer.toString(roomNumber) + ". Please try again.");
+                    System.out.println("Check Out is unsuccessful for Room " + Integer.toString(roomNumber) + ". Please try again.");
             }
         } catch(InputMismatchException ime) {
             logger.severe(ime.getMessage());
@@ -1429,125 +1398,8 @@ public class HotelMgr   {
         }
     }
 
-    public void printRoomStatusStatisticReport()    {	
+    public void printRoomStatusStatisticReport()    {
 
-    		Reservation reservation;
-    		Room room;
-    		int roomNumber = 0;
-            int singleOccupied = 0, singleTotal = 0;
-            int doubleOccupied = 0, doubleTotal = 0;
-            int deluxeOccupied = 0, deluxeTotal = 0;
-            int totalOccupied = 0, hotelTotal = 0;
-            double orSingle;
-            double orDouble;
-            double orDeluxe;
-            double orVip;
-            double orTotal;
-            int vipOccupied = 0, vipTotal = 0;
-            String singleUnitNumber = "";
-            String doubleUnitNumber = "";
-            String deluxeUnitNumber = "";
-            String vipUnitNumber = "";
-
-    		List reservationList;
-    		Date date = null;
-    		boolean dateCheck = false;
-    		
-    		System.out.println("Enter required occupancy (date dd/MM/yyyy)");
-    		do {
-        		try {
-        			String inputDate = sc.nextLine();
-            		date = formatter.parse(inputDate + " 14:00");
-            		dateCheck = true;
-        		} catch (ParseException pe) {
-        			System.out.println("Incorrect date time format");
-        			dateCheck = false;
-        		}
-    		} while (!dateCheck);
-
-    		try {
-    			reservationList = reservationMgr.getReservationList();
-    			if (reservationList.size() == 0) {
-    				System.out.println("Hotel is not occupied");
-    				return;
-    			}
-    			for (int i = 0; i<reservationList.size(); i++) {
-    				reservation = (Reservation)reservationList.get(i);
-    				roomNumber = reservation.getRoomNumber();
-    				room = roomMgr.getRoom(roomNumber);
-
-    				if (room.getRoomType() == Room.ROOM_TYPE.SINGLE) {
-    					singleTotal++;
-    					if (date.after(reservation.getCheckInDate()) && date.before(reservation.getCheckOutDate())) {
-        						singleUnitNumber += room.getUnitNumber() + "(" + room.getRoomNumber() + ") , ";
-        						singleOccupied++;
-    						}
-    					}
-    				if (room.getRoomType() == ROOM_TYPE.DOUBLE) {
-    					doubleTotal++;
-    					if (date.after(reservation.getCheckInDate()) && date.before(reservation.getCheckOutDate())) {
-    							doubleUnitNumber += room.getUnitNumber() + "(" + room.getRoomNumber() + ") , ";
-    							doubleOccupied++;
-    						}
-    					}
-    					
-    				if (room.getRoomType() == ROOM_TYPE.DELUXE) {
-    					deluxeTotal++;
-    					if (date.after(reservation.getCheckInDate()) && date.before(reservation.getCheckOutDate())) {
-    							deluxeUnitNumber += room.getUnitNumber() + "(" + room.getRoomNumber() + ") , ";
-    							deluxeOccupied++;
-    						}
-    					}
-    					
-    				if (room.getRoomType() == ROOM_TYPE.VIP) {
-    					vipTotal++; 
-    					if (date.after(reservation.getCheckInDate()) && date.before(reservation.getCheckOutDate())) {
-    							vipUnitNumber += room.getUnitNumber() + "(" + room.getRoomNumber() + ") , ";
-    							vipOccupied++;
-    						}
-    					}
-    				}
-    			orSingle = (double)singleOccupied/(double)singleTotal * 100.0;
-    			orDouble = (double)doubleOccupied/(double)doubleTotal * 100.0;
-    			orDeluxe = (double)deluxeOccupied/(double)deluxeTotal * 100.0;
-    			orVip = (double)vipOccupied/(double)vipTotal * 100.0;
-    			totalOccupied = singleOccupied + doubleOccupied + deluxeOccupied + vipOccupied;
-    			hotelTotal = singleTotal + doubleTotal + deluxeTotal + vipTotal;
-    			orTotal = (double)totalOccupied / (double)hotelTotal * 100;
-                System.out.println(
-                        "==============ROOM OCCUPANCY REPORT==============\n"  +
-                        "On Date: " + date +"\n" +
-                        "Single Room\n" +
-                        "Total Single Rooms: " + singleTotal + "\n" +
-                        "Occupied Single Rooms: " + singleOccupied +"\n" +
-                        "Occupancy Rate: " + String.format("%.2f", orSingle) +"%\n" +
-                        "Occupied Rooms: " + singleUnitNumber + "\n" +
-                        "--------------------------------------------------\n" +
-                        "Double Room\n" +
-                        "Total Double Rooms: " + doubleTotal + "\n" +
-                        "Occupied Double Rooms: " + doubleOccupied +"\n" +
-                        "Occupancy Rate: " + String.format("%.2f", orDouble) +"%\n" +
-                        "Occupied Rooms: " + doubleUnitNumber + "\n" +
-                        "--------------------------------------------------\n" +
-                        "Deluxe Room\n" +
-                        "Total Deluxe Rooms: " + deluxeTotal + "\n" +
-                        "Occupied Deluxe Rooms: " + deluxeOccupied +"\n" +
-                        "Occupancy Rate: " + String.format("%.2f", orDeluxe) +"%\n" +
-                        "Occupied Rooms: " + deluxeUnitNumber + "\n" +
-                        "--------------------------------------------------\n" +
-                        "VIP Room\n" +
-                        "Total VIP Rooms: " + vipTotal + "\n" +
-                        "Occupied VIP Rooms: " + vipOccupied +"\n" +
-                        "Occupancy Rate: " + String.format("%.2f", orVip) +"%\n" +
-                        "Occupied Rooms: " + vipUnitNumber + "\n" +
-                        "--------------------------------------------------\n" +
-                        "Hotel Occupany Rate: " +  String.format("%.2f", orTotal) +"%\n"
-                    );
-    		} catch (NullPointerException npe)   {
-                logger.severe(npe.getMessage());
-                npe.printStackTrace(System.out);
-                System.out.println("The hotel is currently empty.");
-            }
     }
 
     /**

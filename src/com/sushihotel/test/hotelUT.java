@@ -62,10 +62,6 @@ public class hotelUT    {
                     "16) Check Out\n" +
                     "17) Print Room Occupancy Rate (One Day)\n" +
                     "18) Exit\n" +
-                    "=============================================\n" +
-                    "=============TEMPORARY FUNCTIONS=============\n" +
-                    "19) Print meal list \n" +
-                    "20) Print reservaiton list \n" +
                     "Choice (1-18): "
                 );
                 choice = sc.nextInt();
@@ -125,12 +121,6 @@ public class hotelUT    {
                         break;
                     case 17:
                         hotelMgr.printRoomStatusStatisticReport();
-                        break;
-                    case 19:
-                        hotelMgr.printMealList();
-                        break;
-                    case 20:
-                        hotelMgr.printReservationList();
                         break;
                     default:
                         break;
