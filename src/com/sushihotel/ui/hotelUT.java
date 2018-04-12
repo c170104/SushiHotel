@@ -1,9 +1,12 @@
-package com.sushihotel.test;
+package com.sushihotel.ui;
 
 import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import java.util.logging.*;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import com.sushihotel.hotel.HotelMgr;
 
@@ -63,8 +66,10 @@ public class hotelUT    {
                     "15) Check In\n" +
                     "16) Check Out\n" +
                     "17) Print Room Occupancy Rate (One Day)\n" +
-                    "18) Exit\n" +
-                    "Choice (1-18): "
+                    "18) Print Reservation List\n" +
+                    "19) Check Room Service Status\n" +
+                    "20) Exit\n" +
+                    "Choice (1-20): "
                 );
                 choice = sc.nextInt();
 
@@ -124,19 +129,19 @@ public class hotelUT    {
                     case 17:
                         hotelMgr.printRoomStatusStatisticReport();
                         break;
-                    case 19:
-                    	hotelMgr.printMealList();
-                    	break;
-                    case 20:
+                    case 18:
                     	hotelMgr.printReservationList();     
                     	break;
-                    case 21:
+                    case 19:
                     	hotelMgr.checkRoomServiceStatus();
-                    	break;
+                        break;
+                    case 99:
+                        hotelMgr.setDummyData();
+                        break;
                     default:
                         break;
                 }
-            } while (choice != 18);
+            } while (choice != 20);
         } catch(InputMismatchException ime) {
             logger.severe(ime.getMessage());
             System.out.println("Invalid Choice. Please try again.");

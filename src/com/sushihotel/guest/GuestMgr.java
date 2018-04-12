@@ -2,13 +2,12 @@
 package com.sushihotel.guest;
 
 import java.util.List;
-import java.util.logging.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.sushihotel.exception.DuplicateData;
 import com.sushihotel.exception.EmptyDB;
 import com.sushihotel.exception.InvalidEntity;
-import com.sushihotel.guest.Guest;
-import com.sushihotel.guest.GuestModel;
 
 public class GuestMgr {
     private static final Logger logger = Logger.getLogger(GuestMgr.class.getName());

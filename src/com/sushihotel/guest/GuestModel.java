@@ -3,11 +3,9 @@ package com.sushihotel.guest;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.lang.Integer;
 
 import com.sushihotel.database.DataStoreFactory;
 import com.sushihotel.database.IDataStore;
-import com.sushihotel.guest.Guest;
 import com.sushihotel.exception.DuplicateData;
 import com.sushihotel.exception.EmptyDB;
 import com.sushihotel.exception.InvalidEntity;
@@ -123,20 +121,16 @@ public class GuestModel {
             	dbGuest.setCountry(guest.getCountry());
             	dbGuest.setCreditCardNumber(guest.getCreditCardNumber());
             	dbGuest.setGender(guest.getGender());
-            	//dbGuest.setGuestID(guest.getGuestID());
             	dbGuest.setIdentificationNo(guest.getIdentificationNo());
             	dbGuest.setName(guest.getName());
             	dbGuest.setNationality(guest.getNationality());
             	dbGuest.setPassportNumber(guest.getPassportNumber());
-                //iter.remove();
                 trigger_flag = true;
                 break;
             }
         }
         if(!trigger_flag)
             throw new InvalidEntity(guestID + " not found.", Guest.GUEST_SEARCH_TYPE.GUEST_ID);
-
-        //list.add(guest);
 
         return dataStore.write(list, IDataStore.DB_ENTITY_TYPE.GUEST);
 

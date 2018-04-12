@@ -10,7 +10,6 @@ import com.sushihotel.database.IDataStore;
 import com.sushihotel.exception.DuplicateData;
 import com.sushihotel.exception.EmptyDB;
 import com.sushihotel.exception.InvalidEntity;
-import com.sushihotel.menu.Meal;
 
 
 public class MenuModel {
@@ -47,8 +46,6 @@ public class MenuModel {
         	  meal.setMealID(size + 1);
         }
         
-// 		mealID automatically set on creation
-//        meal.setMealID(size + 1); // 
         list.add(meal);
         list.sort(Comparator.comparing(Meal::getMealID));
         return dataStore.write(list, IDataStore.DB_ENTITY_TYPE.MENU);
@@ -108,7 +105,6 @@ public class MenuModel {
                 dbMeal.setMealName(meal.getMealName());
                 dbMeal.setMealPrice(meal.getMealPrice());
                 dbMeal.setPreparedMethod(meal.getPreparedMethod());
-            	//iter.remove(); // removes 
                 trigger_flag = true;
                 break;
             }
@@ -117,7 +113,6 @@ public class MenuModel {
             throw new InvalidEntity(mealID + " not found. ", Meal.MENU_SEARCH_TYPE.MEAL_ID);
             
         meal.setMealID(mealID);
-        //list.add(meal); 
         
         return dataStore.write(list, IDataStore.DB_ENTITY_TYPE.MENU);
 	}

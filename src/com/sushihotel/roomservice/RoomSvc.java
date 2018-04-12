@@ -3,9 +3,6 @@ package com.sushihotel.roomservice;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.sushihotel.guest.Guest;
-import com.sushihotel.menu.Meal;
-
 public class RoomSvc implements Serializable{
 	private int roomSvcID;
 	private int roomNumber;
