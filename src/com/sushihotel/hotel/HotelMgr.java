@@ -397,14 +397,6 @@ public class HotelMgr   {
             	numberOfWeekends++;
             }
             System.out.println("Weekdays & Weekends: " + numberOfWeekdays + " " + numberOfWeekends);
-            
-            
-//            System.out.println("Please enter Number of Weekdays");
-//            numberOfWeekdays = sc.nextInt();
-//            sc.nextLine();
-//            System.out.println("Please enter Number of Weekends");
-//            numberOfWeekends = sc.nextInt();
-//            sc.nextLine();
 
             System.out.println("Please enter Number of Adults");
             numAdults = sc.nextInt();
@@ -1198,7 +1190,6 @@ public class HotelMgr   {
         float amountPayable = 0.0f;
         RoomSvc roomSvc;
         String remarks;
-        List<Meal> menu;
         Meal meal;
         Date dateTimeOrdered = new Date(); 
 
@@ -1710,7 +1701,6 @@ public class HotelMgr   {
     	int roomNumber;
     	List<RoomSvc> roomSvcList;
     	RoomSvc roomSvc;
-    	int roomSvcID;
     	
     	System.out.println("Please input room number to check room service");
     	roomNumber = sc.nextInt();

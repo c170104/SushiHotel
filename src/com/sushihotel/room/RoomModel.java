@@ -1,15 +1,14 @@
 package com.sushihotel.room;
 
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import com.sushihotel.database.DataStoreFactory;
 import com.sushihotel.database.IDataStore;
 import com.sushihotel.exception.DuplicateData;
 import com.sushihotel.exception.EmptyDB;
 import com.sushihotel.exception.InvalidEntity;
-import com.sushihotel.room.Room;
 
 public class RoomModel   {
     private static IDataStore dataStore = DataStoreFactory.getDataStore();

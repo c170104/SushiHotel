@@ -1,7 +1,5 @@
 package com.sushihotel.exception;
 
-import com.sushihotel.guest.GuestModel;
-
 public class DuplicateData extends Exception {
     private String duplicateData;
     private Enum type;

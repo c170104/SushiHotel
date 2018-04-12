@@ -2,6 +2,7 @@ package com.sushihotel.database;
 
 import java.io.IOException;
 import java.util.Properties;
+
 import com.sushihotel.tools.ReadPropValues;
 
 public class DataStoreFactory  {

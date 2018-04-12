@@ -25,9 +25,6 @@ public class ReservationMgr {
 					if (System.currentTimeMillis() - reservation.getCheckInDate().getTime() >= 3600000L ) {
 						reservation.setReserveStatus(RESERVE_STATUS.EXPIRED);
 						ReservationModel.update(reservation.getReservationID(), reservation);
-//						System.out.println(reservation.getReservationID() + 
-//								"\n " + reservation.getCheckInDate() +
-//								"\n " + reservation.getReserveStatus());
 					}
 				}
 			}

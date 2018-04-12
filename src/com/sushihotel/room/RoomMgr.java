@@ -6,8 +6,6 @@ import java.util.logging.Logger;
 import com.sushihotel.exception.DuplicateData;
 import com.sushihotel.exception.EmptyDB;
 import com.sushihotel.exception.InvalidEntity;
-import com.sushihotel.room.Room;
-import com.sushihotel.room.RoomModel;
 
 public class RoomMgr    {
     private static final Logger logger = Logger.getLogger(RoomMgr.class.getName());
