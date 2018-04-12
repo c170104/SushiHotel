@@ -213,7 +213,7 @@ public class HotelMgr   {
             System.out.println(ERROR_MSG);
         } catch(NullPointerException npe)   {
             logger.severe(npe.getMessage());
-            System.out.println("No such guest");
+            System.out.println("Sorry, there is no such guest.");
         }
     }
 
@@ -300,7 +300,7 @@ public class HotelMgr   {
      */
 
     /*
-     * START OF RESERVERATION CRUD
+     * START OF RESERVATION CRUD
      * 
      * METHODS:
      * newReservation()
@@ -332,44 +332,44 @@ public class HotelMgr   {
             System.out.println("======Input Reservation Details=====");
             System.out.println("Current date time " + formatter.format(currentDate));
             while(true) {
-                System.out.println("Please enter Guest Name");
+                System.out.println("Please enter Guest Name:");
                 guestName = sc.nextLine();
                 guest = guestMgr.searchGuest(guestName, Guest.GUEST_SEARCH_TYPE.GUEST_NAME);
                 if(guest == null)
-                    System.out.println("Guest does not exist");
+                    System.out.println("Guest does not exist.");
                 else
                     break;
             }
-            System.out.println("Please enter Room Number");
+            System.out.println("Please enter Room Number:");
             roomNumber = sc.nextInt();
             sc.nextLine();
             
             do {
                 do {
-                    System.out.println("Please enter Check In Date (dd/MM/yyyy)");
+                    System.out.println("Please enter Check In Date (dd/MM/yyyy):");
                     try {
                         checkInDateInput = sc.nextLine();
                         checkInDate = formatter.parse(checkInDateInput + " 14:00");
                         if (checkInDate.before(currentDate)) {
                         	dateCheck = false;
-                        	System.out.println("Check in date has already passed current date. Try again");
+                        	System.out.println("Check in date has already passed current date. Try again.");
                         } else {
                             dateCheck = true;
                         }
                     } catch (ParseException pe) {
-                        System.out.println("Incorrect date time format");
+                        System.out.println("Incorrect date time format.");
                         dateCheck = false;
                     }
                 } while (!dateCheck);
 
                 do {
-                    System.out.println("Please enter Check Out Date (dd/MM/yyyy)");
+                    System.out.println("Please enter Check Out Date (dd/MM/yyyy):");
                     try {
                         checkOutDateInput =sc.nextLine();
                         checkOutDate = formatter.parse(checkOutDateInput + " 12:00");
                         dateCheck = true;
                     } catch (ParseException pe) {
-                        System.out.println("Incorrect date time format");
+                        System.out.println("Incorrect date time format.");
                         dateCheck = false;
                     }
                 } while (!dateCheck);
@@ -396,12 +396,12 @@ public class HotelMgr   {
             } else {
             	numberOfWeekends++;
             }
-            System.out.println("Weekdays & Weekends: " + numberOfWeekdays + " " + numberOfWeekends);
+            System.out.println("# of Weekdays =  " + numberOfWeekdays + "\n# of Weekends = " + numberOfWeekends);
 
-            System.out.println("Please enter Number of Adults");
+            System.out.println("Please enter Number of Adults: ");
             numAdults = sc.nextInt();
             sc.nextLine();
-            System.out.println("Please enter Number of Children");
+            System.out.println("Please enter Number of Children: ");
             numChild = sc.nextInt();
             sc.nextLine();
             
@@ -411,7 +411,7 @@ public class HotelMgr   {
             reservationID = reservationMgr.beginReservation(reservation);
 
             if (reservationID != -1) {
-                System.out.println("Reservation has been successfully made for guest " + guestName);
+                System.out.println("Reservation has been successfully made for guest " + guestName + ".");
                 printReservation(reservationID);
             }
             else
@@ -421,7 +421,7 @@ public class HotelMgr   {
             System.out.println(ERROR_MSG);
         } catch (NullPointerException npe) {
             logger.severe(npe.getMessage());
-            System.out.println("No such reservation");
+            System.out.println("Sorry, there is no such reservation.");
         }
     }
 
@@ -448,7 +448,7 @@ public class HotelMgr   {
         Calendar endCal = Calendar.getInstance();
 
         try {
-            System.out.println("Please enter reservation ID to be edited ");
+            System.out.println("Please enter reservation ID to be edited: ");
             reservationID = sc.nextInt();
             sc.nextLine();
 
@@ -485,7 +485,7 @@ public class HotelMgr   {
                 switch (choice) {
                     case 1:
                         while(guest == null)  {
-                            System.out.print("Input new name: ");
+                            System.out.print("Input a new name: ");
                             guestName = sc.nextLine();
                             guest = guestMgr.searchGuest(guestName, Guest.GUEST_SEARCH_TYPE.GUEST_NAME);
                             if(guest == null)   {
@@ -509,21 +509,21 @@ public class HotelMgr   {
                     case 3:
                         dateCheck = false;
                         do {
-                            System.out.println("Input new check in date dd/MM/yyyy");
+                            System.out.println("Input new Check-In date (dd/MM/yyyy): ");
                             try {
                                 checkInDateInput = sc.nextLine();
                                 checkInDate = formatter.parse(checkInDateInput + " 14:00");
                                 if (checkInDate.before(currentDate)) {
                                 	dateCheck = false;
-                                	System.out.println("Check in date has already passed current date. Try again");
+                                	System.out.println("Check in date has already passed current date. Try again.");
                                 } else if (checkInDate.after(checkOutDate)){
-                                	System.out.println("Check in is after check out date. Try again");
+                                	System.out.println("Check in is after check out date. Try again.");
                                 	dateCheck = false;
                                 } else {
                                 	dateCheck = true;
                                 }
                             } catch (ParseException pe) {
-                                System.out.println("Incorrect date time format");
+                                System.out.println("Incorrect date time format.");
                                 logger.severe(pe.getMessage());
                             }
                         } while (!dateCheck);
@@ -550,14 +550,14 @@ public class HotelMgr   {
                         } else {
                         	numberOfWeekends++;
                         }
-                        System.out.println("Number of weekedays: " + numberOfWeekdays + "\nNumber of Weekends: " + numberOfWeekends);
+                        System.out.println("Number of weekdays: " + numberOfWeekdays + "\nNumber of Weekends: " + numberOfWeekends);
                         break;
                         
                         
                     case 4:
                         dateCheck = false;
                         do {
-                            System.out.println("Input new check out date dd/MM/yyyy");
+                            System.out.println("Input the new Check-Out date (dd/MM/yyyy):");
                             try {
                                 checkOutDateInput = sc.nextLine();
                                 checkOutDate = formatter.parse(checkOutDateInput + " 12:00");
@@ -568,7 +568,7 @@ public class HotelMgr   {
                                 	dateCheck = true;
                                 }
                             } catch (ParseException pe) {
-                                System.out.println("Incorrect date time format");
+                                System.out.println("Incorrect date time format.");
                                 logger.severe(pe.getMessage());
                             }
                         } while (!dateCheck);
@@ -595,17 +595,17 @@ public class HotelMgr   {
                         } else {
                         	numberOfWeekends++;
                         }
-                        System.out.println("Number of weekedays: " + numberOfWeekdays + "\nNumber of Weekends: " + numberOfWeekends);
+                        System.out.println("Number of Weekdays: " + numberOfWeekdays + "\nNumber of Weekends: " + numberOfWeekends);
                         break;
                         
                     case 5:
-                        System.out.println("Input new number of adult");
+                        System.out.println("Input new number of adult:");
                         numAdults = sc.nextInt();
                         sc.nextLine();
                         break;
                         
                     case 6:
-                        System.out.println("Input new number of children");
+                        System.out.println("Input new number of children:");
                         numChild = sc.nextInt();
                         sc.nextLine();
                         break;
@@ -656,7 +656,7 @@ public class HotelMgr   {
 
             reservation = new Reservation(guestName, roomNumber, checkInDate, checkOutDate, numAdults, numChild, numberOfWeekdays, numberOfWeekends, reserveStatus);
             if (reservationMgr.editReservation(reservationID, reservation)) {
-                System.out.println("Succesfully updated reservationID " + reservationID + " information.");
+                System.out.println("Successfully updated reservationID " + reservationID + " information.");
             } else {
                 System.out.println("System failed to update reservation " + reservationID + ". Please try again.");
             }
@@ -666,7 +666,7 @@ public class HotelMgr   {
             System.out.println(ERROR_MSG);
         } catch (NullPointerException npe) {
             logger.severe(npe.getMessage());
-            System.out.println("No such reservation");
+            System.out.println("Sorry, there is no such reservation.");
         }
     }
     
@@ -675,7 +675,7 @@ public class HotelMgr   {
         int reservationID;
         String confirmation;
         try {
-            System.out.println("Please enter reservation ID to be deleted");
+            System.out.println("Please enter reservation ID to be deleted:");
             reservationID = sc.nextInt();
             sc.nextLine();
 
@@ -687,12 +687,12 @@ public class HotelMgr   {
             }
 
             if (reservationMgr.deleteReservation(reservationID)) {
-                System.out.println("Deletion of resevation " + reservationID + " was successful");
+                System.out.println("Deletion of reservation " + reservationID + " was successful.");
             } else {
-                System.out.println("Deletion of resevation " + reservationID + " was unsuccessful, please try again");
+                System.out.println("Deletion of reservation " + reservationID + " was unsuccessful, please try again.");
             }
         } catch (NumberFormatException nfe) {
-            System.out.println("Wrong number input format");
+            System.out.println("Wrong number input format.");
         } catch (InputMismatchException ime) {
             logger.severe(ime.getMessage());
             System.out.println(ERROR_MSG);
@@ -719,7 +719,7 @@ public class HotelMgr   {
             );
         } catch (NullPointerException npe) {
             logger.severe(npe.getMessage());
-            System.out.println("No such reservation.");
+            System.out.println("Sorry, there is no such reservation.");
         }
     }
 
@@ -808,7 +808,7 @@ public class HotelMgr   {
             room = new Room(roomNumber, roomType, maxNoAdults, maxNoChild, rateWeekdays, rateWeekends, bedType, wifiEnabled, facingView, smokingAllowed, unitNumber);
 
             if(roomMgr.createRoom(room))
-                System.out.println("Room number " + roomNumber + " has been succesfully created.");
+                System.out.println("Room number " + roomNumber + " has been successfully created.");
             else
                 System.out.println("System has failed to create Room number " + roomNumber + ". Please try again.");
             
@@ -839,7 +839,7 @@ public class HotelMgr   {
         int choice;
 
         try {
-            System.out.println("Please enter the Room Number you want to update: ");
+            System.out.println("Please enter the Room Number you want to update (1-48): ");
             roomNumber = sc.nextInt();
 
             room = roomMgr.getRoom(roomNumber);
@@ -858,10 +858,10 @@ public class HotelMgr   {
 
             do {
                 System.out.println(
-                    "Choose the options(1-1) to update:\n" +
+                    "Choose the options(1-12) to update:\n" +
                     "1) Room Type: " + roomType.toString() + "\n" +
                     "2) Max Number of Adults: " + Integer.toString(maxNoAdults) + "\n" +
-                    "3) Max Number of Chilren: " + Integer.toString(maxNoChild) + "\n" +
+                    "3) Max Number of Children: " + Integer.toString(maxNoChild) + "\n" +
                     "4) Weekdays Rate: " + Float.toString(rateWeekdays) + "\n" +
                     "5) Weekends Rate: " + Float.toString(rateWeekends) + "\n" +
                     "6) Bed Type: " + bedType + "\n" +
@@ -870,7 +870,7 @@ public class HotelMgr   {
                     "9) Smoking Allowed: " + (smokingAllowed ? "Yes" : "No") + "\n" +
                     "10) Room Status: " + roomStatus.toString() + "\n" +
                     "11) Unit Number: " + unitNumber + "\n" +
-                    "12) Update\n" +
+                    "12) Update/Exit\n" +
                     "Choice: "
                 );
                 choice = sc.nextInt();
@@ -967,7 +967,7 @@ public class HotelMgr   {
                         }
                         break;
                     case 11:
-                        System.out.println("Please Enter Unit Number: ");
+                        System.out.println("Please Enter Unit Number (e.g. 02-01): ");
                         unitNumber = sc.nextLine();
                         break;
                     default:
@@ -985,7 +985,7 @@ public class HotelMgr   {
             System.out.println(ERROR_MSG);
         } catch(NullPointerException npe)   {
             logger.severe(npe.getMessage());
-            System.out.println("No such room");
+            System.out.println("Sorry, there is no such room.");
         }
     }
 
@@ -1112,7 +1112,7 @@ public class HotelMgr   {
         String decision;
 
         try {  
-            System.out.println("Please enter meal ID to be deleted");
+            System.out.println("Please enter meal ID to be deleted:");
             mealID = sc.nextInt();
             sc.nextLine();
 
@@ -1125,16 +1125,16 @@ public class HotelMgr   {
             }
 
             if (menuMgr.removeMeal(mealID)) {
-                System.out.println("Deletion of meal number " + mealID +" was successful");
+                System.out.println("Deletion of meal number " + mealID +" was successful!");
             } else {
-                System.out.println("Deletion of meal number " + mealID +" was unsuccessful, please try again");
+                System.out.println("Deletion of meal number " + mealID +" was unsuccessful, please try again!");
             } 
         } catch (InputMismatchException ime) {
                 logger.severe(ime.getMessage());
                 System.out.println(ERROR_MSG);
         } catch (NullPointerException npe)   {
             logger.severe(npe.getMessage());
-            System.out.println("No meal data");
+            System.out.println("No meal data.");
         }
     }
 
@@ -1195,7 +1195,7 @@ public class HotelMgr   {
 
         try {
             System.out.println("============== Room Service ==============");
-            System.out.println("Please enter the Room number: ");
+            System.out.println("Please enter the Room number (1-48): ");
             roomNumber = sc.nextInt();
             sc.nextLine();
 
@@ -1235,7 +1235,7 @@ public class HotelMgr   {
             System.out.println(ERROR_MSG);
         } catch(NullPointerException npe)   {
             logger.severe(npe.getMessage());
-            System.out.println("No such Meal ID.");
+            System.out.println("Sorry, there is no such Meal ID.");
         }
     }
 
@@ -1258,7 +1258,7 @@ public class HotelMgr   {
 
             switch(choice)  {
                 case 1:
-                    System.out.println("Please enter Room number: ");
+                    System.out.println("Please enter Room Number: ");
                     roomNumber = sc.nextInt();
                     sc.nextLine();
                     room = roomMgr.getRoom(roomNumber);
@@ -1345,37 +1345,37 @@ public class HotelMgr   {
                 else if(choice == 2)    {
 
                     // Create blank invoice
-                    System.out.print("Please input room number: ");
+                    System.out.print("Please input room number (1-48): ");
                     roomNumber = sc.nextInt();
                     sc.nextLine();
            
                     
                     do {
                         do {
-                            System.out.println("Please enter Check In Date (dd/MM/yyyy)");
+                            System.out.println("Please enter Check In Date (dd/MM/yyyy):");
                             try {
                                 checkInDateInput = sc.nextLine();
                                 checkInDate = formatter.parse(checkInDateInput + " 14:00");
                                 if (checkInDate.before(currentDate)) {
                                 	dateCheck = false;
-                                	System.out.println("Check in date has already passed current date. Try again");
+                                	System.out.println("Check in date has already passed current date. Try again.");
                                 } else {
                                     dateCheck = true;
                                 }
                             } catch (ParseException pe) {
-                                System.out.println("Incorrect date time format");
+                                System.out.println("Incorrect date time format.");
                                 dateCheck = false;
                             }
                         } while (!dateCheck);
 
                         do {
-                            System.out.println("Please enter Check Out Date (dd/MM/yyyy)");
+                            System.out.println("Please enter Check Out Date (dd/MM/yyyy):");
                             try {
                                 checkOutDateInput =sc.nextLine();
                                 checkOutDate = formatter.parse(checkOutDateInput + " 12:00");
                                 dateCheck = true;
                             } catch (ParseException pe) {
-                                System.out.println("Incorrect date time format");
+                                System.out.println("Incorrect date time format.");
                                 dateCheck = false;
                             }
                         } while (!dateCheck);
@@ -1402,16 +1402,7 @@ public class HotelMgr   {
                     } else {
                     	totalWeekends++;
                     }
-                    System.out.println("Weekdays & Weekends: " + totalWeekdays + " " + totalWeekends);
-                    
-                    
-                    
-//                    System.out.print("Please input total weekdays of stay: ");
-//                    totalWeekdays = sc.nextInt();
-//                    sc.nextLine();
-//                    System.out.print("Please input total weekends of stay: ");
-//                    totalWeekends = sc.nextInt();
-//                    sc.nextLine();
+                    System.out.println("# of Weekdays = " + totalWeekdays + "\n# of Weekends = " + totalWeekends);
                 }
 
                 invoice = new Invoice(guest.getGuestID(), roomNumber, checkInDate, checkOutDate, totalWeekdays, totalWeekends);
@@ -1569,14 +1560,14 @@ public class HotelMgr   {
 		Date date = null;
 		boolean dateCheck = false;
 		
-		System.out.println("Enter required occupancy (date dd/MM/yyyy)");
+		System.out.println("Enter the required occupancy date (dd/MM/yyyy):");
 		do {
     		try {
     			String inputDate = sc.nextLine();
         		date = formatter.parse(inputDate + " 14:00");
         		dateCheck = true;
     		} catch (ParseException pe) {
-    			System.out.println("Incorrect date time format");
+    			System.out.println("Incorrect date time format.");
     			dateCheck = false;
     		}
 		} while (!dateCheck);
@@ -1584,7 +1575,7 @@ public class HotelMgr   {
 		try {
 			reservationList = reservationMgr.getReservationList();
 			if (reservationList.size() == 0) {
-				System.out.println("Hotel is not occupied");
+				System.out.println("Hotel is not occupied.");
 				return;
 			}
 			for (int i = 0; i<reservationList.size(); i++) {
@@ -1657,7 +1648,7 @@ public class HotelMgr   {
                     "Occupancy Rate: " + String.format("%.2f", orVip) +"%\n" +
                     "Occupied Rooms: " + vipUnitNumber + "\n" +
                     "--------------------------------------------------\n" +
-                    "Hotel Occupany Rate: " +  String.format("%.2f", orTotal) +"%\n"
+                    "Hotel Occupancy Rate: " +  String.format("%.2f", orTotal) +"%\n"
                 );
 		} catch (NullPointerException npe)   {
             logger.severe(npe.getMessage());
@@ -1702,7 +1693,7 @@ public class HotelMgr   {
     	List<RoomSvc> roomSvcList;
     	RoomSvc roomSvc;
     	
-    	System.out.println("Please input room number to check room service");
+    	System.out.println("Please input room number to check room service:");
     	roomNumber = sc.nextInt();
     	sc.nextLine();
     	
@@ -1741,6 +1732,11 @@ public class HotelMgr   {
     }
     
     public void setDummyData()  {
+        roomMgr.createRoom(new Room(1, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "02-01"));
+        roomMgr.createRoom(new Room(2, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "02-02"));
+        roomMgr.createRoom(new Room(3, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "02-03"));
+        roomMgr.createRoom(new Room(4, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "02-04"));
+        roomMgr.createRoom(new Room(5, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", true, "02-05"));
          roomMgr.createRoom(new Room(6, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", true, "02-06"));
          roomMgr.createRoom(new Room(7, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", true, "02-07"));
          roomMgr.createRoom(new Room(8, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", true, "02-08"));
