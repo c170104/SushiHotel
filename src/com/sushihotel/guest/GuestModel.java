@@ -117,7 +117,18 @@ public class GuestModel {
         while(iter.hasNext())   {
             dbGuest = (Guest)iter.next();
             if(dbGuest.getGuestID() == guestID) {
-                iter.remove();
+            	dbGuest.setAddress(guest.getAddress());
+            	dbGuest.setBillingAddress(guest.getBillingAddress());
+            	dbGuest.setContactNumber(guest.getContactNumber());
+            	dbGuest.setCountry(guest.getCountry());
+            	dbGuest.setCreditCardNumber(guest.getCreditCardNumber());
+            	dbGuest.setGender(guest.getGender());
+            	//dbGuest.setGuestID(guest.getGuestID());
+            	dbGuest.setIdentificationNo(guest.getIdentificationNo());
+            	dbGuest.setName(guest.getName());
+            	dbGuest.setNationality(guest.getNationality());
+            	dbGuest.setPassportNumber(guest.getPassportNumber());
+                //iter.remove();
                 trigger_flag = true;
                 break;
             }
@@ -125,7 +136,7 @@ public class GuestModel {
         if(!trigger_flag)
             throw new InvalidEntity(guestID + " not found.", Guest.GUEST_SEARCH_TYPE.GUEST_ID);
 
-        list.add(guest);
+        //list.add(guest);
 
         return dataStore.write(list, IDataStore.DB_ENTITY_TYPE.GUEST);
 

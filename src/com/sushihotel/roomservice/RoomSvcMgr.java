@@ -1,6 +1,7 @@
 package com.sushihotel.roomservice;
 
 import java.util.List;
+import java.util.Iterator;
 import java.util.logging.*;
 
 import com.sushihotel.roomservice.RSvcModel;
@@ -95,6 +96,8 @@ public class RoomSvcMgr {
 		}
 		return roomSvc;
 	}
+	
+	
 
 	public boolean updateRoomSvcStatus(int roomSvcID, Enum status)	{
 		RoomSvc roomSvc = null;
@@ -109,5 +112,25 @@ public class RoomSvcMgr {
 		if(roomSvc == null)
 			return false;
 		return editRoomSvc(roomSvcID, roomSvc);
+	}
+	
+	public List<RoomSvc> getRoomSvcList(int roomNumber) {
+		List<RoomSvc> roomSvcList = null;
+		RoomSvc roomSvc;
+		Iterator iter;
+    	try {
+			roomSvcList = RSvcModel.read();
+			iter = roomSvcList.iterator();
+			
+			while(iter.hasNext()) {
+				roomSvc = (RoomSvc)iter.next();
+				if(roomSvc.getRoomNumber() != roomNumber)
+					iter.remove();
+			}
+			
+		} catch (EmptyDB edb) {
+			logger.warning(edb.getMessage());
+		}
+		return roomSvcList;
 	}
 }

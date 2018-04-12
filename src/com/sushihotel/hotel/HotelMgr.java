@@ -2,10 +2,14 @@ package com.sushihotel.hotel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import com.sushihotel.guest.Guest;
@@ -18,6 +22,7 @@ import com.sushihotel.reservation.Reservation;
 import com.sushihotel.reservation.Reservation.RESERVE_STATUS;
 import com.sushihotel.reservation.ReservationMgr;
 import com.sushihotel.room.Room;
+import com.sushihotel.room.Room.ROOM_TYPE;
 import com.sushihotel.room.RoomMgr;
 import com.sushihotel.roomservice.RoomSvc;
 import com.sushihotel.roomservice.RoomSvcMgr;
@@ -312,16 +317,20 @@ public class HotelMgr   {
         int reservationID;
         Date checkInDate = null;
         Date checkOutDate = null;
+        Calendar startCal = Calendar.getInstance();
+        Calendar endCal = Calendar.getInstance();
+        Date currentDate = new Date();
         String checkInDateInput;
         String checkOutDateInput;
         int numAdults;
         int numChild;
-        int numberOfWeekdays;
-        int numberOfWeekends;
+        int numberOfWeekdays = 0;
+        int numberOfWeekends = 0;
         boolean dateCheck = false;
 
         try {
             System.out.println("======Input Reservation Details=====");
+            System.out.println("Current date time " + formatter.format(currentDate));
             while(true) {
                 System.out.println("Please enter Guest Name");
                 guestName = sc.nextLine();
@@ -341,7 +350,12 @@ public class HotelMgr   {
                     try {
                         checkInDateInput = sc.nextLine();
                         checkInDate = formatter.parse(checkInDateInput + " 14:00");
-                        dateCheck = true;
+                        if (checkInDate.before(currentDate)) {
+                        	dateCheck = false;
+                        	System.out.println("Check in date has already passed current date. Try again");
+                        } else {
+                            dateCheck = true;
+                        }
                     } catch (ParseException pe) {
                         System.out.println("Incorrect date time format");
                         dateCheck = false;
@@ -365,13 +379,32 @@ public class HotelMgr   {
                     dateCheck = false;
                 }
             } while (!dateCheck);
-
-            System.out.println("Please enter Number of Weekdays");
-            numberOfWeekdays = sc.nextInt();
-            sc.nextLine();
-            System.out.println("Please enter Number of Weekends");
-            numberOfWeekends = sc.nextInt();
-            sc.nextLine();
+            
+        	startCal.setTime(checkInDate);
+        	endCal.setTime(checkOutDate);
+            do {
+                if (startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+                    numberOfWeekdays++;
+                } else {
+                	numberOfWeekends++;
+                }
+            	startCal.add(Calendar.DAY_OF_MONTH, 1);
+            } while (startCal.getTimeInMillis() < endCal.getTimeInMillis()); //excluding end date
+            
+            if (startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+                numberOfWeekdays++;
+            } else {
+            	numberOfWeekends++;
+            }
+            System.out.println("Weekdays & Weekends: " + numberOfWeekdays + " " + numberOfWeekends);
+            
+            
+//            System.out.println("Please enter Number of Weekdays");
+//            numberOfWeekdays = sc.nextInt();
+//            sc.nextLine();
+//            System.out.println("Please enter Number of Weekends");
+//            numberOfWeekends = sc.nextInt();
+//            sc.nextLine();
 
             System.out.println("Please enter Number of Adults");
             numAdults = sc.nextInt();
@@ -408,6 +441,7 @@ public class HotelMgr   {
         int roomNumber;
         Date checkInDate;
         Date checkOutDate;
+        Date currentDate = new Date();
         String checkInDateInput;
         String checkOutDateInput;
         int numAdults;
@@ -418,6 +452,8 @@ public class HotelMgr   {
         int choice;
         int statusSelection;
         boolean dateCheck;
+        Calendar startCal = Calendar.getInstance();
+        Calendar endCal = Calendar.getInstance();
 
         try {
             System.out.println("Please enter reservation ID to be edited ");
@@ -438,17 +474,17 @@ public class HotelMgr   {
 
             do {
                 System.out.print(
-                    "Choose the option (1-10) to update: \n" +
-                    "1) Name: " + guestName +
+                    "Choose the option (1-8) to update: \n" +
+                    "1) Name: " + guestName + "\n" +
                     "2) Room number: " + Integer.toString(roomNumber) + "\n" +
                     "3) Check in date: " + formatter.format(checkInDate)+ "\n" +
                     "4) Check out date: " + formatter.format(checkOutDate) + "\n" +
                     "5) Number of adults: " + Integer.toString(numAdults) + "\n" +
                     "6) Number of children: " + Integer.toString(numChild) + "\n" +
                     "7) Reserve status: " + reserveStatus.toString() + "\n" +
-                    "8) Number of weekdays: " + Integer.toString(numberOfWeekdays) + "\n" +
-                    "9) Number of weekends: " + Integer.toString(numberOfWeekends) + "\n" +
-                    "10) Exit/Update\n\n" +
+//                    "8) Number of weekdays: " + Integer.toString(numberOfWeekdays) + "\n" +
+//                    "9) Number of weekends: " + Integer.toString(numberOfWeekends) + "\n" +
+                    "8) Exit/Update\n\n" +
                     "Choice: "
                 );
                 choice = sc.nextInt();
@@ -484,14 +520,48 @@ public class HotelMgr   {
                             System.out.println("Input new check in date dd/MM/yyyy");
                             try {
                                 checkInDateInput = sc.nextLine();
-                                checkInDate = formatter.parse(checkInDateInput + " 12:00");
-                                dateCheck = true;
+                                checkInDate = formatter.parse(checkInDateInput + " 14:00");
+                                if (checkInDate.before(currentDate)) {
+                                	dateCheck = false;
+                                	System.out.println("Check in date has already passed current date. Try again");
+                                } else if (checkInDate.after(checkOutDate)){
+                                	System.out.println("Check in is after check out date. Try again");
+                                	dateCheck = false;
+                                } else {
+                                	dateCheck = true;
+                                }
                             } catch (ParseException pe) {
                                 System.out.println("Incorrect date time format");
                                 logger.severe(pe.getMessage());
                             }
                         } while (!dateCheck);
+                        
+                        ///// Calculates number of weekday & weekend /////
+                        
+                        numberOfWeekdays = 0;
+                        numberOfWeekends = 0;
+                        startCal.setTime(checkInDate);
+                        endCal.setTime(checkOutDate);
+                        System.out.println(checkInDate);
+                        System.out.println(checkOutDate);
+                        do {
+                            if (startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+                                numberOfWeekdays++;
+                            } else {
+                            	numberOfWeekends++;
+                            }
+                        	startCal.add(Calendar.DAY_OF_MONTH, 1);
+                        } while (startCal.getTimeInMillis() < endCal.getTimeInMillis()); //excluding end date
+                        
+                        if (startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+                            numberOfWeekdays++;
+                        } else {
+                        	numberOfWeekends++;
+                        }
+                        System.out.println("Number of weekedays: " + numberOfWeekdays + "\nNumber of Weekends: " + numberOfWeekends);
                         break;
+                        
+                        
                     case 4:
                         dateCheck = false;
                         do {
@@ -499,23 +569,55 @@ public class HotelMgr   {
                             try {
                                 checkOutDateInput = sc.nextLine();
                                 checkOutDate = formatter.parse(checkOutDateInput + " 12:00");
-                                dateCheck = true;
+                                if (checkOutDate.before(checkInDate)) {
+                                	dateCheck = false;
+                                	System.out.println("Check out date can't be before check in date. Try again");
+                                } else {
+                                	dateCheck = true;
+                                }
                             } catch (ParseException pe) {
                                 System.out.println("Incorrect date time format");
                                 logger.severe(pe.getMessage());
                             }
                         } while (!dateCheck);
+                        
+                        ///// Calculates number of weekday & weekend /////
+                        
+                        numberOfWeekdays = 0;
+                        numberOfWeekends = 0;
+                        startCal.setTime(checkInDate);
+                        endCal.setTime(checkOutDate);
+                        System.out.println(checkInDate);
+                        System.out.println(checkOutDate);
+                        do {
+                            if (startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+                                numberOfWeekdays++;
+                            } else {
+                            	numberOfWeekends++;
+                            }
+                        	startCal.add(Calendar.DAY_OF_MONTH, 1);
+                        } while (startCal.getTimeInMillis() < endCal.getTimeInMillis()); //excluding end date
+                        
+                        if (startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+                            numberOfWeekdays++;
+                        } else {
+                        	numberOfWeekends++;
+                        }
+                        System.out.println("Number of weekedays: " + numberOfWeekdays + "\nNumber of Weekends: " + numberOfWeekends);
                         break;
+                        
                     case 5:
                         System.out.println("Input new number of adult");
                         numAdults = sc.nextInt();
                         sc.nextLine();
                         break;
+                        
                     case 6:
                         System.out.println("Input new number of children");
                         numChild = sc.nextInt();
                         sc.nextLine();
                         break;
+                        
                     case 7:
                         while(true) {
                             System.out.println("Select reserve status \n" + "1) CONFIRMED\n" + "2) WAITLIST\n"
@@ -543,22 +645,22 @@ public class HotelMgr   {
                                 System.out.println("Please select a correct input (1-4).");
                         }
                         break;
-                    case 8:
-                        System.out.println("Input number of weekdays ");
-                        numberOfWeekdays = sc.nextInt();
-                        sc.nextLine();
-                        break;
-
-                    case 9:
-                        System.out.println("Input number of weekends ");
-                        numberOfWeekends = sc.nextInt();
-                        sc.nextLine();
-                        break;
+//                    case 8:
+//                        System.out.println("Input number of weekdays ");
+//                        numberOfWeekdays = sc.nextInt();
+//                        sc.nextLine();
+//                        break;
+//
+//                    case 9:
+//                        System.out.println("Input number of weekends ");
+//                        numberOfWeekends = sc.nextInt();
+//                        sc.nextLine();
+//                        break;
 
                     default:
                         break;
                 }
-            } while (choice != 10);
+            } while (choice != 8);
 
             reservation = new Reservation(guestName, roomNumber, checkInDate, checkOutDate, numAdults, numChild, numberOfWeekdays, numberOfWeekends, reserveStatus);
             if (reservationMgr.editReservation(reservationID, reservation)) {
@@ -575,7 +677,8 @@ public class HotelMgr   {
             System.out.println("No such reservation");
         }
     }
-
+    
+    
     public void removeReservation() {
         int reservationID;
         String confirmation;
@@ -1147,6 +1250,7 @@ public class HotelMgr   {
     public void checkRoomAvailability() {
         int roomNumber;
         int choice;
+        Room room;
         try {
             System.out.println(
                 "========================= Check Room Availability =========================\n" +
@@ -1165,10 +1269,8 @@ public class HotelMgr   {
                     System.out.println("Please enter Room number: ");
                     roomNumber = sc.nextInt();
                     sc.nextLine();
-                    if(roomMgr.checkRoomAvailability(roomNumber))
-                        System.out.println("Room number " + roomNumber + " is Available.");
-                    else
-                        System.out.println("Room number " + roomNumber + " is currently unavailable.");
+                    room = roomMgr.getRoom(roomNumber);
+                    System.out.println("\nUnit number " + room.getUnitNumber() + "(" + roomNumber + ") is " + room.getRoomStatus().toString() + ".\n");
                     break;
                 case 2:
                     roomMgr.printRoomStatusByAvailability();
@@ -1398,10 +1500,234 @@ public class HotelMgr   {
         }
     }
 
-    public void printRoomStatusStatisticReport()    {
+    public void printRoomStatusStatisticReport()    {	
 
+		Reservation reservation;
+		Room room;
+		int roomNumber = 0;
+        int singleOccupied = 0, singleTotal = 0;
+        int doubleOccupied = 0, doubleTotal = 0;
+        int deluxeOccupied = 0, deluxeTotal = 0;
+        int totalOccupied = 0, hotelTotal = 0;
+        double orSingle;
+        double orDouble;
+        double orDeluxe;
+        double orVip;
+        double orTotal;
+        int vipOccupied = 0, vipTotal = 0;
+        String singleUnitNumber = "";
+        String doubleUnitNumber = "";
+        String deluxeUnitNumber = "";
+        String vipUnitNumber = "";
+
+		List reservationList;
+		Date date = null;
+		boolean dateCheck = false;
+		
+		System.out.println("Enter required occupancy (date dd/MM/yyyy)");
+		do {
+    		try {
+    			String inputDate = sc.nextLine();
+        		date = formatter.parse(inputDate + " 14:00");
+        		dateCheck = true;
+    		} catch (ParseException pe) {
+    			System.out.println("Incorrect date time format");
+    			dateCheck = false;
+    		}
+		} while (!dateCheck);
+
+		try {
+			reservationList = reservationMgr.getReservationList();
+			if (reservationList.size() == 0) {
+				System.out.println("Hotel is not occupied");
+				return;
+			}
+			for (int i = 0; i<reservationList.size(); i++) {
+				reservation = (Reservation)reservationList.get(i);
+				roomNumber = reservation.getRoomNumber();
+				room = roomMgr.getRoom(roomNumber);
+
+				if (room.getRoomType() == Room.ROOM_TYPE.SINGLE) {
+					singleTotal++;
+					if (date.after(reservation.getCheckInDate()) && date.before(reservation.getCheckOutDate())) {
+    						singleUnitNumber += room.getUnitNumber() + "(" + room.getRoomNumber() + ") , ";
+    						singleOccupied++;
+						}
+					}
+				if (room.getRoomType() == ROOM_TYPE.DOUBLE) {
+					doubleTotal++;
+					if (date.after(reservation.getCheckInDate()) && date.before(reservation.getCheckOutDate())) {
+							doubleUnitNumber += room.getUnitNumber() + "(" + room.getRoomNumber() + ") , ";
+							doubleOccupied++;
+						}
+					}
+					
+				if (room.getRoomType() == ROOM_TYPE.DELUXE) {
+					deluxeTotal++;
+					if (date.after(reservation.getCheckInDate()) && date.before(reservation.getCheckOutDate())) {
+							deluxeUnitNumber += room.getUnitNumber() + "(" + room.getRoomNumber() + ") , ";
+							deluxeOccupied++;
+						}
+					}
+					
+				if (room.getRoomType() == ROOM_TYPE.VIP) {
+					vipTotal++; 
+					if (date.after(reservation.getCheckInDate()) && date.before(reservation.getCheckOutDate())) {
+							vipUnitNumber += room.getUnitNumber() + "(" + room.getRoomNumber() + ") , ";
+							vipOccupied++;
+						}
+					}
+				}
+			orSingle = (double)singleOccupied/(double)singleTotal * 100.0;
+			orDouble = (double)doubleOccupied/(double)doubleTotal * 100.0;
+			orDeluxe = (double)deluxeOccupied/(double)deluxeTotal * 100.0;
+			orVip = (double)vipOccupied/(double)vipTotal * 100.0;
+			totalOccupied = singleOccupied + doubleOccupied + deluxeOccupied + vipOccupied;
+			hotelTotal = singleTotal + doubleTotal + deluxeTotal + vipTotal;
+			orTotal = (double)totalOccupied / (double)hotelTotal * 100;
+            System.out.println(
+                    "==============ROOM OCCUPANCY REPORT==============\n"  +
+                    "On Date: " + date +"\n" +
+                    "Single Room\n" +
+                    "Total Single Rooms: " + singleTotal + "\n" +
+                    "Occupied Single Rooms: " + singleOccupied +"\n" +
+                    "Occupancy Rate: " + String.format("%.2f", orSingle) +"%\n" +
+                    "Occupied Rooms: " + singleUnitNumber + "\n" +
+                    "--------------------------------------------------\n" +
+                    "Double Room\n" +
+                    "Total Double Rooms: " + doubleTotal + "\n" +
+                    "Occupied Double Rooms: " + doubleOccupied +"\n" +
+                    "Occupancy Rate: " + String.format("%.2f", orDouble) +"%\n" +
+                    "Occupied Rooms: " + doubleUnitNumber + "\n" +
+                    "--------------------------------------------------\n" +
+                    "Deluxe Room\n" +
+                    "Total Deluxe Rooms: " + deluxeTotal + "\n" +
+                    "Occupied Deluxe Rooms: " + deluxeOccupied +"\n" +
+                    "Occupancy Rate: " + String.format("%.2f", orDeluxe) +"%\n" +
+                    "Occupied Rooms: " + deluxeUnitNumber + "\n" +
+                    "--------------------------------------------------\n" +
+                    "VIP Room\n" +
+                    "Total VIP Rooms: " + vipTotal + "\n" +
+                    "Occupied VIP Rooms: " + vipOccupied +"\n" +
+                    "Occupancy Rate: " + String.format("%.2f", orVip) +"%\n" +
+                    "Occupied Rooms: " + vipUnitNumber + "\n" +
+                    "--------------------------------------------------\n" +
+                    "Hotel Occupany Rate: " +  String.format("%.2f", orTotal) +"%\n"
+                );
+		} catch (NullPointerException npe)   {
+            logger.severe(npe.getMessage());
+            npe.printStackTrace(System.out);
+            System.out.println("The hotel is currently empty.");
+        }		
     }
 
+    public void printReservationList() {
+    	Reservation reservation;
+    	List<Reservation> reservationList;
+    	try {
+    		reservationList = reservationMgr.getReservationList();
+    		if (reservationList.size()==0) {
+    			System.out.println("There are currently no reservations");
+    			return;
+    		}
+    		for (int i=0;i<reservationList.size();i++) {
+    			reservation = reservationList.get(i);
+    			System.out.println(
+    	                "====================================================================" +
+    	                "\nReservation ID: " + Integer.toString(reservation.getReservationID()) +
+    	                "\nRoom Number: " + Integer.toString(reservation.getRoomNumber()) + 
+    	                "\nNo. of Adults: " + Integer.toString(reservation.getNumAdults()) + 
+    	                "\nNo. of Childrens: " + Integer.toString(reservation.getNumChild()) + 
+    	                "\nCheck In Date: " + reservation.getCheckInDate() + 
+    	                "\nCheck Out Date: " + reservation.getCheckOutDate() + 
+    	                "\nNo. of Weekdays: " + Integer.toString(reservation.getNoOfWeekdays()) + 
+    	                "\nNo. of Weekends: " + Integer.toString(reservation.getNoOfWeekends()) + 
+    	                "\nReservation Status: " + reservation.getReserveStatus().toString() +
+    	                "\n===================================================================="
+    	            );
+    		}
+    	} catch (NullPointerException npe) {
+    		logger.severe(npe.getMessage());
+            System.out.println("The reservation is currently empty.");
+    	}
+    }
+    
+    public void checkRoomServiceStatus() {
+    	int roomNumber;
+    	List<RoomSvc> roomSvcList;
+    	RoomSvc roomSvc;
+    	int roomSvcID;
+    	
+    	System.out.println("Please input room number to check room service");
+    	roomNumber = sc.nextInt();
+    	sc.nextLine();
+    	
+    	roomSvcList = roomSvcMgr.getRoomSvcList(roomNumber);
+    	
+    	System.out.println("Room Number: " + roomNumber);
+    	for(int i=0; i<roomSvcList.size(); i++)	{
+    		roomSvc = roomSvcList.get(i);
+    		System.out.print(
+    				"===================================\n" + 
+    				"Room Service ID: " + roomSvc.getRoomSvcID() + "\n" +
+    				"Date Ordered: " + formatter.format(roomSvc.getDateTimeOrdered()) + "\n" +
+    				"Amount Payable: " + roomSvc.getAmountPayable() + "\n" +
+    				"Remarks: " + roomSvc.getRemarks() + "\n" +
+    				"Status: " + roomSvc.getRoomSvcStatus().toString() + "\n" +
+    				"==================================="
+    		);
+    	}
+    	
+    }
+    
+    public void updateExpiredStatus () {
+		Date timeCheck = new Date();
+		timeCheck.setHours(13);
+		timeCheck.setMinutes(00);
+		timeCheck.setSeconds(00);
+		long initialDelay = new Date(timeCheck.getTime()-System.currentTimeMillis()).getTime();
+		//System.out.println(initialDelay);
+		if (initialDelay <= 0 ) {
+			initialDelay = initialDelay + 86400000L;
+		}
+		ScheduledExecutorService execService = Executors.newScheduledThreadPool(5);
+		execService.scheduleAtFixedRate(()->{
+			reservationMgr.updateExpiredReservation();
+		}, initialDelay, 86400000L, TimeUnit.MILLISECONDS); 
+    }
+    
+    /*
+     * Checks reservation list at set timing, currently is 1300hrs
+     * if any confirmed reserve status on the same day has not checked in by 1300
+     * sets reserve status to expired.
+     */
+//	Date timeCheck = new Date();
+//	timeCheck.setHours(13);
+//	timeCheck.setMinutes(00);
+//	timeCheck.setSeconds(00);
+//	long initialDelay = new Date(timeCheck.getTime()-System.currentTimeMillis()).getTime();
+//	System.out.println(initialDelay);
+//	if (initialDelay <= 0 ) {
+//		initialDelay = initialDelay + 86400000L;
+//	}
+//	ScheduledExecutorService execService = Executors.newScheduledThreadPool(5);
+//	execService.scheduleAtFixedRate(()->{
+//		 hotelMgr.updateExpiredStatus();
+//	}, initialDelay, 86400000L, TimeUnit.MILLISECONDS); 
+	
+
+    
+    /*
+     * Checks reservation list every hour 
+     * if any confirmed reserve status on the same day has not checked in with an hour's grace
+     * sets reserve status to expired.
+     */
+//	ScheduledExecutorService execService = Executors.newScheduledThreadPool(5);			
+//	execService.scheduleAtFixedRate(()->{
+//		 hotelMgr.updateExpiredStatus();
+//	}, initialDelay, 3600000L, TimeUnit.MILLISECONDS);
+
+    
     /**
      * 
      * END OF OPERATIONAL/BUSINESS LOGIC
