@@ -1,4 +1,4 @@
-package com.sushihotel.test;
+/*package com.sushihotel.test;
 
 import com.sushihotel.invoice.Invoice;
 import com.sushihotel.invoice.InvoiceMgr;
@@ -30,4 +30,4 @@ public class invUT {
 
         
     }
-}
+}*/
