@@ -19,6 +19,7 @@ public class hotelUT    {
         int choice;
         String staffName;
         
+        hotelMgr.updateRoomSvcDelivered(); // if theres no room service database will show error
         hotelMgr.updateExpiredStatus();
         try {
             /**
