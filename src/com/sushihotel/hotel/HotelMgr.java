@@ -1665,6 +1665,13 @@ public class HotelMgr {
             reservationMgr.updateExpiredReservation();
         }, initialDelay, 86400000L, TimeUnit.MILLISECONDS);
     }
+    
+    public void updateRoomSvcDelivered() {
+    	ScheduledExecutorService execService = Executors.newSingleThreadScheduledExecutor();
+    	execService.scheduleAtFixedRate(()-> {
+    		roomSvcMgr.updateRoomSvcStatusToDelivered();
+    	}, 0, 30000L,TimeUnit.MILLISECONDS);
+    }
 
     public void setDummyData() {
         roomMgr.createRoom(

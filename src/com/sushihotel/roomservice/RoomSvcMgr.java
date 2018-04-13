@@ -133,4 +133,30 @@ public class RoomSvcMgr {
 		}
 		return roomSvcList;
 	}
+	
+	public boolean updateRoomSvcStatusToDelivered() {
+		List<RoomSvc> roomSvcList = null;
+		RoomSvc roomSvc;
+		Iterator iter;
+		long delay;
+    	try {
+			roomSvcList = RSvcModel.read();
+			iter = roomSvcList.iterator();
+			while(iter.hasNext()) {
+				roomSvc = (RoomSvc)iter.next();
+				if (roomSvc.getRoomSvcStatus() == RoomSvc.ROOM_SVC_STATUS.PREPARING ) {
+					delay = System.currentTimeMillis()-roomSvc.getDateTimeOrdered().getTime(); // delay is in miliseconds, 2minutes would be 120 000
+					//System.out.println("Delay till start: " + delay);
+					if (delay>=120000L)
+						roomSvc.setRoomSvcStatus(RoomSvc.ROOM_SVC_STATUS.DELIVERED);
+						RSvcModel.update(roomSvc.getRoomSvcID(), roomSvc);
+				}
+			}
+		} catch (EmptyDB edb) {
+			logger.warning(edb.getMessage());
+		} catch (InvalidEntity ie) {
+			logger.warning(ie.getMessage());
+		}
+		return true;
+	}
 }

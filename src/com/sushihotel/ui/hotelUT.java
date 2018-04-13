@@ -36,7 +36,7 @@ public class hotelUT    {
              */
 
             System.out.println(
-                "Welcome to SushiHotel's Hotel Reservation System!\n" +
+                "========= Welcome to Sushi Hotel =========\n" +
                 "Please enter your name: "
                 );
             staffName = sc.next();
