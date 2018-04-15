@@ -1,0 +1,164 @@
+Apr 15, 2018 12:04:24 PM com.sushihotel.guest.GuestMgr searchGuest
+WARNING: (GUEST_NAME) System.out.println("Guest does not exist."); not found.
+Apr 15, 2018 12:04:28 PM com.sushihotel.guest.GuestMgr searchGuest
+WARNING: (GUEST_NAME) Lawrannnnnnn not found.
+Apr 15, 2018 12:04:40 PM com.sushihotel.guest.GuestMgr searchGuest
+WARNING: (GUEST_NAME) Lawrann not found.
+Apr 15, 2018 12:04:46 PM com.sushihotel.guest.GuestMgr searchGuest
+WARNING: (GUEST_NAME) Lawrannn not found.
+Apr 15, 2018 12:04:48 PM com.sushihotel.guest.GuestMgr searchGuest
+WARNING: (GUEST_NAME) Lawrannnn not found.
+Apr 15, 2018 12:04:48 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 15, 2018 12:04:49 PM com.sushihotel.guest.GuestMgr searchGuest
+WARNING: (GUEST_NAME) Lawrannnnn not found.
+Apr 15, 2018 12:05:18 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 15, 2018 12:05:31 PM com.sushihotel.room.RoomMgr getRoom
+WARNING: Room DB not found.
+Apr 15, 2018 12:05:31 PM com.sushihotel.hotel.HotelMgr newReservation
+SEVERE: null
+Apr 15, 2018 12:05:48 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 15, 2018 12:06:08 PM com.sushihotel.room.RoomMgr getRoom
+WARNING: Room DB not found.
+Apr 15, 2018 12:06:08 PM com.sushihotel.hotel.HotelMgr newReservation
+SEVERE: null
+Apr 15, 2018 12:07:07 PM com.sushihotel.room.RoomMgr getRoom
+WARNING: Room DB not found.
+Apr 15, 2018 12:07:07 PM com.sushihotel.hotel.HotelMgr newReservation
+SEVERE: null
+Apr 15, 2018 12:08:44 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 1 |Type: SINGLE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 2 |Type: SINGLE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 3 |Type: SINGLE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 4 |Type: SINGLE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 5 |Type: DOUBLE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 6 |Type: DOUBLE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 7 |Type: DELUXE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 8 |Type: DELUXE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 9 |Type: SINGLE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 10 |Type: SINGLE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 11 |Type: SINGLE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 12 |Type: SINGLE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 13 |Type: DOUBLE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 14 |Type: DOUBLE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 15 |Type: DELUXE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 16 |Type: DELUXE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 17 |Type: SINGLE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 18 |Type: SINGLE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 19 |Type: SINGLE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 20 |Type: DOUBLE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 21 |Type: DOUBLE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 22 |Type: DELUXE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 23 |Type: DELUXE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 24 |Type: VIP
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 25 |Type: SINGLE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 26 |Type: SINGLE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 27 |Type: SINGLE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 28 |Type: DOUBLE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 29 |Type: DOUBLE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 30 |Type: DELUXE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 31 |Type: DELUXE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 32 |Type: VIP
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 33 |Type: SINGLE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 34 |Type: SINGLE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 35 |Type: SINGLE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 36 |Type: DOUBLE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 37 |Type: DOUBLE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 38 |Type: DOUBLE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 39 |Type: DELUXE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 40 |Type: VIP
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 41 |Type: SINGLE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 42 |Type: SINGLE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 43 |Type: SINGLE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 44 |Type: DOUBLE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 45 |Type: DOUBLE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 46 |Type: DOUBLE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 47 |Type: DELUXE
+Apr 15, 2018 12:08:45 PM com.sushihotel.room.RoomMgr createRoom
+INFO: [CREATE SUCCESS] Room Number: 48 |Type: VIP
+Apr 15, 2018 12:08:45 PM com.sushihotel.guest.GuestMgr registerGuest
+INFO: [CREATE SUCCESS] Guest ID: 2 | Guest Name: 	Natalie Mohan	
+Apr 15, 2018 12:08:45 PM com.sushihotel.guest.GuestMgr registerGuest
+INFO: [CREATE SUCCESS] Guest ID: 3 | Guest Name: 	Sandy Lim	
+Apr 15, 2018 12:08:45 PM com.sushihotel.guest.GuestMgr registerGuest
+INFO: [CREATE SUCCESS] Guest ID: 4 | Guest Name: 	Nichole Lau	
+Apr 15, 2018 12:08:45 PM com.sushihotel.guest.GuestMgr registerGuest
+INFO: [CREATE SUCCESS] Guest ID: 5 | Guest Name: 	Lam Siew Kei	
+Apr 15, 2018 12:08:45 PM com.sushihotel.guest.GuestMgr registerGuest
+INFO: [CREATE SUCCESS] Guest ID: 6 | Guest Name: 	Quek Wee Tat	
+Apr 15, 2018 12:08:45 PM com.sushihotel.guest.GuestMgr registerGuest
+INFO: [CREATE SUCCESS] Guest ID: 7 | Guest Name: 	Nicholas Vun	
+Apr 15, 2018 12:08:58 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 15, 2018 12:09:28 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 15, 2018 12:09:58 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 15, 2018 12:11:50 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 15, 2018 12:12:20 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 15, 2018 12:12:50 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 15, 2018 12:13:20 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 15, 2018 12:21:16 PM com.sushihotel.guest.GuestMgr searchGuest
+WARNING: (IDENTIFICATION_NO) S9526353D not found.
+Apr 15, 2018 12:21:31 PM com.sushihotel.guest.GuestMgr registerGuest
+INFO: [CREATE SUCCESS] Guest ID: 8 | Guest Name: LawrannChan
+Apr 15, 2018 12:21:31 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 15, 2018 12:30:35 PM com.sushihotel.guest.GuestMgr registerGuest
+INFO: [CREATE SUCCESS] Guest ID: 1 | Guest Name: Lawrann
+Apr 15, 2018 12:30:41 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 15, 2018 12:31:28 PM com.sushihotel.guest.GuestMgr searchGuest
+WARNING: (IDENTIFICATION_NO) testtest not found.

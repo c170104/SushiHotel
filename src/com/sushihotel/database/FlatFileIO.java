@@ -70,7 +70,7 @@ public class FlatFileIO implements IDataStore {
             fileContent = (ArrayList) in.readObject();
             in.close();  
         } catch(IOException ioe)  {
-            System.out.println("IOException: " + ioe.getMessage());
+            //System.out.println("IOException: " + ioe.getMessage());
         } catch(ClassNotFoundException cnfe)  {
             System.out.println("Class Exception: " + cnfe.getMessage());
         }
@@ -89,7 +89,7 @@ public class FlatFileIO implements IDataStore {
             oos.writeObject(content);
             oos.close();
         } catch(IOException ioe)  {
-            System.out.println("IOException: " + ioe.getMessage());
+            //System.out.println("IOException: " + ioe.getMessage());
             ioe.printStackTrace();
             return false;
         }

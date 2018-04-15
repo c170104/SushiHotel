@@ -1,0 +1,6 @@
+Apr 15, 2018 12:53:31 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 15, 2018 12:54:01 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 15, 2018 12:54:06 PM com.sushihotel.guest.GuestMgr searchGuest
+WARNING: (IDENTIFICATION_NO) testetsttt not found.

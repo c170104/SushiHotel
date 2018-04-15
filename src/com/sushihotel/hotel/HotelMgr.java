@@ -53,7 +53,7 @@ public class HotelMgr {
      */
     public void guestRegistration() {
         Guest guest;
-        String identificationNo;
+        String identificationNo = null;
         String name;
         String creditCardNo;
         String billingAddress;
@@ -62,36 +62,209 @@ public class HotelMgr {
         String gender;
         String nationality;
         String contactNo;
-        String passportNo;
+        String passportNo = null;
+        String choice;
+        Boolean inputValidation = false;
+        int i;
 
         try {
             // Guest Registration Begins
             System.out.println("============ Guest Registration ============");
-            System.out.println("Please enter Name: ");
+            System.out.println("Please enter Name: \n(Enter 'exit' to exit)");
             name = sc.nextLine();
-            System.out.println("Please enter Gender (F/M/O): ");
-            gender = sc.nextLine();
-            System.out.println("Please enter Identification Number: ");
-            identificationNo = sc.nextLine();
-            System.out.println("Please enter Passport Number: ");
-            passportNo = sc.nextLine();
-            System.out.println("Please enter Nationality: ");
+            if (name.equals("exit")) {
+            	return;
+            }
+            do {
+                System.out.println("Please enter Gender (F/M/O): \n(Enter 'exit' to exit)");
+                gender = sc.nextLine();
+                inputValidation = true;
+                if (!gender.equals("exit"))  {
+                	if (!gender.equals("F") && !gender.equals("M") && !gender.equals("O")) {
+                		System.out.println("Incorrect gender entry, try again!");
+                		inputValidation = false;
+	                } 
+                }
+            } while (!inputValidation);
+            if (gender.equals("exit")) {
+            	return;
+            }
+            
+            
+            System.out.println("Select type of ID \n1)Identification Number \n2)Passport Number\n(Enter 'exit' to exit)");
+            do {
+            	choice = sc.nextLine();
+            	if (choice.equals("exit")) {
+            		return;
+                }
+                if (!choice.equals("1") &&  !choice.equals("2")) {
+                	System.out.println("Invalid input, please try again!");
+                 	inputValidation = false;
+                }
+            }while (!inputValidation);
+           
+            switch (Integer.parseInt(choice)) {
+            case 1:
+            	// ID Validation
+                System.out.println("Please enter Identification Number: \n(Enter 'exit' to exit)");
+                do {
+                    identificationNo = sc.nextLine();
+                	if (identificationNo.equals("exit")) {
+                		inputValidation = true;
+                    	return;
+                    }
+                    try {
+                    	if (guestMgr.searchGuest(identificationNo, Guest.GUEST_SEARCH_TYPE.IDENTIFICATION_NO) != null ) {
+                    	System.out.println("Identification Number has been registered before. Please try again");
+                    	inputValidation = false;
+                    	} else {
+                    		inputValidation = true;
+                    	}
+                    } catch (NullPointerException npe) {
+                    	inputValidation = true;
+                    }
+                } while (!inputValidation);
+            	break;
+            case 2:
+            	 //Passport Validation
+                System.out.println("Please enter Passport Number: \n(Enter 'exit' to exit)");
+                do {
+                    passportNo = sc.nextLine();
+                	if (passportNo.equals("exit")) {
+                		inputValidation = true;
+                    	return;
+                    }
+                    try {
+                    	if (guestMgr.searchGuest(passportNo, Guest.GUEST_SEARCH_TYPE.PASSPORT_NO) != null ) {
+                    	System.out.println("Passport Number has been regiestered before. Please try again");
+                    	inputValidation = false;
+                    	}  else {
+                    		inputValidation = true;
+                    	}
+                    } catch (NullPointerException npe) {
+                    	inputValidation = true;
+                    }
+                } while (!inputValidation);
+            	break;
+            default:
+            	break;
+            }
+            
+//            // ID Validation
+//            System.out.println("Please enter Identification Number: \n(Enter 'exit' to exit)");
+//            do {
+//                identificationNo = sc.nextLine();
+//            	if (identificationNo.equals("exit")) {
+//            		inputValidation = true;
+//                	return;
+//                }
+//                try {
+//                	if (guestMgr.searchGuest(identificationNo, Guest.GUEST_SEARCH_TYPE.IDENTIFICATION_NO) != null ) {
+//                	System.out.println("Identificatnion Number has been regiestered before. Please try again");
+//                	inputValidation = false;
+//                	}
+//                } catch (NullPointerException npe) {
+//                	inputValidation = true;
+//                }
+//            } while (!inputValidation);
+//            
+//   
+//            
+//            //Passport Validation
+//            System.out.println("Please enter Passport Number: \n(Enter 'exit' to exit)");
+//            do {
+//                passportNo = sc.nextLine();
+//            	if (passportNo.equals("exit")) {
+//            		inputValidation = true;
+//                	return;
+//                }
+//                try {
+//                	if (guestMgr.searchGuest(passportNo, Guest.GUEST_SEARCH_TYPE.PASSPORT_NO) != null ) {
+//                	System.out.println("Passport Number has been regiestered before. Please try again");
+//                	inputValidation = false;
+//                	}
+//                } catch (NullPointerException npe) {
+//                	inputValidation = true;
+//                }
+//            } while (!inputValidation);
+//            
+            
+
+
+            System.out.println("Please enter Nationality: \n(Enter 'exit' to exit)");
             nationality = sc.nextLine();
-            System.out.println("Please enter Address: ");
+            if (nationality.equals("exit")) {
+            	return;
+            }
+            System.out.println("Please enter Address: \n(Enter 'exit' to exit)");
             address = sc.nextLine();
-            System.out.println("Please enter Contact Number: ");
-            contactNo = sc.nextLine();
-            System.out.println("Please enter Credit Card Number: ");
-            creditCardNo = sc.nextLine();
-            System.out.println("Please enter Billing Address: ");
+            if (address.equals("exit")) {
+            	return;
+            	
+            }
+            
+          //Contact number validation
+            do {   
+	            System.out.println("Please enter 8 digit Contact Number: \n(Enter 'exit' to exit)");
+	            contactNo = sc.nextLine();
+	            inputValidation = true;
+	            if (!contactNo.equals("exit")) {
+	                for (i = 0; i<contactNo.length(); i++) {
+	                	if (contactNo.charAt(i) == ' ' || Character.isLetter(contactNo.charAt(i)) || contactNo.length()!=8) {
+	                		System.out.println("Invalid entry, please try again");
+	                		inputValidation = false;
+	                		break;
+	                	}
+	                }
+	            }
+            } while (!inputValidation);
+            if (contactNo.equals("exit")) {
+            	return;
+            }
+            
+            //Credit card validation
+            do {
+                System.out.println("Please enter 16 digit Credit Card Number: \n(Enter 'exit' to exit)");
+                creditCardNo = sc.nextLine();
+                inputValidation = true;
+                if (!creditCardNo.equals("exit")) {
+                    for (i = 0; i<creditCardNo.length(); i++) {
+                    	if (creditCardNo.charAt(i) == ' ' || Character.isLetter(creditCardNo.charAt(i)) || creditCardNo.length()!=16) {
+                    		System.out.println("Invalid entry, please try again");
+                    		inputValidation = false;
+                    		break;
+                    	}
+                    }
+                }
+            }while (!inputValidation);
+            if (creditCardNo.equals("exit")) {
+            	return;
+            }
+
+            System.out.println("Please enter Billing Address: \n(Enter 'exit' to exit)");
             billingAddress = sc.nextLine();
-            System.out.println("Please enter Country: ");
+            if (billingAddress.equals("exit")) {
+            	return;
+            }
+            System.out.println("Please enter Country: \n(Enter 'exit' to exit)");
             country = sc.nextLine();
+            if (country.equals("exit")) {
+            	return;
+            }
 
             // Guest object creation
             guest = new Guest(identificationNo, name, creditCardNo, billingAddress, address, country, gender,
                     nationality, contactNo, passportNo);
-
+            System.out.println(identificationNo + " id\n" +
+            		name + " name\n" +
+            		creditCardNo + " cc\n" +
+            		address + " add\n" +
+            		country + " countr\n" +
+            		gender + " g\n" +
+            		nationality + " nati\n" +
+            		contactNo + " conatct\n" +
+            		passportNo + " pp\n" 
+            		);
             if (guestMgr.registerGuest(guest))
                 System.out.println("Guest " + name + " has been successfully registered!");
             else
@@ -116,10 +289,16 @@ public class HotelMgr {
         String contactNo;
         String passportNo;
         int choice;
+        String inputChecker;
+        Boolean inputValidation = false;
+        int i;
 
         try {
-            System.out.println("Please enter the exact name of the Guest to be updated: ");
+            System.out.println("Please enter the exact name of the Guest to be updated: \n(Enter 'exit' to exit)");
             name = sc.nextLine();
+            if (name.equals("exit")) {
+            	return;
+            }
 
             guest = guestMgr.searchGuest(name, Guest.GUEST_SEARCH_TYPE.GUEST_NAME);
 
@@ -145,44 +324,138 @@ public class HotelMgr {
                 sc.nextLine();
                 switch (choice) {
                 case 1:
-                    System.out.println("Name: ");
-                    name = sc.nextLine();
+                    System.out.println("Name: \n(Enter 'exit' to exit)");
+                    inputChecker = sc.nextLine();
+                    if (inputChecker.equals("exit")) {
+                    	break;
+                    }
+                    name = inputChecker;
                     break;
                 case 2:
-                    System.out.println("Gender ");
-                    gender = sc.nextLine();
+                	 do {
+                         System.out.println("Please enter Gender (F/M/O): \n(Enter 'exit' to exit)");
+                         inputChecker = sc.nextLine();
+                         inputValidation = true;
+                         if (!inputChecker.equals("exit"))  {
+                         	if (!inputChecker.equals("F") && !inputChecker.equals("M") && !inputChecker.equals("O")) {
+                         		System.out.println("Incorrect gender entry, try again!");
+                         		inputValidation = false;
+         	                } 
+                         }
+                     } while (!inputValidation);
+                     if (inputChecker.equals("exit")) {
+                     	break;
+                     }
+                     gender = inputChecker;
                     break;
+                    
                 case 3:
-                    System.out.println("Identification Number: ");
-                    identificationNo = sc.nextLine();
+                    System.out.println("Identification Number: \n(Enter 'exit' to exit)");
+                    do {
+                    	inputChecker = sc.nextLine();
+                    	if (inputChecker.equals("exit")) {
+                    		inputValidation = true;
+                        	break;
+                        }
+                        try {
+                        	if (guestMgr.searchGuest(inputChecker, Guest.GUEST_SEARCH_TYPE.IDENTIFICATION_NO) != null ) {
+                        	System.out.println("Identification Number has been regiestered before. Please try again");
+                        	inputValidation = false;
+                        	}
+                        } catch (NullPointerException npe) {
+                        	identificationNo = inputChecker;
+                        	inputValidation = true;
+                        }
+                    } while (!inputValidation);
                     break;
+                    
                 case 4:
-                    System.out.println("Passport Number: ");
-                    passportNo = sc.nextLine();
+                	System.out.println("Passport Number: \n(Enter 'exit' to exit)");
+                    do {
+                        inputChecker = sc.nextLine();
+                    	if (passportNo.equals("exit")) {
+                    		inputValidation = true;
+                        	return;
+                        }
+                        try {
+                        	if (guestMgr.searchGuest(inputChecker, Guest.GUEST_SEARCH_TYPE.PASSPORT_NO) != null ) {
+                        	System.out.println("Passport Number has been regiestered before. Please try again");
+                        	inputValidation = false;
+                        	}
+                        } catch (NullPointerException npe) {
+                        	passportNo = inputChecker;
+                        	inputValidation = true;
+                        }
+                    } while (!inputValidation);
                     break;
+                    
                 case 5:
-                    System.out.println("Nationality: ");
+                    System.out.println("Nationality: \n(Enter 'exit' to exit)");
                     nationality = sc.nextLine();
                     break;
                 case 6:
-                    System.out.println("Address: ");
-                    address = sc.nextLine();
+                    System.out.println("Address: \n(Enter 'exit' to exit)");
+                    inputChecker = sc.nextLine();
+                    if (inputChecker.equals("exit")) {
+                    	break;
+                    }
+                    address = inputChecker;
                     break;
                 case 7:
-                    System.out.println("Contact Number: ");
-                    contactNo = sc.nextLine();
+                	do {   
+        	            System.out.println("Please enter 8 digit Contact Number: \n(Enter 'exit' to exit)");
+        	            inputChecker = sc.nextLine();
+        	            inputValidation = true;
+        	            if (!inputChecker.equals("exit")) {
+        	                for (i = 0; i<inputChecker.length(); i++) {
+        	                	if (inputChecker.charAt(i) == ' ' || Character.isLetter(inputChecker.charAt(i)) || inputChecker.length()!=8) {
+        	                		System.out.println("Invalid entry, please try again");
+        	                		inputValidation = false;
+        	                		break;
+        	                	}
+        	                }
+        	            }
+                    } while (!inputValidation);
+                    if (inputChecker.equals("exit")) {
+                    	break;
+                    }
+                    contactNo = inputChecker;
                     break;
                 case 8:
-                    System.out.println("Credit Card Number: ");
-                    creditCardNo = sc.nextLine();
+                	do {   
+        	            System.out.println("Please enter 16 digit Credit Card Number: \n(Enter 'exit' to exit)");
+        	            inputChecker = sc.nextLine();
+        	            inputValidation = true;
+        	            if (!inputChecker.equals("exit")) {
+        	                for (i = 0; i<inputChecker.length(); i++) {
+        	                	if (inputChecker.charAt(i) == ' ' || Character.isLetter(inputChecker.charAt(i)) || inputChecker.length()!=16) {
+        	                		System.out.println("Invalid entry, please try again");
+        	                		inputValidation = false;
+        	                		break;
+        	                	}
+        	                }
+        	            }
+                    } while (!inputValidation);
+                    if (inputChecker.equals("exit")) {
+                    	break;
+                    }
+                    creditCardNo = inputChecker;
                     break;
+                    
                 case 9:
-                    System.out.println("Billing Address ");
-                    billingAddress = sc.nextLine();
-                    break;
+                    System.out.println("Billing Address \n(Enter 'exit' to exit)");
+                    inputChecker = sc.nextLine();
+                    if (inputChecker.equals("exit")) {
+                    	break;
+                    }
+                    billingAddress = inputChecker;
                 case 10:
-                    System.out.println("Country: ");
-                    country = sc.nextLine();
+                    System.out.println("Country: \n(Enter 'exit' to exit)");
+                    inputChecker = sc.nextLine();
+                    if (inputChecker.equals("exit")) {
+                    	break;
+                    }
+                    country = inputChecker;
                     break;
                 default:
                     break;
@@ -213,8 +486,11 @@ public class HotelMgr {
         String guestName;
 
         try {
-            System.out.println("Please enter the name to search: ");
+            System.out.println("Please enter the name to search: \n(Enter 'exit' to exit)");
             guestName = sc.nextLine();
+            if (guestName.equals("exit")) {
+            	return;
+            }
 
             guestList = guestMgr.searchGuestsByName(guestName);
 
@@ -379,7 +655,8 @@ public class HotelMgr {
             endCal.setTime(checkOutDate);
             do {
                 if (startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY
-                        && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+                        && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY
+                        && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.FRIDAY) {
                     numberOfWeekdays++;
                 } else {
                     numberOfWeekends++;
@@ -387,12 +664,12 @@ public class HotelMgr {
                 startCal.add(Calendar.DAY_OF_MONTH, 1);
             } while (startCal.getTimeInMillis() < endCal.getTimeInMillis()); //excluding end date
 
-            if (startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY
-                    && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
-                numberOfWeekdays++;
-            } else {
-                numberOfWeekends++;
-            }
+//            if (startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY
+//                    && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+//                numberOfWeekdays++;
+//            } else {
+//                numberOfWeekends++;
+//            }
             System.out.println("# of Weekdays =  " + numberOfWeekdays + "\n# of Weekends = " + numberOfWeekends);
 
             System.out.println("Please enter Number of Adults: ");
@@ -531,7 +808,8 @@ public class HotelMgr {
                     System.out.println(checkOutDate);
                     do {
                         if (startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY
-                                && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+                                && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY
+                                && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.FRIDAY) {
                             numberOfWeekdays++;
                         } else {
                             numberOfWeekends++;
@@ -539,12 +817,12 @@ public class HotelMgr {
                         startCal.add(Calendar.DAY_OF_MONTH, 1);
                     } while (startCal.getTimeInMillis() < endCal.getTimeInMillis()); //excluding end date
 
-                    if (startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY
-                            && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
-                        numberOfWeekdays++;
-                    } else {
-                        numberOfWeekends++;
-                    }
+//                    if (startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY
+//                            && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+//                        numberOfWeekdays++;
+//                    } else {
+//                        numberOfWeekends++;
+//                    }
                     System.out.println(
                             "Number of weekdays: " + numberOfWeekdays + "\nNumber of Weekends: " + numberOfWeekends);
                     break;
@@ -578,7 +856,8 @@ public class HotelMgr {
                     System.out.println(checkOutDate);
                     do {
                         if (startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY
-                                && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+                                && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY
+                                && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.FRIDAY) {
                             numberOfWeekdays++;
                         } else {
                             numberOfWeekends++;
@@ -586,12 +865,12 @@ public class HotelMgr {
                         startCal.add(Calendar.DAY_OF_MONTH, 1);
                     } while (startCal.getTimeInMillis() < endCal.getTimeInMillis()); //excluding end date
 
-                    if (startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY
-                            && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
-                        numberOfWeekdays++;
-                    } else {
-                        numberOfWeekends++;
-                    }
+//                    if (startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY
+//                            && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+//                        numberOfWeekdays++;
+//                    } else {
+//                        numberOfWeekends++;
+//                    }
                     System.out.println(
                             "Number of Weekdays: " + numberOfWeekdays + "\nNumber of Weekends: " + numberOfWeekends);
                     break;
@@ -1166,6 +1445,10 @@ public class HotelMgr {
             System.out.println("Please enter the Room number (1-48): ");
             roomNumber = sc.nextInt();
             sc.nextLine();
+            if (!roomMgr.getRoom(roomNumber).getRoomStatus().equals(Room.ROOM_STATUS.OCCUPIED)) {
+            	System.out.println("Room is not occupied.");
+            	return;
+            }
 
             // Print Menu by roomSvcMgr
             printMealList();
@@ -1175,27 +1458,33 @@ public class HotelMgr {
                 // get individual meal by roomsvcMgr
                 menuChoice = sc.nextInt();
                 sc.nextLine();
-
-                if (menuChoice == 0)
-                    break;
+                if (menuChoice == 0) {
+                	break;
+                }
                 meal = menuMgr.getMealDetails(menuChoice);
                 amountPayable += meal.getMealPrice();
             }
 
-            System.out.println("Please enter the room service remarks: ");
-            remarks = sc.nextLine();
-            roomSvc = new RoomSvc(roomNumber, amountPayable, remarks, dateTimeOrdered);
+            if (amountPayable != 0) {
+            	System.out.println("Please enter the room service remarks: ");
+            	remarks = sc.nextLine();
+            	roomSvc = new RoomSvc(roomNumber, amountPayable, remarks, dateTimeOrdered);
+            	 if (roomSvcMgr.addNewRoomSvc(roomSvc)) {
+                     roomSvcID = roomSvcMgr.getRoomSvcID(roomNumber);
+                     if (invoiceMgr.addRoomSvc(roomNumber, roomSvcID)) {
+                         roomSvcMgr.updateRoomSvcStatus(roomSvcID, RoomSvc.ROOM_SVC_STATUS.PREPARING);
+                         System.out.println("Room Service has successfully been placed for Room number " + roomNumber + ".");
+                     } else
+                         System.out.println("System has failed to place Room service for Room number " + roomNumber
+                                 + ". Please try again.");
+                 } else
+                     System.out.println("System has failed to add new room service. Please try again.");
+            } else {
+            	System.out.println("Exited room service call");
+            }
 
-            if (roomSvcMgr.addNewRoomSvc(roomSvc)) {
-                roomSvcID = roomSvcMgr.getRoomSvcID(roomNumber);
-                if (invoiceMgr.addRoomSvc(roomNumber, roomSvcID)) {
-                    roomSvcMgr.updateRoomSvcStatus(roomSvcID, RoomSvc.ROOM_SVC_STATUS.PREPARING);
-                    System.out.println("Room Service has successfully been placed for Room number " + roomNumber + ".");
-                } else
-                    System.out.println("System has failed to place Room service for Room number " + roomNumber
-                            + ". Please try again.");
-            } else
-                System.out.println("System has failed to add new room service. Please try again.");
+
+           
 
         } catch (InputMismatchException ime) {
             logger.severe(ime.getMessage());
@@ -1349,7 +1638,8 @@ public class HotelMgr {
                     endCal.setTime(checkOutDate);
                     do {
                         if (startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY
-                                && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+                                && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY
+                                && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.FRIDAY ) {
                             totalWeekdays++;
                         } else {
                             totalWeekends++;
@@ -1357,12 +1647,12 @@ public class HotelMgr {
                         startCal.add(Calendar.DAY_OF_MONTH, 1);
                     } while (startCal.getTimeInMillis() < endCal.getTimeInMillis()); //excluding end date
 
-                    if (startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY
-                            && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
-                        totalWeekdays++;
-                    } else {
-                        totalWeekends++;
-                    }
+//                    if (startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY
+//                            && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+//                        totalWeekdays++;
+//                    } else {
+//                        totalWeekends++;
+//                    }
                     System.out.println("# of Weekdays = " + totalWeekdays + "\n# of Weekends = " + totalWeekends);
                 }
 
@@ -1370,7 +1660,7 @@ public class HotelMgr {
                         totalWeekends);
 
                 if (invoiceMgr.createBlankInvoice(invoice)) {
-                    if (reservationMgr.reservationCheckInChanges(reservationID)) {
+                    if (reservationMgr.reservationCheckInChanges(reservationID)) { // error here, since using number 2 which is made no prior reservation
                         System.out.println("Check In for guest " + guest.getName() + " into Room number "
                                 + Integer.toString(roomNumber) + " is successful!");
                         roomMgr.setRoomToOccupied(roomNumber, Room.ROOM_STATUS.OCCUPIED);
@@ -1593,9 +1883,9 @@ public class HotelMgr {
                     + "--------------------------------------------------\n" + "Hotel Occupancy Rate: "
                     + String.format("%.2f", orTotal) + "%\n");
         } catch (NullPointerException npe) {
-            logger.severe(npe.getMessage());
-            npe.printStackTrace(System.out);
-            System.out.println("The hotel is currently empty.");
+//            logger.severe(npe.getMessage());
+//            npe.printStackTrace(System.out);
+            System.out.println("Hotel is not occupied.");
         }
     }
 
@@ -1674,6 +1964,7 @@ public class HotelMgr {
     }
 
     public void setDummyData() {
+
         roomMgr.createRoom(
                 new Room(1, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "02-01"));
         roomMgr.createRoom(

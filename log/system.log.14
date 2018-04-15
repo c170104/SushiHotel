@@ -1,0 +1,8 @@
+Apr 15, 2018 12:55:48 PM com.sushihotel.guest.GuestMgr searchGuest
+WARNING: (IDENTIFICATION_NO) nottest not found.
+Apr 15, 2018 12:55:50 PM com.sushihotel.guest.GuestMgr searchGuest
+WARNING: (IDENTIFICATION_NO) t not found.
+Apr 15, 2018 12:55:51 PM com.sushihotel.guest.GuestMgr searchGuest
+WARNING: (IDENTIFICATION_NO) nopttest not found.
+Apr 15, 2018 12:56:23 PM com.sushihotel.guest.GuestMgr searchGuest
+WARNING: (IDENTIFICATION_NO) testet not found.

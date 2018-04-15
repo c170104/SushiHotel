@@ -16,10 +16,11 @@ public class hotelUT    {
     private static final HotelMgr hotelMgr = new HotelMgr();
 
     public static void main(String[] args)  {
-        int choice;
+        int choice = 0;
+        boolean inputChecker = false;
         String staffName;
         
-        hotelMgr.updateRoomSvcDelivered(); // if theres no room service database will show error
+        hotelMgr.updateRoomSvcDelivered(); // if theres no room service database will show WARNING: RoomService DB not found
         hotelMgr.updateExpiredStatus();
         try {
             /**
@@ -40,115 +41,124 @@ public class hotelUT    {
                 "========= Welcome to Sushi Hotel =========\n" +
                 "Please enter your name: "
                 );
-            staffName = sc.next();
+            staffName = sc.nextLine();
             System.out.println("Hello, " + staffName + ".\n");
-            do {
-                System.out.println(
-                    "Please select an option(1-18):\n" +
-                    "=============== GUEST MATTERS ===============\n" +
-                    "1) Register Guest\n" +
-                    "2) Update Guest Details\n"+
-                    "3) Search Guest\n"+
-                    "============ RESERVATION MATTERS ============\n" +
-                    "4) New Reservation\n"+
-                    "5) Edit Reservation\n"+
-                    "6) Print Reservation\n"+
-                    "7) Remove Reservation\n" +
-                    "================ ROOM MATTERS ===============\n" +
-                    "8) Create Room\n" +
-                    "9) Edit Room Details\n" +
-                    "================ MENU MATTERS ===============\n" +
-                    "10) Add New Menu Item\n" +
-                    "11) Edit Menu Item\n" +
-                    "12) Remove Menu Item\n" +
-                    "============ OPERATIONAL MATTERS ============\n" +
-                    "13) Order Room Service\n"+
-                    "14) Check Room Availability\n" +
-                    "15) Check In\n" +
-                    "16) Check Out\n" +
-                    "17) Print Room Occupancy Rate (One Day)\n" +
-                    "18) Print Reservation List\n" +
-                    "19) Check Room Service Status\n" +
-                    "20) Exit\n" +
-                    "Choice (1-20): "
-                );
-                choice = sc.nextInt();
+        	}catch(IOException ioe)    {
+        		logger.severe(ioe.getMessage());
+        		System.out.println("System failure. Please contact the system developer.");
+        	}
+        	do {
+	        		System.out.println(
+		                    "Please select an option(1-20):\n" +
+		                    "=============== GUEST MATTERS ===============\n" +
+		                    "1) Register Guest\n" +
+		                    "2) Update Guest Details\n"+
+		                    "3) Search Guest\n"+
+		                    "============ RESERVATION MATTERS ============\n" +
+		                    "4) New Reservation\n"+
+		                    "5) Edit Reservation\n"+
+		                    "6) Print Reservation\n"+
+		                    "7) Remove Reservation\n" +
+		                    "================ ROOM MATTERS ===============\n" +
+		                    "8) Create Room\n" +
+		                    "9) Edit Room Details\n" +
+		                    "================ MENU MATTERS ===============\n" +
+		                    "10) Add New Menu Item\n" +
+		                    "11) Edit Menu Item\n" +
+		                    "12) Remove Menu Item\n" +
+		                    "============ OPERATIONAL MATTERS ============\n" +
+		                    "13) Order Room Service\n"+
+		                    "14) Check Room Availability\n" +
+		                    "15) Check In\n" +
+		                    "16) Check Out\n" +
+		                    "17) Print Room Occupancy Rate (One Day)\n" +
+		                    "18) Print Reservation List\n" +
+		                    "19) Check Room Service Status\n" +
+		                    "20) Exit\n" +
+		                    "Choice (1-20): "
+		                );
 
-                switch(choice)  {
-                    case 1:
-                        hotelMgr.guestRegistration();
-                        break;
-                    case 2:
-                        hotelMgr.updateGuestInformation();
-                        break;
-                    case 3:
-                        hotelMgr.searchGuests();
-                        break;
-                    case 4:
-                        hotelMgr.newReservation();
-                        break;
-                    case 5:
-                        hotelMgr.editReservation();
-                        break;
-                    case 6:
-                        int reservationID;
-                        System.out.println("Please input Reservation ID to print: ");
-                        reservationID = sc.nextInt();
-                        sc.nextLine();
-                        hotelMgr.printReservation(reservationID);
-                        break;
-                    case 7:
-                        hotelMgr.removeReservation();
-                        break;
-                    case 8:
-                        hotelMgr.createRoom();
-                        break;
-                    case 9:
-                        hotelMgr.updateRoomDetails();
-                        break;
-                    case 10:
-                        hotelMgr.addMenuItem();
-                        break;
-                    case 11:
-                        hotelMgr.editMenuItem();
-                        break;
-                    case 12:
-                        hotelMgr.removeMenuItem();
-                        break;
-                    case 13:
-                        hotelMgr.callRoomService();
-                        break;
-                    case 14:
-                        hotelMgr.checkRoomAvailability();
-                        break;
-                    case 15:
-                        hotelMgr.checkIn();
-                        break;
-                    case 16:
-                        hotelMgr.checkOut();
-                        break;
-                    case 17:
-                        hotelMgr.printRoomStatusStatisticReport();
-                        break;
-                    case 18:
-                    	hotelMgr.printReservationList();     
-                    	break;
-                    case 19:
-                    	hotelMgr.checkRoomServiceStatus();
-                        break;
-                    case 99:
-                        hotelMgr.setDummyData();
-                        break;
-                    default:
-                        break;
-                }
-            } while (choice != 20);
-        } catch(InputMismatchException ime) {
-            logger.severe(ime.getMessage());
-            System.out.println("Invalid Choice. Please try again.");
-        } catch(IOException ioe)    {
-            logger.severe(ioe.getMessage());
-            System.out.println("System failure. Please contact the system developer.");
-        }
+	        		try{
+	        		    choice  = Integer.parseInt(sc.nextLine());
+			        	if (choice<= 100 && choice >=1) { // 100 cahnge to 20 when coding is done
+				        	inputChecker = true;
+			        	} else {
+			        		System.out.println("Invalid input, please enter an option from (1-20)");
+			        		inputChecker = false;
+			        	}
+	        		}catch (NumberFormatException nfe) {
+	        			System.out.println("Invalid input, please enter an option from (1-20)");
+	        			inputChecker = false;
+	        		}
+		  
+        			switch(choice)  {
+	                case 1:
+	                    hotelMgr.guestRegistration();
+	                    break;
+	                case 2:
+	                    hotelMgr.updateGuestInformation();
+	                    break;
+	                case 3:
+	                    hotelMgr.searchGuests();
+	                    break;
+	                case 4:
+	                    hotelMgr.newReservation();
+	                    break;
+	                case 5:
+	                    hotelMgr.editReservation();
+	                    break;
+	                case 6:
+	                    int reservationID;
+	                    System.out.println("Please input Reservation ID to print: ");
+	                    reservationID = sc.nextInt();
+	                    sc.nextLine();
+	                    hotelMgr.printReservation(reservationID);
+	                    break;
+	                case 7:
+	                    hotelMgr.removeReservation();
+	                    break;
+	                case 8:
+	                    hotelMgr.createRoom();
+	                    break;
+	                case 9:
+	                    hotelMgr.updateRoomDetails();
+	                    break;
+	                case 10:
+	                    hotelMgr.addMenuItem();
+	                    break;
+	                case 11:
+	                    hotelMgr.editMenuItem();
+	                    break;
+	                case 12:
+	                    hotelMgr.removeMenuItem();
+	                    break;
+	                case 13:
+	                    hotelMgr.callRoomService();
+	                    break;
+	                case 14:
+	                    hotelMgr.checkRoomAvailability();
+	                    break;
+	                case 15:
+	                    hotelMgr.checkIn();
+	                    break;
+	                case 16:
+	                    hotelMgr.checkOut();
+	                    break;
+	                case 17:
+	                    hotelMgr.printRoomStatusStatisticReport();
+	                    break;
+	                case 18:
+	                	hotelMgr.printReservationList();     
+	                	break;
+	                case 19:
+	                	hotelMgr.checkRoomServiceStatus();
+	                    break;
+	                case 99:
+	                    hotelMgr.setDummyData();
+	                    break;
+	                default:
+	                    break;
+	        		}
+        	} while (choice != 20 || !inputChecker);
     }
 }

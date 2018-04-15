@@ -25,7 +25,7 @@ public class DataStoreFactory  {
             // }
             
         } catch(IOException ioe) {
-            System.out.println("IOException: " + ioe.getMessage());
+            //System.out.println("IOException: " + ioe.getMessage());
             System.exit(1);
         }
         return dataStore;   
