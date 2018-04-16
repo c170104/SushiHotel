@@ -20,8 +20,6 @@ public class hotelUT    {
         boolean inputChecker = false;
         String staffName;
         
-        hotelMgr.updateRoomSvcDelivered(); // if theres no room service database will show WARNING: RoomService DB not found
-        hotelMgr.updateExpiredStatus();
         try {
             /**
              * LOGGING HANDLER
@@ -43,6 +41,10 @@ public class hotelUT    {
                 );
             staffName = sc.nextLine();
             System.out.println("Hello, " + staffName + ".\n");
+            
+            hotelMgr.updateRoomSvcDelivered(); // if theres no room service database will show WARNING: RoomService DB not found
+            hotelMgr.updateExpiredStatus();
+            
         	}catch(IOException ioe)    {
         		logger.severe(ioe.getMessage());
         		System.out.println("System failure. Please contact the system developer.");
@@ -61,7 +63,7 @@ public class hotelUT    {
 		                    "7) Remove Reservation\n" +
 		                    "================ ROOM MATTERS ===============\n" +
 		                    "8) Create Room\n" +
-		                    "9) Edit Room Details\n" +
+		                    "9) View/Edit Room Details\n" +
 		                    "================ MENU MATTERS ===============\n" +
 		                    "10) Add New Menu Item\n" +
 		                    "11) Edit Menu Item\n" +
@@ -74,7 +76,8 @@ public class hotelUT    {
 		                    "17) Print Room Occupancy Rate (One Day)\n" +
 		                    "18) Print Reservation List\n" +
 		                    "19) Check Room Service Status\n" +
-		                    "20) Exit\n" +
+		                    "20) Print List of Occupied Rooms\n" +
+		                    "21) Exit\n" +
 		                    "Choice (1-20): "
 		                );
 
@@ -153,12 +156,15 @@ public class hotelUT    {
 	                case 19:
 	                	hotelMgr.checkRoomServiceStatus();
 	                    break;
+	                case 20:
+	                	hotelMgr.printOccupiedRooms();
+	                	break;
 	                case 99:
 	                    hotelMgr.setDummyData();
 	                    break;
 	                default:
 	                    break;
 	        		}
-        	} while (choice != 20 || !inputChecker);
+        	} while (choice != 21 || !inputChecker);
     }
 }

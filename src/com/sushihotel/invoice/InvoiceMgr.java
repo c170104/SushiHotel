@@ -43,6 +43,16 @@ public class InvoiceMgr {
         }
         return list;
     }
+    
+    public List<Invoice> getInvoice()	{
+    	List<Invoice> list = null;
+    	try	{
+    		list = InvoiceModel.read();
+    	} catch(EmptyDB edb)	{
+    		logger.warning(edb.getMessage());
+    	}
+    	return list;
+    }
 
     public Invoice getInvoice(int invoiceID)    {
         Invoice invoice = null;
