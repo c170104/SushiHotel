@@ -37,7 +37,7 @@ public class HotelMgr {
     private Scanner sc = new Scanner(System.in);
 
     private final SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-    private final String ERROR_MSG = "Error. Invalid input. Please Try again";
+    private final String ERROR_MSG = "Error, please try again!";
     private final float TAX_RATE = 0.17f;
 
     private static final Logger logger = Logger.getLogger(HotelMgr.class.getName());
@@ -70,17 +70,32 @@ public class HotelMgr {
         try {
             // Guest Registration Begins
             System.out.println("============ Guest Registration ============");
-            System.out.println("Please enter Name: \n(Enter 'exit' to exit)");
-            name = sc.nextLine();
-            if (name.equals("exit")) {
-            	return;
-            }
+            
+            System.out.println("Please enter exact Name: \n(Enter 'exit' to exit)");
             do {
-                System.out.println("Please enter Gender (F/M/O): \n(Enter 'exit' to exit)");
+                name = sc.nextLine();
+            	if (name.equals("exit")) {
+            		inputValidation = true;
+                	return;
+                }
+                try {
+                	if (guestMgr.searchGuest(name, Guest.GUEST_SEARCH_TYPE.GUEST_NAME) != null ) {
+                	System.out.println("Guest has been registered before. Please try again");
+                	inputValidation = false;
+                	} else {
+                		inputValidation = true;
+                	}
+                } catch (NullPointerException npe) {
+                	inputValidation = true;
+                }
+            } while (!inputValidation);
+
+            do {
+                System.out.println("Please enter Gender (F/M): \n(Enter 'exit' to exit)");
                 gender = sc.nextLine();
                 inputValidation = true;
                 if (!gender.equals("exit"))  {
-                	if (!gender.equals("F") && !gender.equals("M") && !gender.equals("O")) {
+                	if (!gender.equals("F") && !gender.equals("M")) {
                 		System.out.println("Incorrect gender entry, try again!");
                 		inputValidation = false;
 	                } 
@@ -136,7 +151,7 @@ public class HotelMgr {
                     }
                     try {
                     	if (guestMgr.searchGuest(passportNo, Guest.GUEST_SEARCH_TYPE.PASSPORT_NO) != null ) {
-                    	System.out.println("Passport Number has been regiestered before. Please try again");
+                    	System.out.println("Passport Number has been registered before. Please try again");
                     	inputValidation = false;
                     	}  else {
                     		inputValidation = true;
@@ -255,15 +270,15 @@ public class HotelMgr {
             // Guest object creation
             guest = new Guest(identificationNo, name, creditCardNo, billingAddress, address, country, gender,
                     nationality, contactNo, passportNo);
-            System.out.println(identificationNo + " id\n" +
-            		name + " name\n" +
-            		creditCardNo + " cc\n" +
-            		address + " add\n" +
-            		country + " countr\n" +
-            		gender + " g\n" +
-            		nationality + " nati\n" +
-            		contactNo + " conatct\n" +
-            		passportNo + " pp\n" 
+            System.out.println(identificationNo + "\n" +
+            		name + "\n" +
+            		creditCardNo + "\n" +
+            		address + "\n" +
+            		country + "\n" +
+            		gender + "\n" +
+            		nationality + "\n" +
+            		contactNo + "\n" +
+            		passportNo + "\n" 
             		);
             if (guestMgr.registerGuest(guest))
                 System.out.println("Guest " + name + " has been successfully registered!");
@@ -437,6 +452,7 @@ public class HotelMgr {
         	            }
                     } while (!inputValidation);
                     if (inputChecker.equals("exit")) {
+                    	
                     	break;
                     }
                     creditCardNo = inputChecker;
@@ -449,6 +465,7 @@ public class HotelMgr {
                     	break;
                     }
                     billingAddress = inputChecker;
+                    break;
                 case 10:
                     System.out.println("Country: \n(Enter 'exit' to exit)");
                     inputChecker = sc.nextLine();
@@ -457,9 +474,11 @@ public class HotelMgr {
                     }
                     country = inputChecker;
                     break;
+                    
                 default:
                     break;
                 }
+                
             } while (choice != 11);
 
             // Set new values
@@ -493,16 +512,18 @@ public class HotelMgr {
             }
 
             guestList = guestMgr.searchGuestsByName(guestName);
-
+            
             System.out.println("============ Guest Search ============");
             // triggers NullPointerException if guestList is null
             for (int i = 0; i < guestList.size(); i++) {
                 guest = guestList.get(i);
-                System.out.println("Guest Name:\t\t" + guest.getName() + "\n" + "ID Number:\t"
-                        + guest.getIdentificationNo() + "\n" + "Address:\t\t" + guest.getAddress() + "\n"
-                        + "Country:\t\t" + guest.getCountry() + "\n" + "Gender:\t\t\t" + guest.getGender() + "\n"
-                        + "Nationality:\t\t" + guest.getNationality() + "\n" + "Contact Number:\t\t"
-                        + guest.getContactNumber() + "\n" + "Passport Number:\t" + guest.getPassportNumber());
+                System.out.println("Guest Name: " + guest.getName() + "\n" + "ID Number: "
+                        + guest.getIdentificationNo() + "\n" + "Address: " + guest.getAddress() + "\n"
+                        + "Country: " + guest.getCountry() + "\n" + "Gender: " + guest.getGender() + "\n"
+                        + "Nationality: " + guest.getNationality() + "\n" + "Contact Number: "
+                        + guest.getContactNumber() + "\n" + "Passport Number: " + guest.getPassportNumber()
+                        + "\nCredit Card Number: " +guest.getCreditCardNumber()
+                        + "\nBilling Address: " + guest.getBillingAddress());
             }
             System.out.println("=========== End of Search ===========");
         } catch (InputMismatchException ime) {
@@ -521,8 +542,8 @@ public class HotelMgr {
         Guest guest = null;
         try {
             do {
-                System.out.print("Get guest details by:\n" + "1) Guest Name\n" + "2) Guest Identification Number\n"
-                        + "3) Guest Passport Number\n" + "Choice: ");
+                System.out.print("Get guest details by:\n" + "1)Guest Name\n" + "2)Guest Identification Number\n"
+                        + "3)Guest Passport Number\n" + "Choice: ");
                 choice = sc.nextInt();
                 sc.nextLine();
 
@@ -1110,7 +1131,7 @@ public class HotelMgr {
         int choice;
 
         try {
-            System.out.println("Please enter the Room Number you want to update (1-48): ");
+            System.out.println("Please enter the Room Number you want to view/update (1-48): ");
             roomNumber = sc.nextInt();
 
             room = roomMgr.getRoom(roomNumber);
@@ -1658,14 +1679,17 @@ public class HotelMgr {
 
                 invoice = new Invoice(guest.getGuestID(), roomNumber, checkInDate, checkOutDate, totalWeekdays,
                         totalWeekends);
-
+                
                 if (invoiceMgr.createBlankInvoice(invoice)) {
-                    if (reservationMgr.reservationCheckInChanges(reservationID)) { // error here, since using number 2 which is made no prior reservation
-                        System.out.println("Check In for guest " + guest.getName() + " into Room number "
-                                + Integer.toString(roomNumber) + " is successful!");
-                        roomMgr.setRoomToOccupied(roomNumber, Room.ROOM_STATUS.OCCUPIED);
-                        return;
+                    if (choice == 1 && !(reservationMgr.reservationCheckInChanges(reservationID))) { // error here, since using number 2 which is made no prior reservation
+                    	// fail reservation
+                    	System.out.println("Reservation for guest" + guest.getName() +" is unsuccessful. Please try again.");
+                    	return;
                     }
+                    System.out.println("Check In for guest " + guest.getName() + " into Room number "
+                            + Integer.toString(roomNumber) + " is successful!");
+                    roomMgr.setRoomToOccupied(roomNumber, Room.ROOM_STATUS.OCCUPIED);
+                    return;
                 } else {
                     System.out.println("Check In for guest " + guest.getName() + " into Room number "
                             + Integer.toString(roomNumber) + " is unsuccessful. Please try again.");
@@ -1685,13 +1709,17 @@ public class HotelMgr {
             int roomSvcID;
             RoomSvc roomSvc;
             List<Integer> list;
-            System.out.println("========== SushiHotel Bill ==========\n" + "Room number:\t\t" + invoice.getRoomNumber()
-                    + "\n" + "Checked in on:\t\t" + formatter.format(invoice.getCheckInDate()) + "\n"
-                    + "Checked out on:\t\t" + formatter.format(invoice.getCheckOutDate()) + "\n" + "Room charges:\t\t$"
-                    + invoice.getRoomCharges() + "\n" + "Room Service charges:\t$" + invoice.getRoomSvcTotalCharges()
-                    + "\n" + "Late Fees:\t\t$" + invoice.getLateFees() + "\n" + "Discount:\t\t" + invoice.getDiscount()
-                    + "%\n" + "Tax:\t\t\t" + invoice.getTax() + "%\n" + "Total Bill:\t\t$" + invoice.getTotalBill()
-                    + "\n" + "=====================================");
+            System.out.println("========== SushiHotel Bill ==========\n" 
+            + "Room number:\t\t" + invoice.getRoomNumber()
+            + "\n" + "Checked in on:\t\t" + formatter.format(invoice.getCheckInDate()) 
+            + "\n" + "Checked out on:\t\t" + formatter.format(invoice.getCheckOutDate()) 
+            + "\n" + "Room charges:\t\t$" + invoice.getRoomCharges() 
+            + "\n" + "Room Service charges:\t\t$" + invoice.getRoomSvcTotalCharges()
+            + "\n" + "Late Fees:\t\t$" + invoice.getLateFees() 
+            + "\n" + "Discount:\t\t" + invoice.getDiscount()
+            + "%\n" + "Tax:\t\t" + invoice.getTax() 
+            + "%\n" + "Total Bill:\t\t$" + invoice.getTotalBill()
+            + "\n" + "=====================================");
             list = invoice.getRoomSvc();
 
             System.out.println("======= Room Services Ordered =======");
@@ -1784,7 +1812,7 @@ public class HotelMgr {
 
     public void printRoomStatusStatisticReport() {
 
-        Reservation reservation;
+        Invoice invoice;
         Room room;
         int roomNumber = 0;
         int singleOccupied = 0, singleTotal = 0;
@@ -1802,7 +1830,7 @@ public class HotelMgr {
         String deluxeUnitNumber = "";
         String vipUnitNumber = "";
 
-        List reservationList;
+        List<Invoice> invoiceList;
         Date date = null;
         boolean dateCheck = false;
 
@@ -1810,7 +1838,7 @@ public class HotelMgr {
         do {
             try {
                 String inputDate = sc.nextLine();
-                date = formatter.parse(inputDate + " 14:00");
+                date = formatter.parse(inputDate + " 14:01");
                 dateCheck = true;
             } catch (ParseException pe) {
                 System.out.println("Incorrect date time format.");
@@ -1819,42 +1847,44 @@ public class HotelMgr {
         } while (!dateCheck);
 
         try {
-            reservationList = reservationMgr.getReservationList();
-            if (reservationList.size() == 0) {
+            invoiceList = invoiceMgr.getInvoice();
+            if (invoiceList.size() == 0) {
                 System.out.println("Hotel is not occupied.");
                 return;
             }
-            for (int i = 0; i < reservationList.size(); i++) {
-                reservation = (Reservation) reservationList.get(i);
-                roomNumber = reservation.getRoomNumber();
+            
+            singleTotal = roomMgr.getTotalByRoomType(Room.ROOM_TYPE.SINGLE);
+            doubleTotal = roomMgr.getTotalByRoomType(Room.ROOM_TYPE.DOUBLE);
+            deluxeTotal = roomMgr.getTotalByRoomType(Room.ROOM_TYPE.DELUXE);
+            vipTotal = roomMgr.getTotalByRoomType(Room.ROOM_TYPE.VIP);
+            
+            for (int i = 0; i < invoiceList.size(); i++) {
+                invoice = (Invoice)invoiceList.get(i);
+                roomNumber = invoice.getRoomNumber();
                 room = roomMgr.getRoom(roomNumber);
 
                 if (room.getRoomType() == Room.ROOM_TYPE.SINGLE) {
-                    singleTotal++;
-                    if (date.after(reservation.getCheckInDate()) && date.before(reservation.getCheckOutDate())) {
+                    if (date.after(invoice.getCheckInDate()) && date.before(invoice.getCheckOutDate())) {
                         singleUnitNumber += room.getUnitNumber() + "(" + room.getRoomNumber() + ") , ";
                         singleOccupied++;
                     }
                 }
                 if (room.getRoomType() == ROOM_TYPE.DOUBLE) {
-                    doubleTotal++;
-                    if (date.after(reservation.getCheckInDate()) && date.before(reservation.getCheckOutDate())) {
+                    if (date.after(invoice.getCheckInDate()) && date.before(invoice.getCheckOutDate())) {
                         doubleUnitNumber += room.getUnitNumber() + "(" + room.getRoomNumber() + ") , ";
                         doubleOccupied++;
                     }
                 }
 
                 if (room.getRoomType() == ROOM_TYPE.DELUXE) {
-                    deluxeTotal++;
-                    if (date.after(reservation.getCheckInDate()) && date.before(reservation.getCheckOutDate())) {
+                    if (date.after(invoice.getCheckInDate()) && date.before(invoice.getCheckOutDate())) {
                         deluxeUnitNumber += room.getUnitNumber() + "(" + room.getRoomNumber() + ") , ";
                         deluxeOccupied++;
                     }
                 }
 
                 if (room.getRoomType() == ROOM_TYPE.VIP) {
-                    vipTotal++;
-                    if (date.after(reservation.getCheckInDate()) && date.before(reservation.getCheckOutDate())) {
+                    if (date.after(invoice.getCheckInDate()) && date.before(invoice.getCheckOutDate())) {
                         vipUnitNumber += room.getUnitNumber() + "(" + room.getRoomNumber() + ") , ";
                         vipOccupied++;
                     }
@@ -1868,20 +1898,20 @@ public class HotelMgr {
             hotelTotal = singleTotal + doubleTotal + deluxeTotal + vipTotal;
             orTotal = (double) totalOccupied / (double) hotelTotal * 100;
             System.out.println("==============ROOM OCCUPANCY REPORT==============\n" + "On Date: " + date + "\n"
-                    + "Single Room\n" + "Total Single Rooms: " + singleTotal + "\n" + "Occupied Single Rooms: "
-                    + singleOccupied + "\n" + "Occupancy Rate: " + String.format("%.2f", orSingle) + "%\n"
-                    + "Occupied Rooms: " + singleUnitNumber + "\n"
-                    + "--------------------------------------------------\n" + "Double Room\n" + "Total Double Rooms: "
-                    + doubleTotal + "\n" + "Occupied Double Rooms: " + doubleOccupied + "\n" + "Occupancy Rate: "
-                    + String.format("%.2f", orDouble) + "%\n" + "Occupied Rooms: " + doubleUnitNumber + "\n"
-                    + "--------------------------------------------------\n" + "Deluxe Room\n" + "Total Deluxe Rooms: "
-                    + deluxeTotal + "\n" + "Occupied Deluxe Rooms: " + deluxeOccupied + "\n" + "Occupancy Rate: "
-                    + String.format("%.2f", orDeluxe) + "%\n" + "Occupied Rooms: " + deluxeUnitNumber + "\n"
-                    + "--------------------------------------------------\n" + "VIP Room\n" + "Total VIP Rooms: "
-                    + vipTotal + "\n" + "Occupied VIP Rooms: " + vipOccupied + "\n" + "Occupancy Rate: "
-                    + String.format("%.2f", orVip) + "%\n" + "Occupied Rooms: " + vipUnitNumber + "\n"
-                    + "--------------------------------------------------\n" + "Hotel Occupancy Rate: "
-                    + String.format("%.2f", orTotal) + "%\n");
+                + "Single Room\n" + "Total Single Rooms: " + singleTotal + "\n" + "Occupied Single Rooms: "
+                + singleOccupied + "\n" + "Occupancy Rate: " + String.format("%.2f", orSingle) + "%\n"
+                + "Occupied Rooms: " + singleUnitNumber + "\n"
+                + "--------------------------------------------------\n" + "Double Room\n" + "Total Double Rooms: "
+                + doubleTotal + "\n" + "Occupied Double Rooms: " + doubleOccupied + "\n" + "Occupancy Rate: "
+                + String.format("%.2f", orDouble) + "%\n" + "Occupied Rooms: " + doubleUnitNumber + "\n"
+                + "--------------------------------------------------\n" + "Deluxe Room\n" + "Total Deluxe Rooms: "
+                + deluxeTotal + "\n" + "Occupied Deluxe Rooms: " + deluxeOccupied + "\n" + "Occupancy Rate: "
+                + String.format("%.2f", orDeluxe) + "%\n" + "Occupied Rooms: " + deluxeUnitNumber + "\n"
+                + "--------------------------------------------------\n" + "VIP Room\n" + "Total VIP Rooms: "
+                + vipTotal + "\n" + "Occupied VIP Rooms: " + vipOccupied + "\n" + "Occupancy Rate: "
+                + String.format("%.2f", orVip) + "%\n" + "Occupied Rooms: " + vipUnitNumber + "\n"
+                + "--------------------------------------------------\n" + "Hotel Occupancy Rate: "
+                + String.format("%.2f", orTotal) + "%\n");
         } catch (NullPointerException npe) {
 //            logger.severe(npe.getMessage());
 //            npe.printStackTrace(System.out);
@@ -1960,120 +1990,140 @@ public class HotelMgr {
     	ScheduledExecutorService execService = Executors.newSingleThreadScheduledExecutor();
     	execService.scheduleAtFixedRate(()-> {
     		roomSvcMgr.updateRoomSvcStatusToDelivered();
-    	}, 0, 30000L,TimeUnit.MILLISECONDS);
+    	}, 0, 180000L,TimeUnit.MILLISECONDS);
+    }
+    
+    public void printOccupiedRooms() {
+    	List<Room> roomList;
+    	Room room;
+    	Guest guest;
+    	int guestID;
+    	Invoice invoice;
+    	roomList = roomMgr.getOccupiedRoom();
+    	try {
+    		for (int i = 0; i<roomList.size(); i++) {
+        		room = roomList.get(i);
+        		invoice = invoiceMgr.getUnpaidInvoice(room.getRoomNumber());
+        		guestID = invoice.getGuestID();
+        		System.out.println("Room number: " + room.getRoomNumber() + room.getUnitNumber() 
+        							+ "\nGuest name: " + guestMgr.getGuestName(guestID));
+        	}
+    	}catch (NullPointerException npe) {
+            logger.severe(npe.getMessage());
+            System.out.println("The invoice is currently empty.");
+        }
+    	
     }
 
     public void setDummyData() {
 
+        guestMgr.registerGuest(new Guest("S7608086T", "Zac Efron", "4539472608181189","8 Macademia Street", "8 Macademia Street", "America", "M", "American","96954268", "S7608086T"));
+        guestMgr.registerGuest(new Guest("S2432773G", "Ashley Tisdale", "5471589173401465","6 Beverly Hills", "6 Beverly Hills", "Singapore", "F","Singaporean","86096615", "S2432773G"));
+        guestMgr.registerGuest(new Guest("S3895996B", "Bruno Mars", "4716578256648199",
+                                         "41 Mexico Road    ", "41 Mexico Road", "England", "M",
+                                         "English", "95158887", "S3895996B"));
+        guestMgr.registerGuest(new Guest("S9951850N", "Nicki Minaj", "5392350070654359",
+                                         "Stamford East", "Stamford East    ", "Estonia",
+                                         "F", "Estonian", "96894026", "S9951850N"));
+        guestMgr.registerGuest(new Guest("S1641957T", "Oprah", "4532765208914447",
+                                         "80 Fifth Avenue", "80 Fifth Avenue", "Singapore", "F",
+                                         "Singaporean", "93627105", "S1641957T"));
+        guestMgr.registerGuest(new Guest("S5564748Z", "Martin Garrix", "4539231608181189","27 Lonely Road", "27 Lonely Road", "Germany", "M", "German", "96954268", "S7308086T"));
+        guestMgr.registerGuest(new Guest("S6999086L", "Walt Disney", "45394333608181189","100 Obs Street", "10 Obs Street", "America", "M", "American", "96952168", "S7608286T"));
+        guestMgr.registerGuest(new Guest("S5467862L", "Martin Lee", "45322233608181189","7 Apple Street", "7 Apple Street", "Singapore", "M", "Singaporean", "96442168", "Z7602286K"));
+menuMgr.addNewMeal(new Meal("Caesar salad", "A green salad of romaine lettuce and croutons dressed with lemon juice, olive oil, egg, Worcestershire sauce, garlic, Parmesan cheese, and black pepper" , " ",  25f));
+menuMgr.addNewMeal(new Meal("Penang Special Char Kway Teow", "Fragrant, sweet and oily flat noodle with cockles, egg, and chilli paste.", " ", 17f));
+menuMgr.addNewMeal(new Meal("Strawberry Shortcake", "The pillowy sponge cake – alternated with layers of luscious whipped cream and juicy strawberries – makes a wonderful treat at any time of the day.", " ", 8f));
+menuMgr.addNewMeal(new Meal("Wild Mushroom Pizza", "It is served with caramelized onions, fontina and rosemary.", "0ven-baked", 18f));
         roomMgr.createRoom(
-                new Room(1, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "02-01"));
+            new Room(1, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "02-01"));
         roomMgr.createRoom(
-                new Room(2, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "02-02"));
+            new Room(2, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "02-02"));
         roomMgr.createRoom(
-                new Room(3, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "02-03"));
+            new Room(3, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "02-03"));
         roomMgr.createRoom(
-                new Room(4, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "02-04"));
+            new Room(4, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "02-04"));
         roomMgr.createRoom(
-                new Room(5, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", true, "02-05"));
+            new Room(5, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", true, "02-05"));
         roomMgr.createRoom(
-                new Room(6, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", true, "02-06"));
+            new Room(6, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", true, "02-06"));
         roomMgr.createRoom(new Room(7, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", true, "02-07"));
         roomMgr.createRoom(new Room(8, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", true, "02-08"));
         roomMgr.createRoom(
-                new Room(9, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "03-01"));
+            new Room(9, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "03-01"));
         roomMgr.createRoom(
-                new Room(10, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "03-02"));
+            new Room(10, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "03-02"));
         roomMgr.createRoom(
-                new Room(11, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "03-03"));
+            new Room(11, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "03-03"));
         roomMgr.createRoom(
-                new Room(12, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "03-04"));
+            new Room(12, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "03-04"));
         roomMgr.createRoom(
-                new Room(13, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "03-05"));
+            new Room(13, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "03-05"));
         roomMgr.createRoom(
-                new Room(14, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "03-06"));
+            new Room(14, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "03-06"));
         roomMgr.createRoom(
-                new Room(15, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", false, "Lake", false, "03-07"));
+            new Room(15, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", false, "Lake", false, "03-07"));
         roomMgr.createRoom(
-                new Room(16, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", false, "Lake", false, "03-08"));
+            new Room(16, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", false, "Lake", false, "03-08"));
         roomMgr.createRoom(
-                new Room(17, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "04-01"));
+            new Room(17, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "04-01"));
         roomMgr.createRoom(
-                new Room(18, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "04-02"));
+            new Room(18, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "04-02"));
         roomMgr.createRoom(
-                new Room(19, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "04-03"));
+            new Room(19, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "04-03"));
         roomMgr.createRoom(
-                new Room(20, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "04-04"));
+            new Room(20, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "04-04"));
         roomMgr.createRoom(
-                new Room(21, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "04-05"));
+            new Room(21, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "04-05"));
         roomMgr.createRoom(
-                new Room(22, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", false, "04-06"));
+            new Room(22, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", false, "04-06"));
         roomMgr.createRoom(
-                new Room(23, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", false, "04-07"));
+            new Room(23, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", false, "04-07"));
         roomMgr.createRoom(new Room(24, Room.ROOM_TYPE.VIP, 4, 1, 430f, 500f, "Master", true, "Sea", false, "04-08"));
         roomMgr.createRoom(
-                new Room(25, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "05-01"));
+            new Room(25, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "05-01"));
         roomMgr.createRoom(
-                new Room(26, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "05-02"));
+            new Room(26, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "05-02"));
         roomMgr.createRoom(
-                new Room(27, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "05-03"));
+            new Room(27, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "05-03"));
         roomMgr.createRoom(
-                new Room(28, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "05-04"));
+            new Room(28, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "05-04"));
         roomMgr.createRoom(
-                new Room(29, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "05-05"));
+            new Room(29, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "05-05"));
         roomMgr.createRoom(
-                new Room(30, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", false, "05-06"));
+            new Room(30, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", false, "05-06"));
         roomMgr.createRoom(
-                new Room(31, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", false, "05-07"));
+            new Room(31, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", false, "05-07"));
         roomMgr.createRoom(new Room(32, Room.ROOM_TYPE.VIP, 4, 1, 430f, 500f, "Master", true, "Sea", false, "05-08"));
         roomMgr.createRoom(
-                new Room(33, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "06-01"));
+            new Room(33, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "06-01"));
         roomMgr.createRoom(
-                new Room(34, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "06-02"));
+            new Room(34, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "06-02"));
         roomMgr.createRoom(
-                new Room(35, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "06-03"));
+            new Room(35, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "06-03"));
         roomMgr.createRoom(
-                new Room(36, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "06-04"));
+            new Room(36, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "06-04"));
         roomMgr.createRoom(
-                new Room(37, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "06-05"));
+            new Room(37, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "06-05"));
         roomMgr.createRoom(
-                new Room(38, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "06-06"));
+            new Room(38, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "06-06"));
         roomMgr.createRoom(
-                new Room(39, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", false, "06-07"));
+            new Room(39, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", false, "06-07"));
         roomMgr.createRoom(new Room(40, Room.ROOM_TYPE.VIP, 4, 1, 430f, 500f, "Master", true, "Sea", false, "06-08"));
         roomMgr.createRoom(
-                new Room(41, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "07-01"));
+            new Room(41, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "07-01"));
         roomMgr.createRoom(
-                new Room(42, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "07-02"));
+            new Room(42, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "07-02"));
         roomMgr.createRoom(
-                new Room(43, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "07-03"));
+            new Room(43, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "07-03"));
         roomMgr.createRoom(
-                new Room(44, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "07-04"));
+            new Room(44, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "07-04"));
         roomMgr.createRoom(
-                new Room(45, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "07-05"));
+            new Room(45, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "07-05"));
         roomMgr.createRoom(
-                new Room(46, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "07-06"));
+            new Room(46, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "07-06"));
         roomMgr.createRoom(
-                new Room(47, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", false, "07-07"));
-        roomMgr.createRoom(new Room(48, Room.ROOM_TYPE.VIP, 4, 1, 430f, 500f, "Master", true, "Sea", false, "07-08"));
-
-        guestMgr.registerGuest(new Guest("	S7608086T	", "	Natalie Mohan	", "	4539472608181189	",
-                "	8 Tanjong Pagar Terrace	", "	8 Tanjong Pagar Terrace	", "	China	", "	Female	",
-                "	China	", "	96954268	", "	S7608086T	"));
-        guestMgr.registerGuest(new Guest("	S2432773G	", "	Sandy Lim	", "	5471589173401465	",
-                "	6 Jalan Mas Puteh	", "	6 Jalan Mas Puteh	", "	Singapore	", "	Female	",
-                "	Singaporean	", "	86096615	", "	S2432773G	"));
-        guestMgr.registerGuest(new Guest("	S3895996B	", "	Nichole Lau	", "	4716578256648199	",
-                "	41 Jalan Besar Road	", "	41 Jalan Besar Road	", "	Singapore	", "	Female	",
-                "	Singaporean	", "	95158887	", "	S3895996B	"));
-        guestMgr.registerGuest(new Guest("	S9951850N	", "	Lam Siew Kei	", "	5392350070654359	",
-                "	Blk 319 Lorong 8 Geylang East	", "	Blk 319 Lorong 8 Geylang East	", "	Singapore	",
-                "	Male	", "	Singaporean	", "	96894026	", "	S9951850N	"));
-        guestMgr.registerGuest(new Guest("	S1641957T	", "	Quek Wee Tat	", "	4532765208914447	",
-                "	80 Seletar Avenue	", "	80 Seletar Avenue	", "	Singapore	", "	Male	",
-                "	Singaporean	", "	93627105	", "	S1641957T	"));
-        guestMgr.registerGuest(new Guest("	G0852447N	", "	Nicholas Vun	", "	5420253714230097	",
-                "	Blk 40 Kallang Street 37	", "	Blk 40 Kallang Street 37	", "	Singapore	",
-                "	Male	", "	Singaporean	", "	81941069	", "	G0852447N	"));
+            new Room(47, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", false, "07-07"));
 
     }
 

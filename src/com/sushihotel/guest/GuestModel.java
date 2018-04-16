@@ -31,15 +31,22 @@ public class GuestModel {
         // Checks for existing user based on name and passport no.
         for(int i=0; i<size; i++)   {
             dbGuest = (Guest)list.get(i);
-            if(dbGuest.getIdentificationNo().toLowerCase().equals(guest.getIdentificationNo().toLowerCase()))   {
-                throw new DuplicateData(guest.getIdentificationNo(), Guest.GUEST_SEARCH_TYPE.IDENTIFICATION_NO);
+            if (guest.getIdentificationNo() != null && !guest.getIdentificationNo().isEmpty()) {
+            	 if(dbGuest.getIdentificationNo().toLowerCase().equals(guest.getIdentificationNo().toLowerCase()))   {
+            		 throw new DuplicateData(guest.getIdentificationNo(), Guest.GUEST_SEARCH_TYPE.IDENTIFICATION_NO);
+            	 }
             }
+           
             if(dbGuest.getName().toLowerCase().equals(guest.getName().toLowerCase()))  {
                 throw new DuplicateData(guest.getName(), Guest.GUEST_SEARCH_TYPE.GUEST_NAME);
             }
-            if(dbGuest.getPassportNumber().toLowerCase().equals(guest.getPassportNumber().toLowerCase())) {
-                throw new DuplicateData(guest.getPassportNumber(), Guest.GUEST_SEARCH_TYPE.PASSPORT_NO);
+            
+            if (guest.getPassportNumber() != null && !guest.getPassportNumber().isEmpty()) {
+            	if(dbGuest.getPassportNumber().toLowerCase().equals(guest.getPassportNumber().toLowerCase())) {
+            		throw new DuplicateData(guest.getPassportNumber(), Guest.GUEST_SEARCH_TYPE.PASSPORT_NO);
+            	}
             }
+            
         }
 
         // guestID automatically set on creation

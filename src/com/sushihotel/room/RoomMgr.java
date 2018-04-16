@@ -2,6 +2,7 @@ package com.sushihotel.room;
 
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.Iterator;
 
 import com.sushihotel.exception.DuplicateData;
 import com.sushihotel.exception.EmptyDB;
@@ -133,6 +134,7 @@ public class RoomMgr    {
             logger.info(edb.getMessage());
         }
     }
+    
     public void printRoomStatusByRoomType()  {
         try {
             List<Room> list;
@@ -194,8 +196,42 @@ public class RoomMgr    {
             logger.warning(edb.getMessage());
         }
     } 
+    
+    public List<Room> getOccupiedRoom() {
+    	List<Room> roomList = null;
+    	Iterator iter;
+    	Room room;
+    	int k = 1;
+    	try {
+    		roomList = RoomModel.read();
+    		iter = roomList.iterator();
+    		
+    		while(iter.hasNext())	{
+    			room = (Room)iter.next();
+    			if(room.getRoomStatus() != Room.ROOM_STATUS.OCCUPIED)
+    				iter.remove();
+    		}
+    	}catch (EmptyDB edb) {
+    		logger.info(edb.getMessage());
+    	}
+    	return roomList;
+    }
      
-    // public void printRoomOccupancyPercentage(String date)   {
-        
-    // }
+    public int getTotalByRoomType(Enum roomType)	{
+    	List<Room> list;
+    	Room room;
+    	int counter = 0;
+    	try	{
+    		list = RoomModel.read();
+    		
+    		for(int i=0; i<list.size(); i++)	{
+    			room = list.get(i);
+    			if(room.getRoomType() == roomType)
+    				counter++;
+    		}
+    	} catch (EmptyDB edb)	{
+    		logger.info(edb.getMessage());
+    	}
+    	return counter;
+    }
 }

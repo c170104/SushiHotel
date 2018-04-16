@@ -122,4 +122,17 @@ public class GuestMgr {
         }
         return false;
     }
+    
+    public String getGuestName(int guestID) {
+    	Guest guestName = null;
+    	String stringGuestId = Integer.toString(guestID);
+    	try {
+			guestName = GuestModel.read(stringGuestId, Guest.GUEST_SEARCH_TYPE.GUEST_ID);
+		} catch (EmptyDB edb) {
+			logger.log(Level.WARNING, edb.getMessage());
+		} catch (InvalidEntity ie) {
+			logger.log(Level.WARNING, ie.getMessage());
+		}
+    	return guestName.getName();
+    }
 }

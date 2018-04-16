@@ -6,3 +6,187 @@ Apr 15, 2018 12:55:51 PM com.sushihotel.guest.GuestMgr searchGuest
 WARNING: (IDENTIFICATION_NO) nopttest not found.
 Apr 15, 2018 12:56:23 PM com.sushihotel.guest.GuestMgr searchGuest
 WARNING: (IDENTIFICATION_NO) testet not found.
+Apr 15, 2018 1:09:17 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 15, 2018 1:09:47 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 15, 2018 1:10:17 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 15, 2018 1:10:47 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 15, 2018 1:11:17 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 15, 2018 1:11:24 PM com.sushihotel.guest.GuestMgr searchGuest
+WARNING: (IDENTIFICATION_NO) notest not found.
+Apr 15, 2018 1:11:47 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 15, 2018 1:12:17 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 15, 2018 1:12:47 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 15, 2018 1:13:17 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 15, 2018 1:13:47 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 4:26:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 4:26:12 PM com.sushihotel.guest.GuestMgr searchGuest
+WARNING: (IDENTIFICATION_NO) testest not found.
+Apr 16, 2018 4:26:25 PM com.sushihotel.guest.GuestMgr registerGuest
+INFO: [CREATE SUCCESS] Guest ID: 9 | Guest Name: test
+Apr 16, 2018 4:29:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 4:32:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 4:35:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 4:38:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 4:41:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 4:44:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 4:47:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 4:50:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 4:53:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 4:56:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 4:59:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 5:02:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 5:05:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 5:08:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 5:11:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 5:14:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 5:17:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 5:20:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 5:23:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 5:26:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 5:29:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 5:32:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 5:35:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 5:38:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 5:41:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 5:44:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 5:47:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 5:50:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 5:53:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 5:56:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 5:59:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 6:02:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 6:05:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 6:08:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 6:11:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 6:14:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 6:17:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 6:20:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 6:23:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 6:26:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 6:29:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 6:32:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 6:35:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 6:38:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 6:41:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 6:44:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 6:47:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 6:50:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 6:53:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 6:56:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 6:59:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 7:02:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 7:05:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 7:08:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 7:11:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 7:14:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 7:17:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 7:20:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 7:23:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 7:26:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 7:29:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 7:32:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 7:35:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 7:38:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 7:41:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 7:44:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 7:47:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 7:50:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 7:53:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 7:56:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 7:59:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 8:02:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 8:05:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 8:08:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 8:11:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 8:14:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 8:17:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
+Apr 16, 2018 8:20:05 PM com.sushihotel.roomservice.RoomSvcMgr updateRoomSvcStatusToDelivered
+WARNING: RoomService DB not found.
