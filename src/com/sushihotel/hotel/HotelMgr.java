@@ -569,7 +569,7 @@ public class HotelMgr {
             System.out.println("======Input Reservation Details=====");
             System.out.println("Current date time " + formatter.format(currentDate));
             while (true) {
-                System.out.println("Please enter Guest Name (Type 'exit' to exit):");
+                System.out.println("Please enter the exact Guest name, type 'exit' to exit (case insensitive):");
                 guestName = sc.nextLine();
                 if (guestName.equals("exit")) {
                     return;
@@ -600,12 +600,12 @@ public class HotelMgr {
                     try {
                         checkInDateInput = sc.nextLine();
                         checkInDate = formatter.parse(checkInDateInput + " 14:00"); 
-                        if (checkInDate.before(currentDate)) {
-                            dateCheck = false;
-                            System.out.println("Check in date has already passed current date. Try again.");
-                        } else {
+                        //if (checkInDate.before(currentDate)) {
+                        //    dateCheck = false;
+                        //    System.out.println("Check in date has already passed current date. Try again.");
+                        //} else {
                             dateCheck = true;
-                        }
+                        //}
                     } catch (ParseException pe) {
                         System.out.println("Incorrect date time format.");
                         dateCheck = false;
@@ -738,7 +738,7 @@ public class HotelMgr {
                     break;
                 case 2:
                     while (true) {
-                        System.out.print("Input new Room Number: ");
+                        System.out.print("Input new Room Number (1-48): ");
                         roomNumber = sc.nextInt();
                         sc.nextLine();
                         if (roomMgr.checkRoomAvailability(roomNumber))
@@ -1261,7 +1261,7 @@ public class HotelMgr {
             do {
                 System.out.println("Choose the option 1-5 to update: \n" + "1) Meal Name: " + mealName + "\n"
                         + "2) Description: " + description + "\n" + "3) Prepared Method: " + preparedMethod + "\n"
-                        + "4) Meal Price: " + mealPrice + "\n" + "5) Exit/Update" + "\n\n" + "Choice: ");
+                        + "4) Meal Price: " + df.format(mealPrice) + "\n" + "5) Exit/Update" + "\n\n" + "Choice: ");
                 choice = sc.nextInt();
                 sc.nextLine();
                 switch (choice) {
@@ -1290,7 +1290,7 @@ public class HotelMgr {
 
             meal = new Meal(mealName, description, preparedMethod, mealPrice);
             if (menuMgr.editMeal(mealID, meal)) {
-                System.out.println("Succesfully updated Meal ID " + Integer.toString(mealID) + " details.");
+                System.out.println("Successfully updated Meal ID " + Integer.toString(mealID) + " details.");
             } else {
                 System.out
                         .println("System failed to update Meal ID " + Integer.toString(mealID) + ". Please try again.");
@@ -1621,7 +1621,7 @@ public class HotelMgr {
             + "\n" + "Room charges:\t\t$" + df.format(invoice.getRoomCharges())
             + "\n" + "Room Service charges:\t$" + df.format(invoice.getRoomSvcTotalCharges())
             + "\n" + "Late Fees:\t\t$" + df.format(invoice.getLateFees())
-            + "\n" + "Discount:\t\t" + df.format(invoice.getDiscount()*100)
+            + "\n" + "Discount (in decimal):\t\t" + df.format(invoice.getDiscount()*100)
             + "%\n" + "Tax:\t\t\t" + df.format(invoice.getTax()*100) 
             + "%\n" + "Total Bill:\t\t$" + df.format(invoice.getTotalBill())
             + "\n" + "=====================================");
@@ -1659,7 +1659,7 @@ public class HotelMgr {
         boolean cashPayment = true;
 
         try {
-            System.out.println("Please enter Room number to check out: (Enter -1 to exit)");
+            System.out.println("Please enter Room number to check out (1-48): (Enter -1 to exit)");
             roomNumber = sc.nextInt();
             sc.nextLine();
             if (roomNumber == -1) {
