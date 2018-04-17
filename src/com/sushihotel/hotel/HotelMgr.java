@@ -1621,7 +1621,7 @@ public class HotelMgr {
             + "\n" + "Room charges:\t\t$" + df.format(invoice.getRoomCharges())
             + "\n" + "Room Service:\t\t$" + df.format(invoice.getRoomSvcTotalCharges())
             + "\n" + "Late Fees:\t\t\t$" + df.format(invoice.getLateFees())
-            + "\n" + "Discount:\t\t" + df.format(invoice.getDiscount()*100)
+            + "\n" + "Discount:\t\t   -" + df.format(invoice.getDiscount()*100)
             + "%\n" + "Tax:\t\t\t\t" + df.format(invoice.getTax()*100)
             + "%\n" + "Total Bill:\t\t\t$" + df.format(invoice.getTotalBill())
             + "\n" + "=====================================");
