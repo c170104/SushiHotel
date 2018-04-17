@@ -74,7 +74,7 @@ public class HotelMgr {
             // Guest Registration Begins
             System.out.println("============ Guest Registration ============");
             
-            System.out.println("Please enter exact Name: \n(Enter 'exit' to exit)");
+            System.out.println("Please enter the exact Guest name: \n(Enter 'exit' to exit)");
             do {
                 name = sc.nextLine();
             	if (name.equals("exit")) {
@@ -518,7 +518,7 @@ public class HotelMgr {
                 }
 
                 if (type != null) {
-                    System.out.print("Please enter Search data: ");
+                    System.out.print("Please enter the exact Guest name (case insensitive): ");
                     searchData = sc.nextLine();
                     guest = guestMgr.searchGuest(searchData, type);
                 }
@@ -1619,11 +1619,11 @@ public class HotelMgr {
             + "\n" + "Checked in on:\t\t" + formatter.format(invoice.getCheckInDate()) 
             + "\n" + "Checked out on:\t\t" + formatter.format(invoice.getCheckOutDate()) 
             + "\n" + "Room charges:\t\t$" + df.format(invoice.getRoomCharges())
-            + "\n" + "Room Service charges:\t$" + df.format(invoice.getRoomSvcTotalCharges())
-            + "\n" + "Late Fees:\t\t$" + df.format(invoice.getLateFees())
-            + "\n" + "Discount (in decimal):\t\t" + df.format(invoice.getDiscount()*100)
-            + "%\n" + "Tax:\t\t\t" + df.format(invoice.getTax()*100) 
-            + "%\n" + "Total Bill:\t\t$" + df.format(invoice.getTotalBill())
+            + "\n" + "Room Service:\t\t$" + df.format(invoice.getRoomSvcTotalCharges())
+            + "\n" + "Late Fees:\t\t\t$" + df.format(invoice.getLateFees())
+            + "\n" + "Discount:\t\t" + df.format(invoice.getDiscount()*100)
+            + "%\n" + "Tax:\t\t\t\t" + df.format(invoice.getTax()*100)
+            + "%\n" + "Total Bill:\t\t\t$" + df.format(invoice.getTotalBill())
             + "\n" + "=====================================");
             list = invoice.getRoomSvc();
 
@@ -1684,7 +1684,7 @@ public class HotelMgr {
             System.out.print("Late Fees (if any): ");
             lateFees = sc.nextFloat();
             sc.nextLine();
-            System.out.print("Discount: ");
+            System.out.print("Discount (in decimal): ");
             discount = sc.nextFloat();
             sc.nextLine();
 
