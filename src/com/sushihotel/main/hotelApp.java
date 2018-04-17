@@ -165,5 +165,6 @@ public class hotelApp    {
 					sc.nextLine();
 				}
 		} while (choice != 22);
+        System.exit(0);
     }
 }

@@ -599,7 +599,7 @@ public class HotelMgr {
                     System.out.println("Please enter Check In Date (dd/MM/yyyy):");
                     try {
                         checkInDateInput = sc.nextLine();
-                        checkInDate = formatter.parse(checkInDateInput + " 14:00"); 
+                        checkInDate = formatter.parse(checkInDateInput + " 14:00");
                         //if (checkInDate.before(currentDate)) {
                         //    dateCheck = false;
                         //    System.out.println("Check in date has already passed current date. Try again.");
@@ -1867,7 +1867,7 @@ public class HotelMgr {
         System.out.println("Room Number: " + room.getUnitNumber() + "(" +  roomNumber + ").");
         for (int i = 0; i < roomSvcList.size(); i++) {
             roomSvc = roomSvcList.get(i);
-            System.out.print("===================================\n" + "Room Service ID: " + roomSvc.getRoomSvcID()
+            System.out.println("===================================\n" + "Room Service ID: " + roomSvc.getRoomSvcID()
                     + "\n" + "Date Ordered: " + formatter.format(roomSvc.getDateTimeOrdered()) + "\n"
                     + "Amount Payable: " + roomSvc.getAmountPayable() + "\n" + "Remarks: " + roomSvc.getRemarks() + "\n"
                     + "Status: " + roomSvc.getRoomSvcStatus().toString() + "\n"
@@ -1928,6 +1928,11 @@ public class HotelMgr {
     	Invoice invoice;
     	roomList = roomMgr.getOccupiedRoom();
     	try {
+    	    if(roomList.size() == 0) {
+                System.out.println("No room is currently occupied.");
+                return;
+            }
+
     		for (int i = 0; i<roomList.size(); i++) {
         		room = roomList.get(i);
         		invoice = invoiceMgr.getUnpaidInvoice(room.getRoomNumber());
@@ -1935,6 +1940,7 @@ public class HotelMgr {
         		System.out.println("Room number: " + room.getUnitNumber() + "(" + room.getRoomNumber() +")"
         							+ "\nGuest name: " + guestMgr.getGuestName(guestID));
         	}
+
     	}catch (NullPointerException npe) {
             logger.severe(npe.getMessage());
             System.out.println("The invoice is currently empty.");
@@ -2067,7 +2073,11 @@ public class HotelMgr {
             new Room(46, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "07-06"));
         roomMgr.createRoom(
             new Room(47, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", false, "07-07"));
-
+        try {
+        reservationMgr.beginReservation(new Reservation("Martin Lee", 8, formatter.parse("17/04/2018 14:00"), formatter.parse("19/04/2018 12:00"), 1, 0, 2, 0, RESERVE_STATUS.CONFIRMED));
+        } catch (ParseException pe) {
+            System.out.println("");
+        }
     }
 
     /**
