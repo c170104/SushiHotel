@@ -483,7 +483,7 @@ public class HotelMgr {
                         + "\nCredit Card Number: " +guest.getCreditCardNumber()
                         + "\nBilling Address: " + guest.getBillingAddress());
             }
-            System.out.println("=========== End of Search ===========");
+            System.out.println("=========== End of Search ===========\n");
         } catch (InputMismatchException ime) {
             logger.severe(ime.getMessage());
             System.out.println(ERROR_MSG);
