@@ -234,4 +234,18 @@ public class RoomMgr    {
     	}
     	return counter;
     }
+    
+    public boolean updateRoomToReserve(int roomNumber) {
+    	Room room;
+    	try {
+    		room = RoomModel.read(roomNumber);
+    		room.setRoomStatus(Room.ROOM_STATUS.RESERVED);
+    		RoomModel.update(roomNumber, room);
+    	} catch (InvalidEntity ie) {
+    		logger.info(ie.getMessage());
+    	} catch (EmptyDB edb) {
+    		logger.info(edb.getMessage());
+    	}
+    	return true;
+    }
 }

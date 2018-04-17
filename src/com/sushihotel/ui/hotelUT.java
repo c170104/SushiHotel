@@ -44,6 +44,7 @@ public class hotelUT    {
             
             hotelMgr.updateRoomSvcDelivered(); // if theres no room service database will show WARNING: RoomService DB not found
             hotelMgr.updateExpiredStatus();
+            hotelMgr.updateRoomToReserved();
             
         	}catch(IOException ioe)    {
         		logger.severe(ioe.getMessage());
@@ -82,7 +83,8 @@ public class hotelUT    {
 		                );
 
 	        		try{
-	        		    choice  = Integer.parseInt(sc.nextLine());
+	        		    choice  = sc.nextInt();
+	        		    sc.nextLine();
 			        	if (choice<= 100 && choice >=1) { // 100 cahnge to 20 when coding is done
 				        	inputChecker = true;
 			        	} else {

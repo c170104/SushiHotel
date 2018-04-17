@@ -1,5 +1,6 @@
 package com.sushihotel.hotel;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -37,11 +38,13 @@ public class HotelMgr {
     private Scanner sc = new Scanner(System.in);
 
     private final SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+    private final DecimalFormat df = new DecimalFormat("0.00");
     private final String ERROR_MSG = "Error, please try again!";
     private final float TAX_RATE = 0.17f;
 
     private static final Logger logger = Logger.getLogger(HotelMgr.class.getName());
 
+    
     /*
      * START OF GUEST CRUD
      * 
@@ -641,7 +644,7 @@ public class HotelMgr {
                     System.out.println("Please enter Check In Date (dd/MM/yyyy):");
                     try {
                         checkInDateInput = sc.nextLine();
-                        checkInDate = formatter.parse(checkInDateInput + " 14:00");
+                        checkInDate = formatter.parse(checkInDateInput + " 14:00"); 
                         if (checkInDate.before(currentDate)) {
                             dateCheck = false;
                             System.out.println("Check in date has already passed current date. Try again.");
@@ -1413,7 +1416,7 @@ public class HotelMgr {
     public void printMealList() {
         Meal meal;
         List<Meal> mealList;
-        String mealPrice;
+//        String mealPrice;
         try {
             mealList = menuMgr.getMealOffered();
             if (mealList.size() == 0) {
@@ -1423,10 +1426,10 @@ public class HotelMgr {
             System.out.println("========================== MENU ==========================");
             for (int i = 0; i < mealList.size(); i++) {
                 meal = mealList.get(i);
-                mealPrice = String.format("%.2f", meal.getMealPrice());
+//                mealPrice = String.format("%.2f", meal.getMealPrice());
                 System.out.println("Meal ID: " + meal.getMealID() + "\n Meal Name: " + meal.getMealName()
                         + "\n Description: " + meal.getDesc() + "\n Prepared Method: " + meal.getPreparedMethod()
-                        + "\n Meal Price: $" + mealPrice);
+                        + "\n Meal Price: $" + df.format(meal.getMealPrice()));
             }
             System.out.println("==========================================================");
         } catch (NullPointerException npe) {
@@ -1459,6 +1462,7 @@ public class HotelMgr {
         RoomSvc roomSvc;
         String remarks;
         Meal meal;
+        Room room;
         Date dateTimeOrdered = new Date();
 
         try {
@@ -1485,6 +1489,8 @@ public class HotelMgr {
                 meal = menuMgr.getMealDetails(menuChoice);
                 amountPayable += meal.getMealPrice();
             }
+            
+            room = roomMgr.getRoom(roomNumber);
 
             if (amountPayable != 0) {
             	System.out.println("Please enter the room service remarks: ");
@@ -1494,10 +1500,10 @@ public class HotelMgr {
                      roomSvcID = roomSvcMgr.getRoomSvcID(roomNumber);
                      if (invoiceMgr.addRoomSvc(roomNumber, roomSvcID)) {
                          roomSvcMgr.updateRoomSvcStatus(roomSvcID, RoomSvc.ROOM_SVC_STATUS.PREPARING);
-                         System.out.println("Room Service has successfully been placed for Room number " + roomNumber + ".");
+                         System.out.println("Room Service has successfully been placed for Room number " + room.getUnitNumber() + "(" + roomNumber + ").");
                      } else
-                         System.out.println("System has failed to place Room service for Room number " + roomNumber
-                                 + ". Please try again.");
+                         System.out.println("System has failed to place Room service for Room number " + room.getUnitNumber() + "(" + roomNumber
+                                 + "). Please try again.");
                  } else
                      System.out.println("System has failed to add new room service. Please try again.");
             } else {
@@ -1554,6 +1560,7 @@ public class HotelMgr {
     public void checkIn() {
         int choice;
         Guest guest;
+        Room room;
         Reservation reservation = null;
         Invoice invoice;
         Date checkInDate = null;
@@ -1584,7 +1591,7 @@ public class HotelMgr {
                 }
 
                 if (choice == 1) {
-                    System.out.print("Please input the Reservation ID: (Enter -1 to exit)");
+                    System.out.print("Please input the Reservation ID: (Enter -1 to exit)\n");
                     reservationID = sc.nextInt();
                     sc.nextLine();
                     if (reservationID == -1) {
@@ -1617,24 +1624,10 @@ public class HotelMgr {
                     System.out.print("Please input room number (1-48): ");
                     roomNumber = sc.nextInt();
                     sc.nextLine();
-
+                    
                     do {
-                        do {
-                            System.out.println("Please enter Check In Date (dd/MM/yyyy):");
-                            try {
-                                checkInDateInput = sc.nextLine();
-                                checkInDate = formatter.parse(checkInDateInput + " 14:00");
-                                if (checkInDate.before(currentDate)) {
-                                    dateCheck = false;
-                                    System.out.println("Check in date has already passed current date. Try again.");
-                                } else {
-                                    dateCheck = true;
-                                }
-                            } catch (ParseException pe) {
-                                System.out.println("Incorrect date time format.");
-                                dateCheck = false;
-                            }
-                        } while (!dateCheck);
+                    	checkInDate = currentDate;
+                    	System.out.println("Check in date: " + formatter.format(checkInDate));
 
                         do {
                             System.out.println("Please enter Check Out Date (dd/MM/yyyy):");
@@ -1668,17 +1661,13 @@ public class HotelMgr {
                         startCal.add(Calendar.DAY_OF_MONTH, 1);
                     } while (startCal.getTimeInMillis() < endCal.getTimeInMillis()); //excluding end date
 
-//                    if (startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY
-//                            && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
-//                        totalWeekdays++;
-//                    } else {
-//                        totalWeekends++;
-//                    }
                     System.out.println("# of Weekdays = " + totalWeekdays + "\n# of Weekends = " + totalWeekends);
                 }
 
                 invoice = new Invoice(guest.getGuestID(), roomNumber, checkInDate, checkOutDate, totalWeekdays,
                         totalWeekends);
+                
+                room = roomMgr.getRoom(roomNumber);
                 
                 if (invoiceMgr.createBlankInvoice(invoice)) {
                     if (choice == 1 && !(reservationMgr.reservationCheckInChanges(reservationID))) { // error here, since using number 2 which is made no prior reservation
@@ -1686,13 +1675,13 @@ public class HotelMgr {
                     	System.out.println("Reservation for guest" + guest.getName() +" is unsuccessful. Please try again.");
                     	return;
                     }
-                    System.out.println("Check In for guest " + guest.getName() + " into Room number "
-                            + Integer.toString(roomNumber) + " is successful!");
+                    System.out.println("Check In for guest " + guest.getName() + " into Room number " + room.getUnitNumber() + "("
+                            + Integer.toString(roomNumber) + ") is successful!");
                     roomMgr.setRoomToOccupied(roomNumber, Room.ROOM_STATUS.OCCUPIED);
                     return;
                 } else {
-                    System.out.println("Check In for guest " + guest.getName() + " into Room number "
-                            + Integer.toString(roomNumber) + " is unsuccessful. Please try again.");
+                    System.out.println("Check In for guest " + guest.getName() + " into Room number " + room.getUnitNumber() + "("
+                            + Integer.toString(roomNumber) + ") is unsuccessful. Please try again.");
                     return;
                 }
 
@@ -1713,12 +1702,12 @@ public class HotelMgr {
             + "Room number:\t\t" + invoice.getRoomNumber()
             + "\n" + "Checked in on:\t\t" + formatter.format(invoice.getCheckInDate()) 
             + "\n" + "Checked out on:\t\t" + formatter.format(invoice.getCheckOutDate()) 
-            + "\n" + "Room charges:\t\t$" + invoice.getRoomCharges() 
-            + "\n" + "Room Service charges:\t\t$" + invoice.getRoomSvcTotalCharges()
-            + "\n" + "Late Fees:\t\t$" + invoice.getLateFees() 
-            + "\n" + "Discount:\t\t" + invoice.getDiscount()
-            + "%\n" + "Tax:\t\t" + invoice.getTax() 
-            + "%\n" + "Total Bill:\t\t$" + invoice.getTotalBill()
+            + "\n" + "Room charges:\t\t$" + df.format(invoice.getRoomCharges())
+            + "\n" + "Room Service charges:\t$" + df.format(invoice.getRoomSvcTotalCharges())
+            + "\n" + "Late Fees:\t\t$" + df.format(invoice.getLateFees())
+            + "\n" + "Discount:\t\t" + df.format(invoice.getDiscount()*100)
+            + "%\n" + "Tax:\t\t\t" + df.format(invoice.getTax()*100) 
+            + "%\n" + "Total Bill:\t\t$" + df.format(invoice.getTotalBill())
             + "\n" + "=====================================");
             list = invoice.getRoomSvc();
 
@@ -1730,7 +1719,7 @@ public class HotelMgr {
                 roomSvc = roomSvcMgr.getRoomSvc(roomSvcID);
                 System.out.println("Room Service ID: " + Integer.toString(roomSvcID) + "\n" + "Date Ordered: "
                         + formatter.format(roomSvc.getDateTimeOrdered()) + "\n" + "Service Bill: "
-                        + Float.toString(roomSvc.getAmountPayable()) + "\n" + "Remarks: " + roomSvc.getRemarks() + "\n"
+                        + df.format(roomSvc.getAmountPayable()) + "\n" + "Remarks: " + roomSvc.getRemarks() + "\n"
                         + "=====================================");
             }
         } catch (NullPointerException npe) {
@@ -1792,17 +1781,18 @@ public class HotelMgr {
                     cashPayment = false;
 
                 if (invoiceMgr.makePayment(roomNumber, cashPayment)) {
-                    System.out.println("Check Out for Room " + Integer.toString(roomNumber) + " is successful.");
+                    System.out.println("Check Out for Room " + room.getUnitNumber() + "(" + Integer.toString(roomNumber) + ") is successful.");
                     // change room status back to vacant
                     roomMgr.setRoomToOccupied(roomNumber, Room.ROOM_STATUS.VACANT);
                     // remove reservation
-                    reservationMgr.removeReservationAfterCheckOut(roomNumber);
+                    if(reservationMgr.getReservationByID(invoice.getInvoiceID()) != null)
+                    	reservationMgr.removeReservationAfterCheckOut(roomNumber);
                     // print bill
                     invoice = invoiceMgr.getInvoice(invoice.getInvoiceID());
                     printBill(invoice);
                 } else
-                    System.out.println("Check Out is unsuccessful for Room " + Integer.toString(roomNumber)
-                            + ". Please try again.");
+                    System.out.println("Check Out is unsuccessful for Room " + room.getUnitNumber() + "(" + Integer.toString(roomNumber)
+                            + "). Please try again.");
             }
         } catch (InputMismatchException ime) {
             logger.severe(ime.getMessage());
@@ -1911,7 +1901,7 @@ public class HotelMgr {
                 + vipTotal + "\n" + "Occupied VIP Rooms: " + vipOccupied + "\n" + "Occupancy Rate: "
                 + String.format("%.2f", orVip) + "%\n" + "Occupied Rooms: " + vipUnitNumber + "\n"
                 + "--------------------------------------------------\n" + "Hotel Occupancy Rate: "
-                + String.format("%.2f", orTotal) + "%\n");
+                + String.format("%.2f", orTotal) + "w%\n");
         } catch (NullPointerException npe) {
 //            logger.severe(npe.getMessage());
 //            npe.printStackTrace(System.out);
@@ -1951,14 +1941,16 @@ public class HotelMgr {
         int roomNumber;
         List<RoomSvc> roomSvcList;
         RoomSvc roomSvc;
+        Room room;
 
         System.out.println("Please input room number to check room service:");
         roomNumber = sc.nextInt();
         sc.nextLine();
 
+        room = roomMgr.getRoom(roomNumber);
         roomSvcList = roomSvcMgr.getRoomSvcList(roomNumber);
 
-        System.out.println("Room Number: " + roomNumber);
+        System.out.println("Room Number: " + room.getUnitNumber() + "(" +  roomNumber + ").");
         for (int i = 0; i < roomSvcList.size(); i++) {
             roomSvc = roomSvcList.get(i);
             System.out.print("===================================\n" + "Room Service ID: " + roomSvc.getRoomSvcID()
@@ -1993,6 +1985,29 @@ public class HotelMgr {
     	}, 0, 180000L,TimeUnit.MILLISECONDS);
     }
     
+    public void updateRoomToReserved() {
+    	ScheduledExecutorService execService = Executors.newSingleThreadScheduledExecutor();
+    	execService.scheduleAtFixedRate(() -> {
+    		List<Reservation> reservationList;
+    		Reservation reservation = null;
+    		Date date = new Date();
+    		try {
+    			reservationList = reservationMgr.getReservationList();
+    			for (int i = 0; i<reservationList.size(); i++) {
+    				reservation = reservationList.get(i);
+    				if (reservation.getReserveStatus() == Reservation.RESERVE_STATUS.CONFIRMED &&
+    						reservation.getCheckInDate().getDate() == date.getDate() &&
+    						reservation.getCheckInDate().getMonth() == date.getMonth() &&
+    						reservation.getCheckInDate().getYear() == date.getYear()) {
+    					roomMgr.updateRoomToReserve(reservation.getRoomNumber());
+    					}
+    				} 
+    			}catch (NullPointerException npe) {
+    				logger.info(npe.getMessage());
+    		}
+    	}, 0, 10000L,TimeUnit.MILLISECONDS);
+    }
+    
     public void printOccupiedRooms() {
     	List<Room> roomList;
     	Room room;
@@ -2005,7 +2020,7 @@ public class HotelMgr {
         		room = roomList.get(i);
         		invoice = invoiceMgr.getUnpaidInvoice(room.getRoomNumber());
         		guestID = invoice.getGuestID();
-        		System.out.println("Room number: " + room.getRoomNumber() + room.getUnitNumber() 
+        		System.out.println("Room number: " + room.getUnitNumber() + "(" + room.getRoomNumber() +")"
         							+ "\nGuest name: " + guestMgr.getGuestName(guestID));
         	}
     	}catch (NullPointerException npe) {
