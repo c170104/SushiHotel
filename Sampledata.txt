@@ -1,0 +1,718 @@
+# sample datas reciding inside the different .dat files
+
+=========== Menu.dat ============
+
+Meal ID: 1
+ Meal Name: Caesar salad
+ Description: A green salad of romaine lettuce and croutons dressed with lemon juice, olive oil, egg, Worcestershire sauce, garlic, Parmesan cheese, and black pepper
+ Prepared Method:
+ Meal Price: $25.00
+Meal ID: 2
+ Meal Name: Penang Special Char Kway Teow
+ Description: Fragrant, sweet and oily flat noodle with cockles, egg, and chilli paste.
+ Prepared Method:
+ Meal Price: $17.00
+Meal ID: 3
+ Meal Name: Strawberry Shortcake
+ Description: The pillowy sponge cake � alternated with layers of luscious whipped cream and juicy strawberries � makes a wonderful treat at any time of the day.
+ Prepared Method:
+ Meal Price: $8.00
+Meal ID: 4
+ Meal Name: Wild Mushroom Pizza
+ Description: It is served with caramelized onions, fontina and rosemary.
+ Prepared Method: 0ven-baked
+ Meal Price: $18.00
+
+=================================
+
+========== Guest.dat ============
+
+Guest Name: Zac Efron
+ID Number: S7608086T
+Address: 8 Macademia Street
+Country: America
+Gender: M
+Nationality: American
+Contact Number: 96954268
+Passport Number: S7608086T
+Credit Card Number: 4539472608181189
+Billing Address: 8 Macademia Street
+
+
+Guest Name: Ashley Tisdale
+ID Number: S2432773G
+Address: 6 Beverly Hills
+Country: Singapore
+Gender: F
+Nationality: Singaporean
+Contact Number: 86096615
+Passport Number: S2432773G
+Credit Card Number: 5471589173401465
+Billing Address: 6 Beverly Hills
+
+
+Guest Name: Bruno Mars
+ID Number: S3895996B
+Address: 41 Mexico Road
+Country: England
+Gender: M
+Nationality: English
+Contact Number: 95158887
+Passport Number: S3895996B
+Credit Card Number: 4716578256648199
+Billing Address: 41 Mexico Road
+
+
+Guest Name: Nicki Minaj
+ID Number: S9951850N
+Address: Stamford East
+Country: Estonia
+Gender: F
+Nationality: Estonian
+Contact Number: 96894026
+Passport Number: S9951850N
+Credit Card Number: 5392350070654359
+Billing Address: Stamford East
+
+
+Guest Name: Oprah
+ID Number: S1641957T
+Address: 80 Fifth Avenue
+Country: Singapore
+Gender: F
+Nationality: Singaporean
+Contact Number: 93627105
+Passport Number: S1641957T
+Credit Card Number: 4532765208914447
+Billing Address: 80 Fifth Avenue
+
+
+Guest Name: Martin Garrix
+ID Number: S5564748Z
+Address: 27 Lonely Road
+Country: Germany
+Gender: M
+Nationality: German
+Contact Number: 96954268
+Passport Number: S7308086T
+Credit Card Number: 4539231608181189
+Billing Address: 27 Lonely Road
+
+
+Guest Name: Walt Disney
+ID Number: S6999086L
+Address: 10 Obs Street
+Country: America
+Gender: M
+Nationality: American
+Contact Number: 96952168
+Passport Number: S7608286T
+Credit Card Number: 45394333608181189
+Billing Address: 100 Obs Street
+
+
+Guest Name: Martin Lee
+ID Number: S5467862L
+Address: 7 Apple Street
+Country: Singapore
+Gender: M
+Nationality: Singaporean
+Contact Number: 96442168
+Passport Number: Z7602286K
+Credit Card Number: 45322233608181189
+Billing Address: 7 Apple Street
+
+====================================
+
+============== Room.dat ===============
+
+Room number:1
+Room Type: SINGLE
+Max No of Adults: 1
+Max No of Children: 0
+Weekday Rate: $200
+Weekend Rate: $265
+Bed Type: Single
+Wifi-Enabled: true
+Facing View: Mountain
+Smoking Allowed: true
+Unit Number: 02-01
+
+Room number:2
+Room Type: SINGLE
+Max No of Adults: 1
+Max No of Children: 0
+Weekday Rate: $200
+Weekend Rate: $265
+Bed Type: Single
+Wifi-Enabled: true
+Facing View: Mountain
+Smoking Allowed: true
+Unit Number: 02-02
+
+Room number:3
+Room Type: SINGLE
+Max No of Adults: 1
+Max No of Children: 0
+Weekday Rate: $200
+Weekend Rate: $265
+Bed Type: Single
+Wifi-Enabled: true
+Facing View: Mountain
+Smoking Allowed: true
+Unit Number: 02-03
+
+Room number:4
+Room Type: SINGLE
+Max No of Adults: 1
+Max No of Children: 0
+Weekday Rate: $200
+Weekend Rate: $265
+Bed Type: Single
+Wifi-Enabled: true
+Facing View: Mountain
+Smoking Allowed: true
+Unit Number: 02-04
+
+Room number:5
+Room Type: DOUBLE
+Max No of Adults: 2
+Max No of Children: 1
+Weekday Rate: $280
+Weekend Rate: $320
+Bed Type: Double
+Wifi-Enabled: true
+Facing View: Mountain
+Smoking Allowed: true
+Unit Number: 02-05
+
+Room number: 6
+Room Type: DOUBLE
+Max No of Adults: 2
+Max No of Children: 1
+Weekday Rate: $280
+Weekend Rate: $320
+Bed Type: Double
+Wifi-Enabled: true
+Facing View: Mountain
+Smoking Allowed: true
+Unit Number: 02-06
+
+Room number:7
+Room Type: DELUXE
+Max No of Adults: 2
+Max No of Children: 2
+Weekday Rate: $350
+Weekend Rate: $420
+Bed Type: Master
+Wifi-Enabled: true
+Facing View: Lake	
+Smoking Allowed: true
+Unit Number: 02-07
+
+Room number:8
+Room Type: DELUXE
+Max No of Adults: 2
+Max No of Children: 2
+Weekday Rate: $350
+Weekend Rate: $420
+Bed Type: Master
+Wifi-Enabled: true
+Facing View: Lake	
+Smoking Allowed: true
+Unit Number: 02-08
+
+Room number:9
+Room Type: SINGLE
+Max No of Adults: 1
+Max No of Children: 0
+Weekday Rate: $200
+Weekend Rate: $265
+Bed Type: Single
+Wifi-Enabled: true
+Facing View: Mountain
+Smoking Allowed: true
+Unit Number: 03-01
+
+Room number:10
+Room Type: SINGLE
+Max No of Adults: 1
+Max No of Children: 0
+Weekday Rate: $200
+Weekend Rate: $265
+Bed Type: Single
+Wifi-Enabled: true
+Facing View: Mountain
+Smoking Allowed: true
+Unit Number: 03-02
+
+Room number:11
+Room Type: SINGLE
+Max No of Adults: 1
+Max No of Children: 0
+Weekday Rate: $200
+Weekend Rate: $265
+Bed Type: Single
+Wifi-Enabled: true
+Facing View: Mountain
+Smoking Allowed: true
+Unit Number: 03-03
+
+Room number:12
+Room Type: SINGLE
+Max No of Adults: 1
+Max No of Children: 0
+Weekday Rate: $200
+Weekend Rate: $265
+Bed Type: Single
+Wifi-Enabled: true
+Facing View: Mountain
+Smoking Allowed: true
+Unit Number: 03-04
+
+Room number:13
+Room Type: DOUBLE
+Max No of Adults: 2
+Max No of Children: 1
+Weekday Rate: $280
+Weekend Rate: $320
+Bed Type: Double
+Wifi-Enabled: true
+Facing View: Mountain
+Smoking Allowed: false
+Unit Number: 03-05
+
+Room number:14
+Room Type: DOUBLE
+Max No of Adults: 2
+Max No of Children: 1
+Weekday Rate: $280
+Weekend Rate: $320
+Bed Type: Double
+Wifi-Enabled: true
+Facing View: Mountain
+Smoking Allowed: false
+Unit Number: 03-06
+
+Room number:15
+Room Type: DELUXE
+Max No of Adults: 2
+Max No of Children: 2
+Weekday Rate: $350
+Weekend Rate: $420
+Bed Type: Master
+Wifi-Enabled: false
+Facing View: Lake	
+Smoking Allowed: false
+Unit Number: 03-07
+
+Room number:16
+Room Type: DELUXE
+Max No of Adults: 2
+Max No of Children: 2
+Weekday Rate: $350
+Weekend Rate: $420
+Bed Type: Master
+Wifi-Enabled: false
+Facing View: Lake	
+Smoking Allowed: false
+Unit Number: 03-08
+
+Room number:17
+Room Type: SINGLE
+Max No of Adults: 1
+Max No of Children: 0
+Weekday Rate: $200
+Weekend Rate: $265
+Bed Type: Single
+Wifi-Enabled: true
+Facing View: Mountain
+Smoking Allowed: false
+Unit Number: 04-01
+
+Room number:18
+Room Type: SINGLE
+Max No of Adults: 1
+Max No of Children: 0
+Weekday Rate: $200
+Weekend Rate: $265
+Bed Type: Single
+Wifi-Enabled: true
+Facing View: Mountain
+Smoking Allowed: false
+Unit Number: 04-02
+
+Room number:19
+Room Type: SINGLE
+Max No of Adults: 1
+Max No of Children: 0
+Weekday Rate: $200
+Weekend Rate: $265
+Bed Type: Single
+Wifi-Enabled: true
+Facing View: Mountain
+Smoking Allowed: false
+Unit Number: 04-03
+
+Room number:20
+Room Type: DOUBLE
+Max No of Adults: 2
+Max No of Children: 1
+Weekday Rate: $280
+Weekend Rate: $320
+Bed Type: Double
+Wifi-Enabled: true
+Facing View: Mountain
+Smoking Allowed: false
+Unit Number: 04-04
+
+Room number:21
+Room Type: DOUBLE
+Max No of Adults: 2
+Max No of Children: 1
+Weekday Rate: $280
+Weekend Rate: $320
+Bed Type: Double
+Wifi-Enabled: true
+Facing View: Mountain
+Smoking Allowed: false
+Unit Number: 04-05
+
+Room number:22
+Room Type: DELUXE
+Max No of Adults: 2
+Max No of Children: 2
+Weekday Rate: $350
+Weekend Rate: $420
+Bed Type: Master
+Wifi-Enabled: true
+Facing View: Lake	
+Smoking Allowed: false
+Unit Number: 04-06
+
+Room number:23
+Room Type: DELUXE
+Max No of Adults: 2
+Max No of Children: 2
+Weekday Rate: $350
+Weekend Rate: $420
+Bed Type: Master
+Wifi-Enabled: true
+Facing View: Lake	
+Smoking Allowed: false
+Unit Number: 04-07
+
+Room number:24
+Room Type: VIP
+Max No of Adults: 4
+Max No of Children: 1
+Weekday Rate: $430
+Weekend Rate: $500
+Bed Type: Master
+Wifi-Enabled: true
+Facing View: Sea	
+Smoking Allowed: false
+Unit Number: 04-08
+
+Room number:25
+Room Type: SINGLE
+Max No of Adults: 1
+Max No of Children: 0
+Weekday Rate: $200
+Weekend Rate: $265
+Bed Type: Single
+Wifi-Enabled: true
+Facing View: Mountain
+Smoking Allowed: false
+Unit Number: 05-01
+
+Room number:26
+Room Type: SINGLE
+Max No of Adults: 1
+Max No of Children: 0
+Weekday Rate: $200
+Weekend Rate: $265
+Bed Type: Single
+Wifi-Enabled: true
+Facing View: Mountain
+Smoking Allowed: false
+Unit Number: 05-02
+
+Room number:27
+Room Type: SINGLE
+Max No of Adults: 1
+Max No of Children: 0
+Weekday Rate: $200
+Weekend Rate: $265
+Bed Type: Single
+Wifi-Enabled: true
+Facing View: Mountain
+Smoking Allowed: false
+Unit Number: 05-03
+
+Room number:28
+Room Type: DOUBLE
+Max No of Adults: 2
+Max No of Children: 1
+Weekday Rate: $280
+Weekend Rate: $320
+Bed Type: Double
+Wifi-Enabled: true
+Facing View: Mountain
+Smoking Allowed: false
+Unit Number: 05-04
+
+Room number:29
+Room Type: DOUBLE
+Max No of Adults: 2
+Max No of Children: 1
+Weekday Rate: $280
+Weekend Rate: $320
+Bed Type: Double
+Wifi-Enabled: true
+Facing View: Mountain
+Smoking Allowed: false
+Unit Number: 05-05
+
+Room number:30
+Room Type: DELUXE
+Max No of Adults: 2
+Max No of Children: 2
+Weekday Rate: $350
+Weekend Rate: $420
+Bed Type: Master
+Wifi-Enabled: true
+Facing View: Lake	
+Smoking Allowed: false
+Unit Number: 05-06
+
+Room number:31
+Room Type: DELUXE
+Max No of Adults: 2
+Max No of Children: 2
+Weekday Rate: $350
+Weekend Rate: $420
+Bed Type: Master
+Wifi-Enabled: true
+Facing View: Lake	
+Smoking Allowed: false
+Unit Number: 05-07
+
+Room number:32
+Room Type: VIP
+Max No of Adults: 4
+Max No of Children: 1
+Weekday Rate: $430
+Weekend Rate: $500
+Bed Type: Master
+Wifi-Enabled: true
+Facing View: Sea	
+Smoking Allowed: false
+Unit Number: 05-08
+
+Room number:33
+Room Type: SINGLE
+Max No of Adults: 1
+Max No of Children: 0
+Weekday Rate: $200
+Weekend Rate: $265
+Bed Type: Single
+Wifi-Enabled: true
+Facing View: Mountain
+Smoking Allowed: false
+Unit Number: 06-01
+
+Room number:34
+Room Type: SINGLE
+Max No of Adults: 1
+Max No of Children: 0
+Weekday Rate: $200
+Weekend Rate: $265
+Bed Type: Single
+Wifi-Enabled: true
+Facing View: Mountain
+Smoking Allowed: false
+Unit Number: 06-02
+
+Room number:35
+Room Type: SINGLE
+Max No of Adults: 1
+Max No of Children: 0
+Weekday Rate: $200
+Weekend Rate: $265
+Bed Type: Single
+Wifi-Enabled: true
+Facing View: Mountain
+Smoking Allowed: false
+Unit Number: 06-03
+
+Room number:36
+Room Type: DOUBLE
+Max No of Adults: 2
+Max No of Children: 1
+Weekday Rate: $280
+Weekend Rate: $320
+Bed Type: Double
+Wifi-Enabled: true
+Facing View: Mountain
+Smoking Allowed: false
+Unit Number: 06-04
+
+Room number:37
+Room Type: DOUBLE
+Max No of Adults: 2
+Max No of Children: 1
+Weekday Rate: $280
+Weekend Rate: $320
+Bed Type: Double
+Wifi-Enabled: true
+Facing View: Mountain
+Smoking Allowed: false
+Unit Number: 06-05
+
+Room number:38
+Room Type: DOUBLE
+Max No of Adults: 2
+Max No of Children: 1
+Weekday Rate: $280
+Weekend Rate: $320
+Bed Type: Double
+Wifi-Enabled: true
+Facing View: Mountain
+Smoking Allowed: false
+Unit Number: 06-06
+
+Room number:39
+Room Type: DELUXE
+Max No of Adults: 2
+Max No of Children: 2
+Weekday Rate: $350
+Weekend Rate: $420
+Bed Type: Master
+Wifi-Enabled: true
+Facing View: Lake	
+Smoking Allowed: false
+Unit Number: 06-07
+
+Room number:40
+Room Type: VIP
+Max No of Adults: 4
+Max No of Children: 1
+Weekday Rate: $430
+Weekend Rate: $500
+Bed Type: Master
+Wifi-Enabled: true
+Facing View: Sea	
+Smoking Allowed: false
+Unit Number: 06-08
+
+Room number:41
+Room Type: SINGLE
+Max No of Adults: 1
+Max No of Children: 0
+Weekday Rate: $200
+Weekend Rate: $265
+Bed Type: Single
+Wifi-Enabled: true
+Facing View: Mountain
+Smoking Allowed: false
+Unit Number: 07-01
+
+Room number:42
+Room Type: SINGLE
+Max No of Adults: 1
+Max No of Children: 0
+Weekday Rate: $200
+Weekend Rate: $265
+Bed Type: Single
+Wifi-Enabled: true
+Facing View: Mountain
+Smoking Allowed: false
+Unit Number: 07-02
+
+Room number:43
+Room Type: SINGLE
+Max No of Adults: 1
+Max No of Children: 0
+Weekday Rate: $200
+Weekend Rate: $265
+Bed Type: Single
+Wifi-Enabled: true
+Facing View: Mountain
+Smoking Allowed: false
+Unit Number: 07-03
+
+Room number:44
+Room Type: DOUBLE
+Max No of Adults: 2
+Max No of Children: 1
+Weekday Rate: $280
+Weekend Rate: $320
+Bed Type: Double
+Wifi-Enabled: true
+Facing View: Mountain
+Smoking Allowed: false
+Unit Number: 07-04
+
+Room number:45
+Room Type: DOUBLE
+Max No of Adults: 2
+Max No of Children: 1
+Weekday Rate: $280
+Weekend Rate: $320
+Bed Type: Double
+Wifi-Enabled: true
+Facing View: Mountain
+Smoking Allowed: false
+Unit Number: 07-05
+
+Room number:46
+Room Type: DOUBLE
+Max No of Adults: 2
+Max No of Children: 1
+Weekday Rate: $280
+Weekend Rate: $320
+Bed Type: Double
+Wifi-Enabled: true
+Facing View: Mountain
+Smoking Allowed: false
+Unit Number: 07-06
+
+Room number:47
+Room Type: DELUXE
+Max No of Adults: 2
+Max No of Children: 2
+Weekday Rate: $350
+Weekend Rate: $420
+Bed Type: Master
+Wifi-Enabled: true
+Facing View: Lake	
+Smoking Allowed: false
+Unit Number: 07-07
+
+Room number:48
+Room Type: VIP
+Max No of Adults: 4
+Max No of Children: 1
+Weekday Rate: $430
+Weekend Rate: $500
+Bed Type: Master
+Wifi-Enabled: true
+Facing View: Sea	
+Smoking Allowed: false
+Unit Number: 07-08
+
+==========================
+
+====== Reservation.dat ========
+Empty
+===============================
+
+======== RoomSvc.dat ==========
+Empty
+===============================
+
+======== Invoice.dat ==========
+Empty
+===============================
+

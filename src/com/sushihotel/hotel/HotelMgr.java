@@ -481,7 +481,8 @@ public class HotelMgr {
                         + "Nationality: " + guest.getNationality() + "\n" + "Contact Number: "
                         + guest.getContactNumber() + "\n" + "Passport Number: " + guest.getPassportNumber()
                         + "\nCredit Card Number: " +guest.getCreditCardNumber()
-                        + "\nBilling Address: " + guest.getBillingAddress());
+                        + "\nBilling Address: " + guest.getBillingAddress()
+                        + "\n\n");
             }
             System.out.println("=========== End of Search ===========\n");
         } catch (InputMismatchException ime) {
