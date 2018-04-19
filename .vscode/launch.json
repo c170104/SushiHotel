@@ -16,12 +16,12 @@
         },
         {
             "type": "java",
-            "name": "Debug hotelUT",
+            "name": "Debug hotelApp",
             "request": "launch",
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",
             "stopOnEntry": false,
-            "mainClass": "com.sushihotel.test.hotelUT",
+            "mainClass": "com.sushihotel.main.hotelApp",
             "args": ""
         },
         {

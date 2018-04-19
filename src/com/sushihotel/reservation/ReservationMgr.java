@@ -194,6 +194,18 @@ public class ReservationMgr {
 		return false;
 	}
 
+	public boolean removeReservationByID(int reservationID)	{
+		try	{
+			if(ReservationModel.delete(reservationID))
+				return true;
+		} catch (EmptyDB edb) {
+			logger.warning(edb.getMessage());
+		} catch (InvalidEntity ie) {
+			logger.warning(ie.getMessage());
+		}
+		return false;
+	}
+
 	public Reservation getReservationByNameAndRoomNumber(String guestName, int roomNumber)	{
 		Reservation reservation;
 		List<Reservation> list;

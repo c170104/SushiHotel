@@ -1,5 +1,6 @@
 package com.sushihotel.hotel;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -37,11 +38,13 @@ public class HotelMgr {
     private Scanner sc = new Scanner(System.in);
 
     private final SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+    private final DecimalFormat df = new DecimalFormat("0.00");
     private final String ERROR_MSG = "Error, please try again!";
     private final float TAX_RATE = 0.17f;
 
     private static final Logger logger = Logger.getLogger(HotelMgr.class.getName());
 
+    
     /*
      * START OF GUEST CRUD
      * 
@@ -71,7 +74,7 @@ public class HotelMgr {
             // Guest Registration Begins
             System.out.println("============ Guest Registration ============");
             
-            System.out.println("Please enter exact Name: \n(Enter 'exit' to exit)");
+            System.out.println("Please enter the exact Guest name: \n(Enter 'exit' to exit)");
             do {
                 name = sc.nextLine();
             	if (name.equals("exit")) {
@@ -104,7 +107,6 @@ public class HotelMgr {
             if (gender.equals("exit")) {
             	return;
             }
-            
             
             System.out.println("Select type of ID \n1)Identification Number \n2)Passport Number\n(Enter 'exit' to exit)");
             do {
@@ -164,47 +166,6 @@ public class HotelMgr {
             default:
             	break;
             }
-            
-//            // ID Validation
-//            System.out.println("Please enter Identification Number: \n(Enter 'exit' to exit)");
-//            do {
-//                identificationNo = sc.nextLine();
-//            	if (identificationNo.equals("exit")) {
-//            		inputValidation = true;
-//                	return;
-//                }
-//                try {
-//                	if (guestMgr.searchGuest(identificationNo, Guest.GUEST_SEARCH_TYPE.IDENTIFICATION_NO) != null ) {
-//                	System.out.println("Identificatnion Number has been regiestered before. Please try again");
-//                	inputValidation = false;
-//                	}
-//                } catch (NullPointerException npe) {
-//                	inputValidation = true;
-//                }
-//            } while (!inputValidation);
-//            
-//   
-//            
-//            //Passport Validation
-//            System.out.println("Please enter Passport Number: \n(Enter 'exit' to exit)");
-//            do {
-//                passportNo = sc.nextLine();
-//            	if (passportNo.equals("exit")) {
-//            		inputValidation = true;
-//                	return;
-//                }
-//                try {
-//                	if (guestMgr.searchGuest(passportNo, Guest.GUEST_SEARCH_TYPE.PASSPORT_NO) != null ) {
-//                	System.out.println("Passport Number has been regiestered before. Please try again");
-//                	inputValidation = false;
-//                	}
-//                } catch (NullPointerException npe) {
-//                	inputValidation = true;
-//                }
-//            } while (!inputValidation);
-//            
-            
-
 
             System.out.println("Please enter Nationality: \n(Enter 'exit' to exit)");
             nationality = sc.nextLine();
@@ -215,9 +176,7 @@ public class HotelMgr {
             address = sc.nextLine();
             if (address.equals("exit")) {
             	return;
-            	
             }
-            
           //Contact number validation
             do {   
 	            System.out.println("Please enter 8 digit Contact Number: \n(Enter 'exit' to exit)");
@@ -236,7 +195,6 @@ public class HotelMgr {
             if (contactNo.equals("exit")) {
             	return;
             }
-            
             //Credit card validation
             do {
                 System.out.println("Please enter 16 digit Credit Card Number: \n(Enter 'exit' to exit)");
@@ -251,7 +209,8 @@ public class HotelMgr {
                     	}
                     }
                 }
-            }while (!inputValidation);
+            }   while (!inputValidation);
+
             if (creditCardNo.equals("exit")) {
             	return;
             }
@@ -514,7 +473,6 @@ public class HotelMgr {
             guestList = guestMgr.searchGuestsByName(guestName);
             
             System.out.println("============ Guest Search ============");
-            // triggers NullPointerException if guestList is null
             for (int i = 0; i < guestList.size(); i++) {
                 guest = guestList.get(i);
                 System.out.println("Guest Name: " + guest.getName() + "\n" + "ID Number: "
@@ -525,7 +483,7 @@ public class HotelMgr {
                         + "\nCredit Card Number: " +guest.getCreditCardNumber()
                         + "\nBilling Address: " + guest.getBillingAddress());
             }
-            System.out.println("=========== End of Search ===========");
+            System.out.println("=========== End of Search ===========\n");
         } catch (InputMismatchException ime) {
             logger.severe(ime.getMessage());
             System.out.println(ERROR_MSG);
@@ -560,7 +518,7 @@ public class HotelMgr {
                 }
 
                 if (type != null) {
-                    System.out.print("Please enter Search data: ");
+                    System.out.print("Please enter the exact Guest name (case insensitive): ");
                     searchData = sc.nextLine();
                     guest = guestMgr.searchGuest(searchData, type);
                 }
@@ -611,7 +569,7 @@ public class HotelMgr {
             System.out.println("======Input Reservation Details=====");
             System.out.println("Current date time " + formatter.format(currentDate));
             while (true) {
-                System.out.println("Please enter Guest Name (Type 'exit' to exit):");
+                System.out.println("Please enter the exact Guest name, type 'exit' to exit (case insensitive):");
                 guestName = sc.nextLine();
                 if (guestName.equals("exit")) {
                     return;
@@ -642,12 +600,12 @@ public class HotelMgr {
                     try {
                         checkInDateInput = sc.nextLine();
                         checkInDate = formatter.parse(checkInDateInput + " 14:00");
-                        if (checkInDate.before(currentDate)) {
-                            dateCheck = false;
-                            System.out.println("Check in date has already passed current date. Try again.");
-                        } else {
+                        //if (checkInDate.before(currentDate)) {
+                        //    dateCheck = false;
+                        //    System.out.println("Check in date has already passed current date. Try again.");
+                        //} else {
                             dateCheck = true;
-                        }
+                        //}
                     } catch (ParseException pe) {
                         System.out.println("Incorrect date time format.");
                         dateCheck = false;
@@ -685,12 +643,6 @@ public class HotelMgr {
                 startCal.add(Calendar.DAY_OF_MONTH, 1);
             } while (startCal.getTimeInMillis() < endCal.getTimeInMillis()); //excluding end date
 
-//            if (startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY
-//                    && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
-//                numberOfWeekdays++;
-//            } else {
-//                numberOfWeekends++;
-//            }
             System.out.println("# of Weekdays =  " + numberOfWeekdays + "\n# of Weekends = " + numberOfWeekends);
 
             System.out.println("Please enter Number of Adults: ");
@@ -768,8 +720,6 @@ public class HotelMgr {
                         + "\n" + "5) Number of adults: " + Integer.toString(numAdults) + "\n"
                         + "6) Number of children: " + Integer.toString(numChild) + "\n" + "7) Reserve status: "
                         + reserveStatus.toString() + "\n" +
-                        //                    "8) Number of weekdays: " + Integer.toString(numberOfWeekdays) + "\n" +
-                        //                    "9) Number of weekends: " + Integer.toString(numberOfWeekends) + "\n" +
                         "8) Exit/Update\n\n" + "Choice: ");
                 choice = sc.nextInt();
                 sc.nextLine();
@@ -788,7 +738,7 @@ public class HotelMgr {
                     break;
                 case 2:
                     while (true) {
-                        System.out.print("Input new Room Number: ");
+                        System.out.print("Input new Room Number (1-48): ");
                         roomNumber = sc.nextInt();
                         sc.nextLine();
                         if (roomMgr.checkRoomAvailability(roomNumber))
@@ -837,13 +787,6 @@ public class HotelMgr {
                         }
                         startCal.add(Calendar.DAY_OF_MONTH, 1);
                     } while (startCal.getTimeInMillis() < endCal.getTimeInMillis()); //excluding end date
-
-//                    if (startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY
-//                            && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
-//                        numberOfWeekdays++;
-//                    } else {
-//                        numberOfWeekends++;
-//                    }
                     System.out.println(
                             "Number of weekdays: " + numberOfWeekdays + "\nNumber of Weekends: " + numberOfWeekends);
                     break;
@@ -885,13 +828,6 @@ public class HotelMgr {
                         }
                         startCal.add(Calendar.DAY_OF_MONTH, 1);
                     } while (startCal.getTimeInMillis() < endCal.getTimeInMillis()); //excluding end date
-
-//                    if (startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY
-//                            && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
-//                        numberOfWeekdays++;
-//                    } else {
-//                        numberOfWeekends++;
-//                    }
                     System.out.println(
                             "Number of Weekdays: " + numberOfWeekdays + "\nNumber of Weekends: " + numberOfWeekends);
                     break;
@@ -931,17 +867,6 @@ public class HotelMgr {
                             System.out.println("Please select a correct input (1-4).");
                     }
                     break;
-                //                    case 8:
-                //                        System.out.println("Input number of weekdays ");
-                //                        numberOfWeekdays = sc.nextInt();
-                //                        sc.nextLine();
-                //                        break;
-                //
-                //                    case 9:
-                //                        System.out.println("Input number of weekends ");
-                //                        numberOfWeekends = sc.nextInt();
-                //                        sc.nextLine();
-                //                        break;
 
                 default:
                     break;
@@ -1336,7 +1261,7 @@ public class HotelMgr {
             do {
                 System.out.println("Choose the option 1-5 to update: \n" + "1) Meal Name: " + mealName + "\n"
                         + "2) Description: " + description + "\n" + "3) Prepared Method: " + preparedMethod + "\n"
-                        + "4) Meal Price: " + mealPrice + "\n" + "5) Exit/Update" + "\n\n" + "Choice: ");
+                        + "4) Meal Price: " + df.format(mealPrice) + "\n" + "5) Exit/Update" + "\n\n" + "Choice: ");
                 choice = sc.nextInt();
                 sc.nextLine();
                 switch (choice) {
@@ -1365,7 +1290,7 @@ public class HotelMgr {
 
             meal = new Meal(mealName, description, preparedMethod, mealPrice);
             if (menuMgr.editMeal(mealID, meal)) {
-                System.out.println("Succesfully updated Meal ID " + Integer.toString(mealID) + " details.");
+                System.out.println("Successfully updated Meal ID " + Integer.toString(mealID) + " details.");
             } else {
                 System.out
                         .println("System failed to update Meal ID " + Integer.toString(mealID) + ". Please try again.");
@@ -1413,7 +1338,7 @@ public class HotelMgr {
     public void printMealList() {
         Meal meal;
         List<Meal> mealList;
-        String mealPrice;
+
         try {
             mealList = menuMgr.getMealOffered();
             if (mealList.size() == 0) {
@@ -1423,10 +1348,9 @@ public class HotelMgr {
             System.out.println("========================== MENU ==========================");
             for (int i = 0; i < mealList.size(); i++) {
                 meal = mealList.get(i);
-                mealPrice = String.format("%.2f", meal.getMealPrice());
                 System.out.println("Meal ID: " + meal.getMealID() + "\n Meal Name: " + meal.getMealName()
                         + "\n Description: " + meal.getDesc() + "\n Prepared Method: " + meal.getPreparedMethod()
-                        + "\n Meal Price: $" + mealPrice);
+                        + "\n Meal Price: $" + df.format(meal.getMealPrice()));
             }
             System.out.println("==========================================================");
         } catch (NullPointerException npe) {
@@ -1459,6 +1383,7 @@ public class HotelMgr {
         RoomSvc roomSvc;
         String remarks;
         Meal meal;
+        Room room;
         Date dateTimeOrdered = new Date();
 
         try {
@@ -1470,7 +1395,6 @@ public class HotelMgr {
             	System.out.println("Room is not occupied.");
             	return;
             }
-
             // Print Menu by roomSvcMgr
             printMealList();
 
@@ -1485,6 +1409,8 @@ public class HotelMgr {
                 meal = menuMgr.getMealDetails(menuChoice);
                 amountPayable += meal.getMealPrice();
             }
+            
+            room = roomMgr.getRoom(roomNumber);
 
             if (amountPayable != 0) {
             	System.out.println("Please enter the room service remarks: ");
@@ -1494,19 +1420,15 @@ public class HotelMgr {
                      roomSvcID = roomSvcMgr.getRoomSvcID(roomNumber);
                      if (invoiceMgr.addRoomSvc(roomNumber, roomSvcID)) {
                          roomSvcMgr.updateRoomSvcStatus(roomSvcID, RoomSvc.ROOM_SVC_STATUS.PREPARING);
-                         System.out.println("Room Service has successfully been placed for Room number " + roomNumber + ".");
+                         System.out.println("Room Service has successfully been placed for Room number " + room.getUnitNumber() + "(" + roomNumber + ").");
                      } else
-                         System.out.println("System has failed to place Room service for Room number " + roomNumber
-                                 + ". Please try again.");
+                         System.out.println("System has failed to place Room service for Room number " + room.getUnitNumber() + "(" + roomNumber
+                                 + "). Please try again.");
                  } else
                      System.out.println("System has failed to add new room service. Please try again.");
             } else {
             	System.out.println("Exited room service call");
             }
-
-
-           
-
         } catch (InputMismatchException ime) {
             logger.severe(ime.getMessage());
             System.out.println(ERROR_MSG);
@@ -1554,12 +1476,12 @@ public class HotelMgr {
     public void checkIn() {
         int choice;
         Guest guest;
+        Room room;
         Reservation reservation = null;
         Invoice invoice;
         Date checkInDate = null;
         Date checkOutDate = null;
         Date currentDate = new Date();
-        String checkInDateInput;
         String checkOutDateInput;
         Calendar startCal = Calendar.getInstance();
         Calendar endCal = Calendar.getInstance();
@@ -1584,7 +1506,7 @@ public class HotelMgr {
                 }
 
                 if (choice == 1) {
-                    System.out.print("Please input the Reservation ID: (Enter -1 to exit)");
+                    System.out.print("Please input the Reservation ID: (Enter -1 to exit)\n");
                     reservationID = sc.nextInt();
                     sc.nextLine();
                     if (reservationID == -1) {
@@ -1617,24 +1539,10 @@ public class HotelMgr {
                     System.out.print("Please input room number (1-48): ");
                     roomNumber = sc.nextInt();
                     sc.nextLine();
-
+                    
                     do {
-                        do {
-                            System.out.println("Please enter Check In Date (dd/MM/yyyy):");
-                            try {
-                                checkInDateInput = sc.nextLine();
-                                checkInDate = formatter.parse(checkInDateInput + " 14:00");
-                                if (checkInDate.before(currentDate)) {
-                                    dateCheck = false;
-                                    System.out.println("Check in date has already passed current date. Try again.");
-                                } else {
-                                    dateCheck = true;
-                                }
-                            } catch (ParseException pe) {
-                                System.out.println("Incorrect date time format.");
-                                dateCheck = false;
-                            }
-                        } while (!dateCheck);
+                    	checkInDate = currentDate;
+                    	System.out.println("Check in date: " + formatter.format(checkInDate));
 
                         do {
                             System.out.println("Please enter Check Out Date (dd/MM/yyyy):");
@@ -1668,17 +1576,13 @@ public class HotelMgr {
                         startCal.add(Calendar.DAY_OF_MONTH, 1);
                     } while (startCal.getTimeInMillis() < endCal.getTimeInMillis()); //excluding end date
 
-//                    if (startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY
-//                            && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
-//                        totalWeekdays++;
-//                    } else {
-//                        totalWeekends++;
-//                    }
                     System.out.println("# of Weekdays = " + totalWeekdays + "\n# of Weekends = " + totalWeekends);
                 }
 
                 invoice = new Invoice(guest.getGuestID(), roomNumber, checkInDate, checkOutDate, totalWeekdays,
                         totalWeekends);
+                
+                room = roomMgr.getRoom(roomNumber);
                 
                 if (invoiceMgr.createBlankInvoice(invoice)) {
                     if (choice == 1 && !(reservationMgr.reservationCheckInChanges(reservationID))) { // error here, since using number 2 which is made no prior reservation
@@ -1686,13 +1590,13 @@ public class HotelMgr {
                     	System.out.println("Reservation for guest" + guest.getName() +" is unsuccessful. Please try again.");
                     	return;
                     }
-                    System.out.println("Check In for guest " + guest.getName() + " into Room number "
-                            + Integer.toString(roomNumber) + " is successful!");
+                    System.out.println("Check In for guest " + guest.getName() + " into Room number " + room.getUnitNumber() + "("
+                            + Integer.toString(roomNumber) + ") is successful!");
                     roomMgr.setRoomToOccupied(roomNumber, Room.ROOM_STATUS.OCCUPIED);
                     return;
                 } else {
-                    System.out.println("Check In for guest " + guest.getName() + " into Room number "
-                            + Integer.toString(roomNumber) + " is unsuccessful. Please try again.");
+                    System.out.println("Check In for guest " + guest.getName() + " into Room number " + room.getUnitNumber() + "("
+                            + Integer.toString(roomNumber) + ") is unsuccessful. Please try again.");
                     return;
                 }
 
@@ -1713,12 +1617,12 @@ public class HotelMgr {
             + "Room number:\t\t" + invoice.getRoomNumber()
             + "\n" + "Checked in on:\t\t" + formatter.format(invoice.getCheckInDate()) 
             + "\n" + "Checked out on:\t\t" + formatter.format(invoice.getCheckOutDate()) 
-            + "\n" + "Room charges:\t\t$" + invoice.getRoomCharges() 
-            + "\n" + "Room Service charges:\t\t$" + invoice.getRoomSvcTotalCharges()
-            + "\n" + "Late Fees:\t\t$" + invoice.getLateFees() 
-            + "\n" + "Discount:\t\t" + invoice.getDiscount()
-            + "%\n" + "Tax:\t\t" + invoice.getTax() 
-            + "%\n" + "Total Bill:\t\t$" + invoice.getTotalBill()
+            + "\n" + "Room charges:\t\t$" + df.format(invoice.getRoomCharges())
+            + "\n" + "Room Service:\t\t$" + df.format(invoice.getRoomSvcTotalCharges())
+            + "\n" + "Late Fees:\t\t\t$" + df.format(invoice.getLateFees())
+            + "\n" + "Discount:\t\t   -" + df.format(invoice.getDiscount()*100)
+            + "%\n" + "Tax:\t\t\t\t" + df.format(invoice.getTax()*100)
+            + "%\n" + "Total Bill:\t\t\t$" + df.format(invoice.getTotalBill())
             + "\n" + "=====================================");
             list = invoice.getRoomSvc();
 
@@ -1730,7 +1634,7 @@ public class HotelMgr {
                 roomSvc = roomSvcMgr.getRoomSvc(roomSvcID);
                 System.out.println("Room Service ID: " + Integer.toString(roomSvcID) + "\n" + "Date Ordered: "
                         + formatter.format(roomSvc.getDateTimeOrdered()) + "\n" + "Service Bill: "
-                        + Float.toString(roomSvc.getAmountPayable()) + "\n" + "Remarks: " + roomSvc.getRemarks() + "\n"
+                        + df.format(roomSvc.getAmountPayable()) + "\n" + "Remarks: " + roomSvc.getRemarks() + "\n"
                         + "=====================================");
             }
         } catch (NullPointerException npe) {
@@ -1746,6 +1650,7 @@ public class HotelMgr {
         List<Integer> roomServicesID;
         Room room;
         RoomSvc roomSvc;
+        Reservation reservation;
         float weekDayRate;
         float weekEndRate;
         float lateFees;
@@ -1754,7 +1659,7 @@ public class HotelMgr {
         boolean cashPayment = true;
 
         try {
-            System.out.println("Please enter Room number to check out: (Enter -1 to exit)");
+            System.out.println("Please enter Room number to check out (1-48): (Enter -1 to exit)");
             roomNumber = sc.nextInt();
             sc.nextLine();
             if (roomNumber == -1) {
@@ -1779,7 +1684,7 @@ public class HotelMgr {
             System.out.print("Late Fees (if any): ");
             lateFees = sc.nextFloat();
             sc.nextLine();
-            System.out.print("Discount: ");
+            System.out.print("Discount (in decimal): ");
             discount = sc.nextFloat();
             sc.nextLine();
 
@@ -1792,20 +1697,25 @@ public class HotelMgr {
                     cashPayment = false;
 
                 if (invoiceMgr.makePayment(roomNumber, cashPayment)) {
-                    System.out.println("Check Out for Room " + Integer.toString(roomNumber) + " is successful.");
+                    System.out.println("Check Out for Room " + room.getUnitNumber() + "(" + Integer.toString(roomNumber) + ") is successful.");
                     // change room status back to vacant
                     roomMgr.setRoomToOccupied(roomNumber, Room.ROOM_STATUS.VACANT);
                     // remove reservation
-                    reservationMgr.removeReservationAfterCheckOut(roomNumber);
+                    reservation = reservationMgr.getReservationByID(invoice.getInvoiceID());
+                    if(reservation != null)
+                    	reservationMgr.removeReservationByID(reservation.getReservationID());
                     // print bill
                     invoice = invoiceMgr.getInvoice(invoice.getInvoiceID());
                     printBill(invoice);
                 } else
-                    System.out.println("Check Out is unsuccessful for Room " + Integer.toString(roomNumber)
-                            + ". Please try again.");
+                    System.out.println("Check Out is unsuccessful for Room " + room.getUnitNumber() + "(" + Integer.toString(roomNumber)
+                            + "). Please try again.");
             }
         } catch (InputMismatchException ime) {
             logger.severe(ime.getMessage());
+            System.out.println(ERROR_MSG);
+        } catch (NullPointerException npe)  {
+            logger.severe(npe.getMessage());
             System.out.println(ERROR_MSG);
         }
     }
@@ -1911,10 +1821,8 @@ public class HotelMgr {
                 + vipTotal + "\n" + "Occupied VIP Rooms: " + vipOccupied + "\n" + "Occupancy Rate: "
                 + String.format("%.2f", orVip) + "%\n" + "Occupied Rooms: " + vipUnitNumber + "\n"
                 + "--------------------------------------------------\n" + "Hotel Occupancy Rate: "
-                + String.format("%.2f", orTotal) + "%\n");
+                + String.format("%.2f", orTotal) + "w%\n");
         } catch (NullPointerException npe) {
-//            logger.severe(npe.getMessage());
-//            npe.printStackTrace(System.out);
             System.out.println("Hotel is not occupied.");
         }
     }
@@ -1931,7 +1839,8 @@ public class HotelMgr {
             for (int i = 0; i < reservationList.size(); i++) {
                 reservation = reservationList.get(i);
                 System.out.println("===================================================================="
-                        + "\nReservation ID: " + Integer.toString(reservation.getReservationID()) + "\nRoom Number: "
+                        + "\nReservation ID: " + Integer.toString(reservation.getReservationID())
+                        + "\nGuest Name: " + reservation.getGuestName() + "\nRoom Number: "
                         + Integer.toString(reservation.getRoomNumber()) + "\nNo. of Adults: "
                         + Integer.toString(reservation.getNumAdults()) + "\nNo. of Childrens: "
                         + Integer.toString(reservation.getNumChild()) + "\nCheck In Date: "
@@ -1951,23 +1860,24 @@ public class HotelMgr {
         int roomNumber;
         List<RoomSvc> roomSvcList;
         RoomSvc roomSvc;
+        Room room;
 
         System.out.println("Please input room number to check room service:");
         roomNumber = sc.nextInt();
         sc.nextLine();
 
+        room = roomMgr.getRoom(roomNumber);
         roomSvcList = roomSvcMgr.getRoomSvcList(roomNumber);
 
-        System.out.println("Room Number: " + roomNumber);
+        System.out.println("Room Number: " + room.getUnitNumber() + "(" +  roomNumber + ").");
         for (int i = 0; i < roomSvcList.size(); i++) {
             roomSvc = roomSvcList.get(i);
-            System.out.print("===================================\n" + "Room Service ID: " + roomSvc.getRoomSvcID()
+            System.out.println("===================================\n" + "Room Service ID: " + roomSvc.getRoomSvcID()
                     + "\n" + "Date Ordered: " + formatter.format(roomSvc.getDateTimeOrdered()) + "\n"
                     + "Amount Payable: " + roomSvc.getAmountPayable() + "\n" + "Remarks: " + roomSvc.getRemarks() + "\n"
                     + "Status: " + roomSvc.getRoomSvcStatus().toString() + "\n"
                     + "===================================");
         }
-
     }
 
     public void updateExpiredStatus() {
@@ -1976,7 +1886,6 @@ public class HotelMgr {
         timeCheck.setMinutes(00);
         timeCheck.setSeconds(00);
         long initialDelay = new Date(timeCheck.getTime() - System.currentTimeMillis()).getTime();
-        //System.out.println(initialDelay);
         if (initialDelay <= 0) {
             initialDelay = initialDelay + 86400000L;
         }
@@ -1993,138 +1902,53 @@ public class HotelMgr {
     	}, 0, 180000L,TimeUnit.MILLISECONDS);
     }
     
+    public void updateRoomToReserved() {
+    	ScheduledExecutorService execService = Executors.newSingleThreadScheduledExecutor();
+    	execService.scheduleAtFixedRate(() -> {
+    		List<Reservation> reservationList;
+    		Reservation reservation = null;
+    		Date date = new Date();
+    		try {
+    			reservationList = reservationMgr.getReservationList();
+    			for (int i = 0; i<reservationList.size(); i++) {
+    				reservation = reservationList.get(i);
+    				if (reservation.getReserveStatus() == Reservation.RESERVE_STATUS.CONFIRMED &&
+    						reservation.getCheckInDate().getDate() == date.getDate() &&
+    						reservation.getCheckInDate().getMonth() == date.getMonth() &&
+    						reservation.getCheckInDate().getYear() == date.getYear()) {
+    					roomMgr.updateRoomToReserve(reservation.getRoomNumber());
+    					}
+    				} 
+    			}catch (NullPointerException npe) {
+    				logger.info(npe.getMessage());
+    		}
+    	}, 0, 10000L,TimeUnit.MILLISECONDS);
+    }
+    
     public void printOccupiedRooms() {
     	List<Room> roomList;
     	Room room;
-    	Guest guest;
     	int guestID;
     	Invoice invoice;
     	roomList = roomMgr.getOccupiedRoom();
     	try {
+    	    if(roomList.size() == 0) {
+                System.out.println("No room is currently occupied.");
+                return;
+            }
+
     		for (int i = 0; i<roomList.size(); i++) {
         		room = roomList.get(i);
         		invoice = invoiceMgr.getUnpaidInvoice(room.getRoomNumber());
         		guestID = invoice.getGuestID();
-        		System.out.println("Room number: " + room.getRoomNumber() + room.getUnitNumber() 
+        		System.out.println("Room number: " + room.getUnitNumber() + "(" + room.getRoomNumber() +")"
         							+ "\nGuest name: " + guestMgr.getGuestName(guestID));
         	}
+
     	}catch (NullPointerException npe) {
             logger.severe(npe.getMessage());
             System.out.println("The invoice is currently empty.");
         }
-    	
-    }
-
-    public void setDummyData() {
-
-        guestMgr.registerGuest(new Guest("S7608086T", "Zac Efron", "4539472608181189","8 Macademia Street", "8 Macademia Street", "America", "M", "American","96954268", "S7608086T"));
-        guestMgr.registerGuest(new Guest("S2432773G", "Ashley Tisdale", "5471589173401465","6 Beverly Hills", "6 Beverly Hills", "Singapore", "F","Singaporean","86096615", "S2432773G"));
-        guestMgr.registerGuest(new Guest("S3895996B", "Bruno Mars", "4716578256648199",
-                                         "41 Mexico Road    ", "41 Mexico Road", "England", "M",
-                                         "English", "95158887", "S3895996B"));
-        guestMgr.registerGuest(new Guest("S9951850N", "Nicki Minaj", "5392350070654359",
-                                         "Stamford East", "Stamford East    ", "Estonia",
-                                         "F", "Estonian", "96894026", "S9951850N"));
-        guestMgr.registerGuest(new Guest("S1641957T", "Oprah", "4532765208914447",
-                                         "80 Fifth Avenue", "80 Fifth Avenue", "Singapore", "F",
-                                         "Singaporean", "93627105", "S1641957T"));
-        guestMgr.registerGuest(new Guest("S5564748Z", "Martin Garrix", "4539231608181189","27 Lonely Road", "27 Lonely Road", "Germany", "M", "German", "96954268", "S7308086T"));
-        guestMgr.registerGuest(new Guest("S6999086L", "Walt Disney", "45394333608181189","100 Obs Street", "10 Obs Street", "America", "M", "American", "96952168", "S7608286T"));
-        guestMgr.registerGuest(new Guest("S5467862L", "Martin Lee", "45322233608181189","7 Apple Street", "7 Apple Street", "Singapore", "M", "Singaporean", "96442168", "Z7602286K"));
-menuMgr.addNewMeal(new Meal("Caesar salad", "A green salad of romaine lettuce and croutons dressed with lemon juice, olive oil, egg, Worcestershire sauce, garlic, Parmesan cheese, and black pepper" , " ",  25f));
-menuMgr.addNewMeal(new Meal("Penang Special Char Kway Teow", "Fragrant, sweet and oily flat noodle with cockles, egg, and chilli paste.", " ", 17f));
-menuMgr.addNewMeal(new Meal("Strawberry Shortcake", "The pillowy sponge cake – alternated with layers of luscious whipped cream and juicy strawberries – makes a wonderful treat at any time of the day.", " ", 8f));
-menuMgr.addNewMeal(new Meal("Wild Mushroom Pizza", "It is served with caramelized onions, fontina and rosemary.", "0ven-baked", 18f));
-        roomMgr.createRoom(
-            new Room(1, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "02-01"));
-        roomMgr.createRoom(
-            new Room(2, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "02-02"));
-        roomMgr.createRoom(
-            new Room(3, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "02-03"));
-        roomMgr.createRoom(
-            new Room(4, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "02-04"));
-        roomMgr.createRoom(
-            new Room(5, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", true, "02-05"));
-        roomMgr.createRoom(
-            new Room(6, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", true, "02-06"));
-        roomMgr.createRoom(new Room(7, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", true, "02-07"));
-        roomMgr.createRoom(new Room(8, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", true, "02-08"));
-        roomMgr.createRoom(
-            new Room(9, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "03-01"));
-        roomMgr.createRoom(
-            new Room(10, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "03-02"));
-        roomMgr.createRoom(
-            new Room(11, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "03-03"));
-        roomMgr.createRoom(
-            new Room(12, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "03-04"));
-        roomMgr.createRoom(
-            new Room(13, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "03-05"));
-        roomMgr.createRoom(
-            new Room(14, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "03-06"));
-        roomMgr.createRoom(
-            new Room(15, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", false, "Lake", false, "03-07"));
-        roomMgr.createRoom(
-            new Room(16, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", false, "Lake", false, "03-08"));
-        roomMgr.createRoom(
-            new Room(17, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "04-01"));
-        roomMgr.createRoom(
-            new Room(18, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "04-02"));
-        roomMgr.createRoom(
-            new Room(19, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "04-03"));
-        roomMgr.createRoom(
-            new Room(20, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "04-04"));
-        roomMgr.createRoom(
-            new Room(21, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "04-05"));
-        roomMgr.createRoom(
-            new Room(22, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", false, "04-06"));
-        roomMgr.createRoom(
-            new Room(23, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", false, "04-07"));
-        roomMgr.createRoom(new Room(24, Room.ROOM_TYPE.VIP, 4, 1, 430f, 500f, "Master", true, "Sea", false, "04-08"));
-        roomMgr.createRoom(
-            new Room(25, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "05-01"));
-        roomMgr.createRoom(
-            new Room(26, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "05-02"));
-        roomMgr.createRoom(
-            new Room(27, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "05-03"));
-        roomMgr.createRoom(
-            new Room(28, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "05-04"));
-        roomMgr.createRoom(
-            new Room(29, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "05-05"));
-        roomMgr.createRoom(
-            new Room(30, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", false, "05-06"));
-        roomMgr.createRoom(
-            new Room(31, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", false, "05-07"));
-        roomMgr.createRoom(new Room(32, Room.ROOM_TYPE.VIP, 4, 1, 430f, 500f, "Master", true, "Sea", false, "05-08"));
-        roomMgr.createRoom(
-            new Room(33, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "06-01"));
-        roomMgr.createRoom(
-            new Room(34, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "06-02"));
-        roomMgr.createRoom(
-            new Room(35, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "06-03"));
-        roomMgr.createRoom(
-            new Room(36, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "06-04"));
-        roomMgr.createRoom(
-            new Room(37, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "06-05"));
-        roomMgr.createRoom(
-            new Room(38, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "06-06"));
-        roomMgr.createRoom(
-            new Room(39, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", false, "06-07"));
-        roomMgr.createRoom(new Room(40, Room.ROOM_TYPE.VIP, 4, 1, 430f, 500f, "Master", true, "Sea", false, "06-08"));
-        roomMgr.createRoom(
-            new Room(41, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "07-01"));
-        roomMgr.createRoom(
-            new Room(42, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "07-02"));
-        roomMgr.createRoom(
-            new Room(43, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "07-03"));
-        roomMgr.createRoom(
-            new Room(44, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "07-04"));
-        roomMgr.createRoom(
-            new Room(45, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "07-05"));
-        roomMgr.createRoom(
-            new Room(46, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "07-06"));
-        roomMgr.createRoom(
-            new Room(47, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", false, "07-07"));
-
     }
 
     /**

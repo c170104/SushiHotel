@@ -120,8 +120,8 @@ public class InvoiceMgr {
         boolean roomSvcIDExists = false;
 
         try {
-            invoice = InvoiceModel.read(roomNumber);
-
+            //invoice = InvoiceModel.read(roomNumber);
+        	invoice = getUnpaidInvoice(roomNumber);
             roomSvcList = invoice.getRoomSvc();
             for(int i=0; i<roomSvcList.size(); i++) {
                 roomSvcIDExists = (roomSvcList.get(i) == roomSvcID);       
@@ -187,7 +187,7 @@ public class InvoiceMgr {
     public boolean makePayment(int roomNumber, boolean cashPayment)    {
         Invoice invoice;
         try {
-            invoice = InvoiceModel.read(roomNumber);
+            invoice = getUnpaidInvoice(roomNumber);
 
             invoice.setCashPayment(cashPayment);
             invoice.setInvoiceStatus(Invoice.INVOICE_STATUS.PAYMENT_MADE);

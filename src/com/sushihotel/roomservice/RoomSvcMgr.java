@@ -146,7 +146,6 @@ public class RoomSvcMgr {
 				roomSvc = (RoomSvc)iter.next();
 				if (roomSvc.getRoomSvcStatus() == RoomSvc.ROOM_SVC_STATUS.PREPARING ) {
 					delay = System.currentTimeMillis()-roomSvc.getDateTimeOrdered().getTime(); // delay is in miliseconds, 2minutes would be 120 000
-					System.out.println("Delay till start: " + delay);
 					if (delay>=120000L)
 						roomSvc.setRoomSvcStatus(RoomSvc.ROOM_SVC_STATUS.DELIVERED);
 						RSvcModel.update(roomSvc.getRoomSvcID(), roomSvc);
