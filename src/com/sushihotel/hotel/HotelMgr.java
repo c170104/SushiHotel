@@ -1482,7 +1482,6 @@ public class HotelMgr {
         Date checkInDate = null;
         Date checkOutDate = null;
         Date currentDate = new Date();
-        String checkInDateInput;
         String checkOutDateInput;
         Calendar startCal = Calendar.getInstance();
         Calendar endCal = Calendar.getInstance();
@@ -1651,6 +1650,7 @@ public class HotelMgr {
         List<Integer> roomServicesID;
         Room room;
         RoomSvc roomSvc;
+        Reservation reservation;
         float weekDayRate;
         float weekEndRate;
         float lateFees;
@@ -1701,8 +1701,9 @@ public class HotelMgr {
                     // change room status back to vacant
                     roomMgr.setRoomToOccupied(roomNumber, Room.ROOM_STATUS.VACANT);
                     // remove reservation
-                    if(reservationMgr.getReservationByID(invoice.getInvoiceID()) != null)
-                    	reservationMgr.removeReservationAfterCheckOut(roomNumber);
+                    reservation = reservationMgr.getReservationByID(invoice.getInvoiceID());
+                    if(reservation != null)
+                    	reservationMgr.removeReservationByID(reservation.getReservationID());
                     // print bill
                     invoice = invoiceMgr.getInvoice(invoice.getInvoiceID());
                     printBill(invoice);
@@ -1712,6 +1713,9 @@ public class HotelMgr {
             }
         } catch (InputMismatchException ime) {
             logger.severe(ime.getMessage());
+            System.out.println(ERROR_MSG);
+        } catch (NullPointerException npe)  {
+            logger.severe(npe.getMessage());
             System.out.println(ERROR_MSG);
         }
     }
@@ -1835,7 +1839,8 @@ public class HotelMgr {
             for (int i = 0; i < reservationList.size(); i++) {
                 reservation = reservationList.get(i);
                 System.out.println("===================================================================="
-                        + "\nReservation ID: " + Integer.toString(reservation.getReservationID()) + "\nRoom Number: "
+                        + "\nReservation ID: " + Integer.toString(reservation.getReservationID())
+                        + "\nGuest Name: " + reservation.getGuestName() + "\nRoom Number: "
                         + Integer.toString(reservation.getRoomNumber()) + "\nNo. of Adults: "
                         + Integer.toString(reservation.getNumAdults()) + "\nNo. of Childrens: "
                         + Integer.toString(reservation.getNumChild()) + "\nCheck In Date: "
@@ -1923,7 +1928,6 @@ public class HotelMgr {
     public void printOccupiedRooms() {
     	List<Room> roomList;
     	Room room;
-    	Guest guest;
     	int guestID;
     	Invoice invoice;
     	roomList = roomMgr.getOccupiedRoom();
@@ -1944,139 +1948,6 @@ public class HotelMgr {
     	}catch (NullPointerException npe) {
             logger.severe(npe.getMessage());
             System.out.println("The invoice is currently empty.");
-        }
-    }
-
-    public void setDummyData() {
-
-        guestMgr.registerGuest(
-            new Guest("S7608086T", "Zac Efron", "4539472608181189","8 Macademia Street", "8 Macademia Street", "America", "M", "American","96954268", "S7608086T"));
-        guestMgr.registerGuest(
-            new Guest("S2432773G", "Ashley Tisdale", "5471589173401465","6 Beverly Hills", "6 Beverly Hills", "Singapore", "F","Singaporean","86096615", "S2432773G"));
-        guestMgr.registerGuest(
-            new Guest("S3895996B", "Bruno Mars", "4716578256648199",
-                                         "41 Mexico Road    ", "41 Mexico Road", "England", "M",
-                                         "English", "95158887", "S3895996B"));
-        guestMgr.registerGuest(
-            new Guest("S9951850N", "Nicki Minaj", "5392350070654359",
-                                         "Stamford East", "Stamford East    ", "Estonia",
-                                         "F", "Estonian", "96894026", "S9951850N"));
-        guestMgr.registerGuest(
-            new Guest("S1641957T", "Oprah", "4532765208914447",
-                                         "80 Fifth Avenue", "80 Fifth Avenue", "Singapore", "F",
-                                         "Singaporean", "93627105", "S1641957T"));
-        guestMgr.registerGuest(
-            new Guest("S5564748Z", "Martin Garrix", "4539231608181189","27 Lonely Road", "27 Lonely Road", "Germany", "M", "German", "96954268", "S7308086T"));
-        guestMgr.registerGuest(
-            new Guest("S6999086L", "Walt Disney", "45394333608181189","100 Obs Street", "10 Obs Street", "America", "M", "American", "96952168", "S7608286T"));
-        guestMgr.registerGuest(
-            new Guest("S5467862L", "Martin Lee", "45322233608181189","7 Apple Street", "7 Apple Street", "Singapore", "M", "Singaporean", "96442168", "Z7602286K"));
-        menuMgr.addNewMeal(
-            new Meal("Caesar salad", "A green salad of romaine lettuce and croutons dressed with lemon juice, olive oil, egg, Worcestershire sauce, garlic, Parmesan cheese, and black pepper" , " ",  25f));
-        menuMgr.addNewMeal(
-            new Meal("Penang Special Char Kway Teow", "Fragrant, sweet and oily flat noodle with cockles, egg, and chilli paste.", " ", 17f));
-        menuMgr.addNewMeal(
-            new Meal("Strawberry Shortcake", "The pillowy sponge cake � alternated with layers of luscious whipped cream and juicy strawberries � makes a wonderful treat at any time of the day.", " ", 8f));
-        menuMgr.addNewMeal(
-            new Meal("Wild Mushroom Pizza", "It is served with caramelized onions, fontina and rosemary.", "0ven-baked", 18f));
-        roomMgr.createRoom(
-            new Room(1, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "02-01"));
-        roomMgr.createRoom(
-            new Room(2, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "02-02"));
-        roomMgr.createRoom(
-            new Room(3, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "02-03"));
-        roomMgr.createRoom(
-            new Room(4, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "02-04"));
-        roomMgr.createRoom(
-            new Room(5, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", true, "02-05"));
-        roomMgr.createRoom(
-            new Room(6, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", true, "02-06"));
-        roomMgr.createRoom(
-            new Room(7, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", true, "02-07"));
-        roomMgr.createRoom(
-            new Room(8, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", true, "02-08"));
-        roomMgr.createRoom(
-            new Room(9, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "03-01"));
-        roomMgr.createRoom(
-            new Room(10, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "03-02"));
-        roomMgr.createRoom(
-            new Room(11, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "03-03"));
-        roomMgr.createRoom(
-            new Room(12, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", true, "03-04"));
-        roomMgr.createRoom(
-            new Room(13, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "03-05"));
-        roomMgr.createRoom(
-            new Room(14, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "03-06"));
-        roomMgr.createRoom(
-            new Room(15, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", false, "Lake", false, "03-07"));
-        roomMgr.createRoom(
-            new Room(16, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", false, "Lake", false, "03-08"));
-        roomMgr.createRoom(
-            new Room(17, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "04-01"));
-        roomMgr.createRoom(
-            new Room(18, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "04-02"));
-        roomMgr.createRoom(
-            new Room(19, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "04-03"));
-        roomMgr.createRoom(
-            new Room(20, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "04-04"));
-        roomMgr.createRoom(
-            new Room(21, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "04-05"));
-        roomMgr.createRoom(
-            new Room(22, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", false, "04-06"));
-        roomMgr.createRoom(
-            new Room(23, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", false, "04-07"));
-        roomMgr.createRoom(
-            new Room(24, Room.ROOM_TYPE.VIP, 4, 1, 430f, 500f, "Master", true, "Sea", false, "04-08"));
-        roomMgr.createRoom(
-            new Room(25, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "05-01"));
-        roomMgr.createRoom(
-            new Room(26, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "05-02"));
-        roomMgr.createRoom(
-            new Room(27, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "05-03"));
-        roomMgr.createRoom(
-            new Room(28, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "05-04"));
-        roomMgr.createRoom(
-            new Room(29, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "05-05"));
-        roomMgr.createRoom(
-            new Room(30, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", false, "05-06"));
-        roomMgr.createRoom(
-            new Room(31, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", false, "05-07"));
-        roomMgr.createRoom(
-            new Room(32, Room.ROOM_TYPE.VIP, 4, 1, 430f, 500f, "Master", true, "Sea", false, "05-08"));
-        roomMgr.createRoom(
-            new Room(33, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "06-01"));
-        roomMgr.createRoom(
-            new Room(34, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "06-02"));
-        roomMgr.createRoom(
-            new Room(35, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "06-03"));
-        roomMgr.createRoom(
-            new Room(36, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "06-04"));
-        roomMgr.createRoom(
-            new Room(37, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "06-05"));
-        roomMgr.createRoom(
-            new Room(38, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "06-06"));
-        roomMgr.createRoom(
-            new Room(39, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", false, "06-07"));
-        roomMgr.createRoom(
-            new Room(40, Room.ROOM_TYPE.VIP, 4, 1, 430f, 500f, "Master", true, "Sea", false, "06-08"));
-        roomMgr.createRoom(
-            new Room(41, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "07-01"));
-        roomMgr.createRoom(
-            new Room(42, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "07-02"));
-        roomMgr.createRoom(
-            new Room(43, Room.ROOM_TYPE.SINGLE, 1, 0, 200f, 265f, "Single", true, "Mountain", false, "07-03"));
-        roomMgr.createRoom(
-            new Room(44, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "07-04"));
-        roomMgr.createRoom(
-            new Room(45, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "07-05"));
-        roomMgr.createRoom(
-            new Room(46, Room.ROOM_TYPE.DOUBLE, 2, 1, 280f, 320f, "Double", true, "Mountain", false, "07-06"));
-        roomMgr.createRoom(
-            new Room(47, Room.ROOM_TYPE.DELUXE, 2, 2, 350f, 420f, "Master", true, "Lake", false, "07-07"));
-        try {
-        reservationMgr.beginReservation(new Reservation("Martin Lee", 8, formatter.parse("17/04/2018 14:00"), formatter.parse("19/04/2018 12:00"), 1, 0, 2, 0, RESERVE_STATUS.CONFIRMED));
-        } catch (ParseException pe) {
-            System.out.println("");
         }
     }
 

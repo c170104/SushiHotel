@@ -153,9 +153,6 @@ public class hotelApp    {
 						case 21:
 							hotelMgr.printOccupiedRooms();
 							break;
-						case 99:
-							hotelMgr.setDummyData();
-							break;
 						default:
 							break;
 					}
